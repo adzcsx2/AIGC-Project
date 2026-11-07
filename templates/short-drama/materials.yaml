@@ -9,13 +9,13 @@ assets:
   CHAR-01:
     kind: character
     required: true
-    path: assets/CHAR-01.png
+    path: assets/角色01.png
     state: missing
     prompt: 请在图片提示词.md填写此角色的 Midjourney 提示词
   SCENE-01:
     kind: scene
     required: true
-    path: assets/SCENE-01.png
+    path: assets/场景01.png
     state: missing
     prompt: 请在图片提示词.md填写此场景的 Midjourney 提示词
 shots:

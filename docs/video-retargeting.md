@@ -51,11 +51,11 @@ H3 替换当前声明 5–25 整秒、768p 横/竖。通常无需 prompt，需�
 画幅尽量与原片一致，横竖切换可能裁掉人物和关键物品。
 
 ```powershell
-.\.venv\Scripts\python.exe -m autodl_video media inspect assets/source.mp4
+.\.venv\Scripts\python.exe -m autodl_video media inspect assets/原片.mp4
 # 去音轨，保留原视频，目标文件已存在时拒绝覆盖
-.\.venv\Scripts\python.exe -m autodl_video media prepare assets/source.mp4 --output assets/reference-silent.mp4
+.\.venv\Scripts\python.exe -m autodl_video media prepare assets/原片.mp4 --output assets/引导视频-静音.mp4
 # 第12秒起准确截5秒，截片重新编码
-.\.venv\Scripts\python.exe -m autodl_video media prepare assets/source.mp4 --output assets/SHOT-01-silent.mp4 --start 12 --duration 5
+.\.venv\Scripts\python.exe -m autodl_video media prepare assets/原片.mp4 --output assets/镜头01-引导视频-静音.mp4 --start 12 --duration 5
 # 填写自己的图和视频后离线校验
 .\.venv\Scripts\python.exe -m autodl_video validate examples/character-replacement.yaml
 ```
@@ -70,7 +70,7 @@ Wan 按输入视频长度计费，当前客户端没有可靠预算估算；不�
 VIDEO-01:
   kind: video
   required: true
-  path: assets/SHOT-01-silent.mp4
+  path: assets/镜头01-引导视频-静音.mp4
   state: provided
 ```
 

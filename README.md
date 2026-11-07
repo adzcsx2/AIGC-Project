@@ -28,6 +28,10 @@ python -m venv .venv
 Token 必须属于 **ComfyUI 分组**；鉴权头是原始 `Authorization: Token`，不加 `Bearer`。
 `.env`、素材目录 `assets/`、任务记录 `.autodl/` 和输出 `outputs/` 均被 Git 忽略。
 
+`assets/` 下的目录、图片、视频、音频统一使用中文名称，可带数字编号及版本号，扩展名保留真实格式。
+例如 `assets/双精灵对决/角色-银发法师-全身.png`、`assets/双精灵对决/视频/镜头01-双人对峙-版本01.mp4`。
+模型 ID、API 字段和内部素材 ID 保留原值；具体约定见 `AGENTS.md`。
+
 ## 从 YAML 生成视频
 
 ```powershell

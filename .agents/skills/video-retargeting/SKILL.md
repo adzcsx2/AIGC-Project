@@ -21,12 +21,15 @@ description: 在本项目处理原视频去音轨、截片、角色替换和动�
 
 ## 查看并准备原片
 
+原片副本、静音片、抽帧及换角输出归档进 assets 时，目录和文件名统一用中文，
+例如 `原片.mp4`、`引导视频-静音.mp4`、`镜头01-双人对峙.png`；同改清单和 YAML 引用。
+
 1. 用 `autodl media inspect 原片.mp4` 读取时长、画幅和音轨。
    需要测切点和生成代表帧时，使用 `short-drama-breakdown` 的 `breakdown_tool.py measure`；
    只做本次需要的观看与镜头测量，不自动进行竞品研究或付费对照生成。
 2. 先实际查看代表帧，确认出镜人数、目标角色、遮挡、角色换位、武器接触和切镜。
    保留原片，按需求生成无音轨副本或逐镜短片：
-   `autodl media prepare 原片.mp4 --output assets/reference-silent.mp4`；
+   `autodl media prepare 原片.mp4 --output assets/引导视频-静音.mp4`；
    截片再加 `--start 秒数 --duration 秒数`。该工具不联网、不上传、不扩时、不覆盖已有文件。
    仅去音轨时对 H.264/HEVC 复制视频码流；截片会重新编码以准确对齐起点。
 3. H3 原片较短时不默认用更长 duration：上游说明尾部可能自由发挥。

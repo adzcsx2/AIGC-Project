@@ -1,8 +1,8 @@
 workflow_id: minimax_h3_zm_u24
 inputs:
   prompt: 参考图片中的人物在温暖的房间中自然说话，保持人物一致，配合参考音频，镜头平稳
-  ref_image_0: ../assets/reference.png
-  ref_audio_0: ../assets/voice.wav
+  ref_image_0: ../assets/参考图片.png
+  ref_audio_0: ../assets/参考音频.wav
   duration: 5
   resolution: 480p横
 output_dir: outputs/images-audio-to-video

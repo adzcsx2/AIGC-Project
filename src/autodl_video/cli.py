@@ -30,9 +30,9 @@ def template(workflow_id: str, workflow: dict) -> dict:
         kind = rule["type"]
         if kind in {"image", "audio", "video"}:
             inputs[name] = {
-                "image": "../assets/reference.png",
-                "audio": "../assets/voice.wav",
-                "video": "../assets/reference.mp4",
+                "image": "../assets/参考图片.png",
+                "audio": "../assets/参考音频.wav",
+                "video": "../assets/参考视频.mp4",
             }[kind]
         elif "default" in rule:
             inputs[name] = rule["default"]

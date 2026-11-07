@@ -5,13 +5,13 @@
 | 配置 | 用途 | 需要准备的素材 |
 |---|---|---|
 | `text-to-video.yaml` | 1 秒文生视频样片 | 无 |
-| `image-to-video.yaml` | 参考图生视频 | `assets/reference.png` |
-| `images-audio-to-video.yaml` | 图片和音频协同生成 | `assets/reference.png`、`assets/voice.wav` |
-| `first-last-frame.yaml` | 首尾帧过渡 | `assets/first.png`、`assets/last.png` |
-| `motion-transfer.yaml` | 动作迁移 | `assets/reference.png`、`assets/reference.mp4` |
-| `character-replacement.yaml` | H3 单角色替换 | `assets/characters/HERO.png`、`assets/reference-silent.mp4` |
-| `multi-character-replacement.yaml` | H3 多角色替换 | 两张角色图、`assets/reference-silent.mp4` |
-| `text-to-speech.yaml` | 参考音色语音生成 | `assets/voice.wav` |
+| `image-to-video.yaml` | 参考图生视频 | `assets/参考图片.png` |
+| `images-audio-to-video.yaml` | 图片和音频协同生成 | `assets/参考图片.png`、`assets/参考音频.wav` |
+| `first-last-frame.yaml` | 首尾帧过渡 | `assets/起始帧.png`、`assets/结束帧.png` |
+| `motion-transfer.yaml` | 动作迁移 | `assets/参考图片.png`、`assets/参考视频.mp4` |
+| `character-replacement.yaml` | H3 单角色替换 | `assets/人物/主角.png`、`assets/引导视频-静音.mp4` |
+| `multi-character-replacement.yaml` | H3 多角色替换 | 两张角色图、`assets/引导视频-静音.mp4` |
+| `text-to-speech.yaml` | 参考音色语音生成 | `assets/参考音频.wav` |
 
 素材路径相对 YAML 所在位置；以上示例位于 `examples/`，因此使用 `../assets/`。
 也可以直接填写可公开访问的 HTTP(S) 素材 URL，或 MIME 正确的 Base64 data URL。

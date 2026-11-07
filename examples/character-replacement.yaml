@@ -2,8 +2,8 @@
 # 短剧镜头还须同时添加 materials_manifest 和 shot_id，见 docs/video-retargeting.md。
 workflow_id: minimax_h3_zm_titi
 inputs:
-  ref_image: ../assets/characters/HERO.png
-  ref_video: ../assets/reference-silent.mp4
+  ref_image: ../assets/人物/主角.png
+  ref_video: ../assets/引导视频-静音.mp4
   duration: 5
   resolution: 768p横
 # 通常省略 prompt；特殊要求只用简短自然语言，勿填普通 H3 六段式。
