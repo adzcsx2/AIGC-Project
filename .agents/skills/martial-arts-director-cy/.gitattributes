@@ -1,0 +1,2 @@
+# Preserve whitespace in the vendored skill exactly as published upstream.
+SKILL.md whitespace=-blank-at-eol

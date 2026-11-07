@@ -141,6 +141,11 @@ with AutoDLClient(load_token(Path(r"E:\AutoDL"))) as client:
 在此项目里可以直接提问“哪个模型支持首尾帧”“更新模型目录”“帮我用参考图生成视频”。
 项目 `AGENTS.md` 要求回答参数和价格时查阅目录，不依赖记忆猜测。
 
+已安装 [martial-arts-director-cy 武术指导技能](.agents/skills/martial-arts-director-cy/SKILL.md)，
+用于打斗戏动作编排、人物锚定、多宫格分镜及配套视频提示词。
+可以直接说“用武术指导 skill，给这张角色图设计一段雨夜打斗戏”。
+与 Midjourney 和 AutoDL 的配合方式见 [打斗戏工作流](docs/fight-scenes.md)。
+
 ## 开发验证
 
 ```powershell

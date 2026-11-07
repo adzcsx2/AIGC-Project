@@ -4,6 +4,10 @@
 
 - 对 AutoDL 模型选择、参数解释、目录更新和生成请求，使用
   `.agents/skills/autodl-aigc/SKILL.md`；不要凭记忆编造工作流 ID 或参数。
+- 对打斗戏、武术指导、武打分镜、动作编排和动作分解海报，使用
+  `.agents/skills/martial-arts-director-cy/SKILL.md`，并读 `docs/fight-scenes.md` 衔接本项目。
+  武指技能负责分镜及图像/视频提示词；API 配置和执行交给 autodl-aigc。
+  用户已有 Midjourney 角色图时，以该图锁定人物、服装和风格，用户需求优先于模板默认值。
 - 项目入口为 `.venv/Scripts/python.exe -m autodl_video`（Windows）或安装后的 `autodl`。
 - `catalog/workflows.yaml` 是上游工作流规则及说明的本地快照，使用 `models sync` 更新，
   不直接手改生成目录。查询价格/最新模型时先同步或读取对应公开详情。
