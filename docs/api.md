@@ -35,6 +35,9 @@ HTTPS 结果通过无 Token 的独立客户端流式下载，保存为任务 ID 
 
 客户端会显示这个嵌套错误并给出 Token 分组提示，不打印 Token。
 401/403 应核对 Token 有效性、ComfyUI 分组和权限；程序不创建或更改凭证。
+本机 `.env` 的 `autodl_apikey:...` 已兼容，发送前会去除变量名前缀。
+正确提取令牌后已观察到 HTTP 403，错误类型为 `permission_denied`，
+消息为 `This token does not have permission to access ComfyUI APIs`，表示缺少该接口权限。
 HTTP 408、5xx、连接中断及无法解析的成功提交响应都按“可能已提交”处理，不自动再发生成请求。
 
 H3 公开计费字段 `price=40` 对应页面显示的 ¥0.040/秒；估价取高峰/空闲价格较大值，

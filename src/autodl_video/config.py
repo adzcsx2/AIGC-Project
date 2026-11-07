@@ -88,7 +88,7 @@ def project_root(explicit: str | Path | None = None) -> Path:
 
 
 def load_token(root: Path) -> str:
-    names = ("AUTODL_API_KEY", "AUTODL_TOKEN")
+    names = ("AUTODL_API_KEY", "AUTODL_APIKEY", "AUTODL_TOKEN")
     token = next((os.environ[n].strip() for n in names if os.environ.get(n, "").strip()), "")
     path = root / ".env"
     if not token and path.exists():
@@ -98,10 +98,17 @@ def load_token(root: Path) -> str:
             for line in raw.splitlines()
             if line.strip() and not line.lstrip().startswith("#")
         ]
-        if len(lines) == 1 and not re.match(r"^(?:export\s+)?[A-Za-z_]\w*\s*=", lines[0]):
+        if len(lines) == 1 and not re.match(r"^(?:export\s+)?[A-Za-z_]\w*\s*[=:]", lines[0]):
             token = lines[0]
         else:
-            values = dotenv_values(stream=io.StringIO(raw))
+            normalized = []
+            for line in raw.splitlines():
+                match = re.match(r"^\s*(?:export\s+)?([A-Za-z_]\w*)\s*:\s*(.*)$", line)
+                if match and match[1].upper() in names:
+                    line = f"{match[1]}={match[2]}"
+                normalized.append(line)
+            parsed = dotenv_values(stream=io.StringIO("\n".join(normalized)))
+            values = {name.upper(): value for name, value in parsed.items()}
             token = next((str(values[n]).strip() for n in names if values.get(n)), "")
     if not token:
         raise AutoDLError("Set AUTODL_API_KEY in .env (or keep a single bare Token line)")

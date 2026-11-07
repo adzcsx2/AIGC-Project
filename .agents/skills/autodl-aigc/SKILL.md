@@ -48,5 +48,7 @@ description: 使用本项目的 Python 工具查询和更新 AutoDL ComfyUI 模�
   无 ID 时看 `.autodl/attempts/` 并核对平台调用日志；有 ID 就恢复查询。
 - 鉴权使用 ComfyUI 分组原始 Token，不加 Bearer。密钥只由工具从项目 `.env`/环境变量读取，
   不询问用户在聊天里粘贴 Token。401/403 时只说明分组或权限问题，不擅自修改凭证。
+- `.env` 兼容 `autodl_apikey:...`、标准等号赋值和裸 Token，冒号前的变量名不能作为密钥发送。
+  若接口明确返回 permission_denied，依据实际错误解释分组权限，不把它称作无效密钥。
 
 修改后用模拟 HTTP 测试验证校验、状态、重试及下载；真实生成测试需要用户已授权的范围和预算。

@@ -22,8 +22,9 @@ python -m venv .venv
 
 ## 密钥
 
-读取优先级：环境变量 `AUTODL_API_KEY` / `AUTODL_TOKEN`，其次项目 `.env`。
-支持标准 `AUTODL_API_KEY=...`，也兼容现有的一行裸 Token，不会修改 `.env`。
+读取优先级：环境变量 `AUTODL_API_KEY` / `AUTODL_APIKEY` / `AUTODL_TOKEN`，其次项目 `.env`。
+支持标准 `AUTODL_API_KEY=...`、`autodl_apikey:...`（变量名不区分大小写），
+也兼容一行裸 Token。解析不会修改 `.env`。
 Token 必须属于 **ComfyUI 分组**；鉴权头是原始 `Authorization: Token`，不加 `Bearer`。
 `.env`、素材目录 `assets/`、任务记录 `.autodl/` 和输出 `outputs/` 均被 Git 忽略。
 

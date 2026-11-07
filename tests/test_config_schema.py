@@ -17,6 +17,11 @@ from autodl_video.schema import estimate_cost, validate_inputs
         "# comment\nraw-test-token\n",
         "AUTODL_API_KEY=test-key",
         "AUTODL_TOKEN='test-key'",
+        "autodl_apikey:test-key",
+        "autodl_apikey: test-key",
+        "autodl_apikey=test-key",
+        'AUTODL_API_KEY: "test-key"',
+        "# settings\nautodl_apikey:test-key\nOTHER_SETTING=unchanged",
     ],
 )
 def test_env_formats(tmp_path, monkeypatch, body):
