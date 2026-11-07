@@ -24,11 +24,13 @@
 | 同上 | `short-drama-storyboard` | 景别、机位、走位、冻结关键帧及参考图绑定 |
 | 同上 | `short-drama-video-prompts` | 把分镜转为对应模型的视频提示词，包含 MiniMax H3 方言 |
 | 同上 | `short-drama-review` | 剧本、连续性、分镜和提示词审校，按需使用 |
+| 同上 | `short-drama-breakdown` | 后续原视频换角需求补装：原片测量、切点、代表帧与镜头分析 |
 | [phileiny/h3-storyboard-skill](https://github.com/phileiny/h3-storyboard-skill) | `h3-storyboard` | H3 情绪表演、动作节拍密度与镜头设计补充 |
+| [alchaincyf/seedance-skill](https://github.com/alchaincyf/seedance-skill) | `huashu-seedance` | 后续补装：实际白模引擎、几何体检与照片辅助空间反解 |
 | [UnderleveledBuilder/awesome-short-drama-skills](https://github.com/UnderleveledBuilder/awesome-short-drama-skills) | `short-drama-skill-finder` | 今后按新增需求检索其他实际源仓库 |
 
-合计安装 10 项外部技能，来自 3 个源仓库，其中 9 项负责实际创作。
-另创建本项目 `short-drama-workflow`，把这组能力接到现有 `autodl-aigc`；
+合计安装 12 项外部技能，来自 4 个源仓库，其中 11 项负责实际创作/媒体准备。
+另创建本项目 `short-drama-workflow` 与 `video-retargeting`，把这组能力接到现有 `autodl-aigc`；
 原有 `martial-arts-director-cy` 继续负责打斗动作。
 完整文件位于 `.agents/skills/`，没有只复制技能名称或只装索引。
 
@@ -42,7 +44,7 @@ H3 补充指南侧重“怎么演、怎么拆镜”，与主线的提示词格�
 - [eternityspring/shuohao-skills](https://github.com/eternityspring/shuohao-skills)：有角色、剧本和分镜能力，
   但采用另一套小说改编与结构化交付流程；部分角色参考/分镜阶段还直接调用其他图片生成链路。
   与现有主线大量重叠，因此本次不混入两套产物契约与生产执行方式。
-- zenstory 的小说分析、对标视频拆解：当前需求是用户自己的创意与提示词风格，尚不需要这些专门入口。
+- zenstory 的小说分析：尚无长篇原著分析需求。原先未装的对标视频拆解已随原视频换角需求补装，按需使用其测量与抽帧能力。
 - zenstory 的 `short-drama-produce`：本项目已有 AutoDL 任务记录、预算预检、轮询和下载，
   不另引入 provider/adapter 与凭据。上游路由提及它时，由项目衔接规则转到 `autodl-aigc`。
 - zenstory 的后期剪辑阶段：本次要求到生成视频，尚未要求剪辑、配乐与成片封装，保留以后按需安装。
@@ -67,6 +69,7 @@ H3 补充指南侧重“怎么演、怎么拆镜”，与主线的提示词格�
 - 索引固定提交：[9a1f686](https://github.com/UnderleveledBuilder/awesome-short-drama-skills/tree/9a1f686460c0a03cb0df40c3d2e55739568911dc)，CC0-1.0。
 - zenstory 固定提交：[862ae46](https://github.com/zenstory-ai/drama-skills/tree/862ae46f36516f2b7d188da42e0e67365f7ddde6)，MIT。
 - H3 固定提交：[ce732ba](https://github.com/phileiny/h3-storyboard-skill/tree/ce732bae6e05d2e4c4943e3e1fda2d515f9a2ff3)，MIT。
+- 白模引擎固定提交：[4530b44](https://github.com/alchaincyf/seedance-skill/tree/4530b443b686c363da27109712ac18aec07aa6b9)，MIT。
 
 每个外部技能保留原始 SKILL.md、配套资源与来源记录，补齐源仓库根 LICENSE；
 缺少 Codex 界面元数据的两个技能由本项目补充。精确目录与 SKILL.md 哈希见 `installed-skills.yaml`。

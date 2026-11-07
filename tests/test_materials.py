@@ -127,6 +127,24 @@ def test_bindings_check_identity_and_every_media_input(materials):
         assert_shot_ready(path, "SHOT-01", inputs, rules, path.parent)
 
 
+def test_retargeting_binds_character_and_video(materials):
+    path, data = materials
+    (path.parent / "reference.mp4").write_bytes(b"test video fixture")
+    data["assets"]["VIDEO-01"] = {"kind": "video", "path": "reference.mp4", "state": "ready"}
+    shot = data["shots"]["SHOT-01"]
+    shot["required_assets"].append("VIDEO-01")
+    shot["reference_bindings"] = {"ref_image": "CHAR-01", "ref_video": "VIDEO-01"}
+    save(materials)
+    rules = {"ref_image": {"type": "image"}, "ref_video": {"type": "video"}}
+    inputs = {"ref_image": "character.png", "ref_video": "reference.mp4"}
+    assert_shot_ready(path, "SHOT-01", inputs, rules, path.parent)
+    # A video field must not silently receive a character-image binding.
+    shot["reference_bindings"]["ref_video"] = "CHAR-01"
+    save(materials)
+    with pytest.raises(AutoDLError, match="素材类型"):
+        assert_shot_ready(path, "SHOT-01", inputs, rules, path.parent)
+
+
 def test_gate_blocks_before_network_or_credentials(materials, config, project, monkeypatch):
     path, data = materials
     data["assets"]["CHAR-01"]["state"] = "missing"

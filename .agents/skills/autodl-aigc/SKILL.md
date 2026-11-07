@@ -30,6 +30,10 @@ description: 使用本项目的 Python 工具查询和更新 AutoDL ComfyUI 模�
 
 ## 配置与生成
 
+原视频替换人物或动作迁移先使用 video-retargeting。minimax_h3_zm_titi/titim 是专用替换工作流，
+通常省略 prompt，需要调整时只用简短自然语言，不填普通 H3 六段式。
+参考视频可先用 `autodl media inspect/prepare` 检查、截片与去音轨，原文件保留。
+
 短剧项目先用 `short-drama-workflow` 衔接创作；每镜 YAML 必须同时有
 `materials_manifest` 和 `shot_id`，通过 `autodl materials check 清单路径` 及 `autodl validate 镜头配置路径`。
 任一必要素材缺失、未检查或输入绑错图都不得生成；不能直接用底层 submit 绕过此检查。

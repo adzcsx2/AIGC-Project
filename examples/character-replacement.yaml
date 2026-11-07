@@ -1,0 +1,11 @@
+# 独立换角示例：原片至少 5 秒，先准备静音副本；填写自己的图与视频。
+# 短剧镜头还须同时添加 materials_manifest 和 shot_id，见 docs/video-retargeting.md。
+workflow_id: minimax_h3_zm_titi
+inputs:
+  ref_image: ../assets/characters/HERO.png
+  ref_video: ../assets/reference-silent.mp4
+  duration: 5
+  resolution: 768p横
+# 通常省略 prompt；特殊要求只用简短自然语言，勿填普通 H3 六段式。
+output_dir: outputs/character-replacement
+max_cost_cny: 0.55

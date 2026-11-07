@@ -5,7 +5,12 @@
 - 跨阶段短剧创作默认使用 `.agents/skills/short-drama-workflow/SKILL.md`，
   按角色/风格提示词 → 剧本分镜 → 补齐素材 → MiniMax 图生视频衔接。
   用户去 Midjourney 生成图；助手提供可复制提示词并检查回传图。
-- 原创作能力来自已安装的 zenstory-ai/drama-skills 八项技能，H3 表演补充来自
+- 原视频换角、去音轨、动作迁移和白模/深度路线判断使用
+  `.agents/skills/video-retargeting/SKILL.md`。原片测量与抽帧用 short-drama-breakdown，
+  白模预演用 huashu-seedance；不能声称已部署任意原视频到深度或3D动捕。
+- H3 专用角色替换工作流 minimax_h3_zm_titi/titim 省略提示词或用简单主体映射，
+  不套普通 H3 六段式。具体输入、声音与时长边界见 `docs/video-retargeting.md`。
+- 原创作能力来自已安装的 zenstory-ai/drama-skills 九项技能，H3 表演补充来自
   phileiny/h3-storyboard-skill；具体来源、版本及取舍见 `docs/short-drama-skills-analysis.md`。
   需要哪个阶段就读对应 skill；不要求把全部技能、全部参考一次读入。
 - 用户明确要求必要素材满足后才进入视频生成。缺图时给出用途、影响镜头、提示词与保存路径，
@@ -15,7 +20,7 @@
   或 `VideoProject.generate`。素材检查与媒体绑定检查由 Python 执行，缺图不提交。
   五份 Markdown 拥有创作正文，materials.yaml 只登记生产就绪与文件绑定。
 - 上游路由提及的 short-drama-produce 未安装，真实生成由本项目 autodl-aigc 接管；
-  未安装的小说拆解、对标视频拆解、后期剪辑阶段仅在用户确有需要时扩展。
+  未安装的小说拆解、后期剪辑阶段仅在用户确有需要时扩展。
 
 - 对 AutoDL 模型选择、参数解释、目录更新和生成请求，使用
   `.agents/skills/autodl-aigc/SKILL.md`；不要凭记忆编造工作流 ID 或参数。

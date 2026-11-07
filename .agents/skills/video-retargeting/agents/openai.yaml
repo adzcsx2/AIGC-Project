@@ -1,0 +1,4 @@
+interface:
+  display_name: "视频换角与动作迁移"
+  short_description: "准备无声引导片，用自己的角色替换原片人物，并区分白模预演与深度控制路线"
+  default_prompt: "使用 $video-retargeting，分析我的原视频和角色图，准备静音参考片与换角配置，缺素材时先列清单。"

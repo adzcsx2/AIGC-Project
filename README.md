@@ -149,11 +149,15 @@ with AutoDLClient(load_token(Path(r"E:\AutoDL"))) as client:
 ## 短剧制作工作流
 
 已按 [Awesome Short Drama Skills 索引](https://github.com/UnderleveledBuilder/awesome-short-drama-skills)
-安装实际源仓库的 10 项技能，并增加本项目的 `$short-drama-workflow` 衔接技能。
+安装实际源仓库的 12 项技能，并增加本项目的 `$short-drama-workflow`、`$video-retargeting` 衔接技能。
 现在可以直接说“按这段提示词的画风设计我的角色”“把这个想法写成剧本和分镜”。
 缺角色图、场景图或关键帧时会列出补图清单和 Midjourney 提示词；你补齐图片后才进入 MiniMax 视频生成。
 完整流程、清单检查和 YAML 用法见 [短剧工作流](docs/short-drama-workflow.md)，
 安装来源与取舍见 [技能分析](docs/short-drama-skills-analysis.md)。
+
+原视频去音轨、截片、用自己的角色替换原片人物或迁移动作，使用
+[视频换角工作流](docs/video-retargeting.md)。已补装原片拆镜与白模预演引擎；
+任意原片到深度或3D动捕目前没有部署执行端，详情见该文的能力表。
 
 ```powershell
 .\.venv\Scripts\python.exe -m autodl_video materials check projects/我的短剧/剧集/EP001/materials.yaml

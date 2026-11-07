@@ -44,6 +44,9 @@ API 使用现有 `autodl-aigc`。先读根目录 `AGENTS.md`；清单格式与�
 
 ## 4. MiniMax 图生视频
 
+原视频驱动的换角/动作迁移先使用 `video-retargeting`，其 H3 专用角色替换使用简单提示词，
+不套本节普通图生视频的六段式。清单中的视频登记为 kind: video 并绑定实际媒体字段。
+
 - 仅素材齐备后使用 `short-drama-video-prompts` 的 MiniMax H3 方言编写最终视频提示词，
   再用 `autodl-aigc` 查询实际工作流规则、价格及参考方式，逐镜编写 YAML。
   上游示例 production_profile 的时长范围不是 API 规则，使用本项目实际 `input_rules`。
@@ -61,4 +64,4 @@ API 使用现有 `autodl-aigc`。先读根目录 `AGENTS.md`；清单格式与�
 
 需要复核剧本或镜头质量时使用 `short-drama-review`；需要扩展能力时使用
 `short-drama-skill-finder` 从索引核对真实源仓库，再安装匹配的具体技能。
-未安装的小说拆解、竞品视频拆解和后期剪辑技能不是本次流程前置要求。
+小说拆解和后期剪辑未安装；原片需要拆镜、抽帧时已可使用 short-drama-breakdown。

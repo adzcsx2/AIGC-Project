@@ -14,6 +14,7 @@ from .client import AutoDLClient
 from .config import atomic_text, project_root
 from .errors import AutoDLError
 from .materials import check_materials
+from .reference import prepare_reference, probe_video
 from .runner import VideoProject
 
 
@@ -77,6 +78,15 @@ def parser() -> argparse.ArgumentParser:
     check = material_commands.add_parser("check", help="离线输出缺图清单，不调用 API")
     check.add_argument("manifest", type=Path)
     check.add_argument("--shot", help="核对镜头 ID；仍检查整份清单的必要素材")
+    media = commands.add_parser("media", help="本地视频检查、去音轨与片段准备")
+    media_commands = media.add_subparsers(dest="action", required=True)
+    inspect = media_commands.add_parser("inspect", help="读取参考视频的时长、画幅与音轨")
+    inspect.add_argument("source", type=Path)
+    prepare = media_commands.add_parser("prepare", help="输出无音轨 MP4，保留原视频")
+    prepare.add_argument("source", type=Path)
+    prepare.add_argument("--output", type=Path, required=True)
+    prepare.add_argument("--start", type=float, default=0)
+    prepare.add_argument("--duration", type=float)
     task = commands.add_parser("task", help="恢复查询和下载，不会重新提交任务")
     task_commands = task.add_subparsers(dest="action", required=True)
     task_commands.add_parser("list", help="列出本地任务记录")
@@ -109,6 +119,15 @@ def main(argv: list[str] | None = None) -> int:
             last_status = status
 
     try:
+        if args.command == "media":
+            print_json(
+                probe_video(args.source)
+                if args.action == "inspect"
+                else prepare_reference(
+                    args.source, args.output, start=args.start, duration=args.duration
+                )
+            )
+            return 0
         if args.command == "materials":
             report = check_materials(args.manifest, args.shot)
             print_json(report)

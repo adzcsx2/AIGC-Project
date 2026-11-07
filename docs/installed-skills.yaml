@@ -71,3 +71,17 @@ skills:
   installed_path: .agents/skills/short-drama-skill-finder
   license: CC0-1.0
   skill_sha256: 6775b6772ff4005ac292d168ea6ff17857e6d1580f4ffbb0d3b2e750ea10ecec
+- name: short-drama-breakdown
+  repository: https://github.com/zenstory-ai/drama-skills
+  ref: 862ae46f36516f2b7d188da42e0e67365f7ddde6
+  source_path: skills/short-drama-breakdown
+  license: MIT
+  installed_path: .agents/skills/short-drama-breakdown
+  skill_sha256: 862c305e6e85cd7049df78bddb8d372db9847abb8df6ced7acbc3887bda26784
+- name: huashu-seedance
+  repository: https://github.com/alchaincyf/seedance-skill
+  ref: 4530b443b686c363da27109712ac18aec07aa6b9
+  source_path: .
+  license: MIT
+  installed_path: .agents/skills/huashu-seedance
+  skill_sha256: 8a0e68d4f8c123f777bcac1dd2511fdcd6f043a183b2d0d790156c8a34953b00

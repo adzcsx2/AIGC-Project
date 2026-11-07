@@ -1,0 +1,4 @@
+interface:
+  display_name: "白模预演工作台"
+  short_description: "通过场景参数构建白模预演、检查几何与机位，并生成和实际运镜一致的提示词"
+  default_prompt: "使用 $huashu-seedance，为我的镜头设计 scene.json 白模预演，先检查空间和运镜，再准备渲染与参考图提示词。"
