@@ -1,0 +1,24 @@
+# 英文提示词修订提案，待用户确认；未提交生成，禁止自动执行 run。
+# 本轮建议先确认面部晶闪与额饰，再另行确认全身造型生成。
+# 普通 image prompt 参考不保证身份严格一致，不冒充已验证的编辑器绑定。
+prompt: >-
+  Close-up head-and-shoulders portrait of an adult silver-haired elven sorceress in an Eastern
+  xianxia fantasy world. Delicate oval face, pale gray-green eyes, natural pink lips, pointed ears
+  and long fine silver-white hair parted away from her forehead. Her face fills most of the frame,
+  with the entire forehead, both eyes and upper cheeks clearly visible, almost frontal with a
+  slight three-quarter turn. One elongated blue-violet faceted diamond gemstone sits vertically
+  at the center of her forehead, held by extremely fine silver twig filigree lying close to the skin,
+  forming small V-shaped branches toward the temples. Ultrafine skin-adhering translucent crystal
+  flakes and iridescent pearl dust sparkle around the forehead jewel, across the temples and brow
+  bones, and around the outer eye corners and upper cheekbones. Irregular clusters of tiny icy-white,
+  pale blue and lilac glints, with uncovered skin between the flecks and natural pores still visible.
+  The delicate crystalline shimmer belongs to her skin, separate from the larger forehead gemstone.
+  A glimpse of silver-blue and pale lilac shoulder armor, soft cool backlight, gentle frontal fill,
+  controlled highlights, shallow depth of field, realistic cinematic fantasy CG, pale blue-gray
+  background. One portrait, no tall crown, antlers, oversized facial rhinestones, opaque glitter mask,
+  floating star particles, text or panels. --ar 3:4 --chaos 0 --stylize 50
+reference_images:
+  - ../../../assets/双精灵对决/参考图-银发精灵.png
+output_dir: outputs/midjourney
+timeout: 1800
+poll_interval: 3

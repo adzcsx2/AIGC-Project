@@ -32,6 +32,8 @@ description: 使用本项目的 Python 工具查询和更新 AutoDL ComfyUI 模�
 
 遵守根目录 AGENTS.md 的素材中文命名规则：assets 下的目录与图片/视频/音频文件名用中文，
 建议保存名、YAML 媒体路径及归档结果同步采用中文；API 参数键与工作流 ID 保持原值。
+所有模型提示词正文统一英文，YAML 与实际请求一致；中文说明和作品台词按需求保留，
+API 枚举及引用标记保持协议原值。历史已提交配置不覆盖，复用时另建英文版本。
 
 原视频替换人物或动作迁移先使用 video-retargeting。minimax_h3_zm_titi/titim 是专用替换工作流，
 通常省略 prompt，需要调整时只用简短自然语言，不填普通 H3 六段式。

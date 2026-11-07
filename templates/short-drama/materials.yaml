@@ -11,13 +11,13 @@ assets:
     required: true
     path: assets/角色01.png
     state: missing
-    prompt: 请在图片提示词.md填写此角色的 Midjourney 提示词
+    prompt: Write the English Midjourney prompt for this character in the image-prompt document.
   SCENE-01:
     kind: scene
     required: true
     path: assets/场景01.png
     state: missing
-    prompt: 请在图片提示词.md填写此场景的 Midjourney 提示词
+    prompt: Write the English Midjourney prompt for this scene in the image-prompt document.
 shots:
   SHOT-01:
     required_assets: [CHAR-01, SCENE-01]

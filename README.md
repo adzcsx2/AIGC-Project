@@ -6,6 +6,9 @@ Python + YAML 驱动 AutoDL ComfyUI 工作流，支持视频、语音生成及�
 必须取得用户确认才能执行下一步；不自动放大、重抽、生成下一角色或继续视频。
 用户直接要求本次生成即为该次授权，不重复确认同一请求。具体规则见 `AGENTS.md`。
 
+所有模型提示词正文统一使用英文，包括图片、视频、编辑与负面提示词；
+中文说明、剧本及素材中文命名继续保留。已提交配置保留原文作历史记录，新版本另写英文提示词。
+
 ## 安装
 
 要求 Python 3.11+。本项目已经创建 `.venv`；在 PowerShell 中可直接调用虚拟环境的程序，
@@ -39,7 +42,7 @@ Token 必须属于 **ComfyUI 分组**；鉴权头是原始 `Authorization: Token
 Midjourney 本机代理已通过 Discord 账号初始化、频道读取及 API 鉴权检查，
 可用 Python `MidjourneyProject` 或 `autodl mj` 提交 YAML、选图、查询和恢复任务。
 账号及连接配置按用户要求保存在根目录 `.env`，说明使用中文。
-命令、限制与示例见 [Midjourney 本机接入](docs/midjourney-local.md)；实际出图尚未验证。
+命令、限制与示例见 [Midjourney 本机接入](docs/midjourney-local.md)；已取回首轮四张候选，用户未通过验收。
 
 ## 从 YAML 生成视频
 
@@ -138,7 +141,7 @@ from autodl_video.storage import download_results
 with AutoDLClient(load_token(Path(r"E:\AutoDL"))) as client:
     task = client.submit(
         "minimax_h3_lightx2v_no_pic",
-        {"prompt": "一只橘猫走过雨后的街道", "duration": 1, "resolution": "480p横"},
+        {"prompt": "An orange cat walks along a street after the rain.", "duration": 1, "resolution": "480p横"},
     )
     # 立即保存 task["task_id"]；底层接口不提供 YAML 校验和预算检查。
     completed = client.wait(task["task_id"])

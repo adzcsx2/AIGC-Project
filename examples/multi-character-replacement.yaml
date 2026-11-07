@@ -5,7 +5,7 @@ inputs:
   ref_image_1: ../assets/人物/对手.png
   ref_video: ../assets/引导视频-静音.mp4
   video_subject_to_replace: person
-  prompt: 图1换左边的人，图2换右边的人，保留原场景。
+  prompt: Replace the person on the left with the character in image 1 and the person on the right with the character in image 2. Preserve the original scene.
   duration: 5
   resolution: 768p横
 output_dir: outputs/multi-character-replacement

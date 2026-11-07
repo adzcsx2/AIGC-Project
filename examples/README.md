@@ -1,6 +1,7 @@
 # 示例配置
 
 先使用 `autodl models show WORKFLOW_ID` 阅读模型说明，准备素材，再运行 `autodl validate 配置路径`。
+所有模型提示词正文统一英文；说明、素材路径及文件名继续使用中文，API 枚举保持原值。
 
 | 配置 | 用途 | 需要准备的素材 |
 |---|---|---|
@@ -29,7 +30,7 @@ autodl models template minimax_h3_zm_titim --output examples/my-motion.yaml
 
 MJ 生图使用独立命令：`autodl mj validate examples/双精灵-法师生图.yaml`，
 真正提交使用 `autodl mj run`，会消耗会员额度。普通垫图与新版编辑器的角色引用功能不同，
-当前已验证连接与离线配置，尚未验证真实出图。详见 [本机接入](../docs/midjourney-local.md)。
+当前已取回首轮真实候选，但用户未通过验收。详见 [本机接入](../docs/midjourney-local.md)。
 
 换角与去音轨见 [视频换角工作流](../docs/video-retargeting.md)。H3 替换专用工作流使用简单提示词，
 不套普通 H3 六段式。短剧镜头另外绑定 materials_manifest/shot_id 并通过素材检查。

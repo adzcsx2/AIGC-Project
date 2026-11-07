@@ -1,6 +1,6 @@
 workflow_id: minimax_h3_lightx2v_no_pic
 inputs:
-  prompt: 一只橘猫走过雨后的街道，地面映出柔和灯光，镜头缓慢跟随，电影质感
+  prompt: An orange cat walks along a street after the rain. Soft lights reflect on the wet pavement as the camera slowly follows, with a cinematic look.
   duration: 1
   resolution: 480p横
 output_dir: outputs/demo

@@ -38,7 +38,7 @@ def template(workflow_id: str, workflow: dict) -> dict:
         elif "default" in rule:
             inputs[name] = rule["default"]
         elif kind in {"prompt", "string"}:
-            inputs[name] = "请填写要生成的内容"
+            inputs[name] = "Describe the content to generate"
         elif kind == "enum":
             option = rule["options"][0]
             inputs[name] = option["label"] if isinstance(option, dict) else option
