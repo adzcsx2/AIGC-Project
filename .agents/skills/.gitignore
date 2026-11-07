@@ -1,0 +1,8 @@
+# Ship the selected upstream text templates and local dashboard with their skills.
+# Keep the project's generated assets and martial-arts example media ignored.
+!short-drama/assets/
+!short-drama/assets/**
+!short-drama-develop/assets/
+!short-drama-develop/assets/**
+!short-drama-write/assets/
+!short-drama-write/assets/**

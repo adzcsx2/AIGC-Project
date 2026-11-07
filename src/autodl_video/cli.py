@@ -13,6 +13,7 @@ from .catalog import get_workflow, load_catalog, sync_catalog
 from .client import AutoDLClient
 from .config import atomic_text, project_root
 from .errors import AutoDLError
+from .materials import check_materials
 from .runner import VideoProject
 
 
@@ -71,6 +72,11 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument("--max-cost", help="按最新最高时段价格估算的预算，单位人民币")
     validate = commands.add_parser("validate", help="离线校验 YAML，不调用 API")
     validate.add_argument("config", type=Path)
+    materials = commands.add_parser("materials", help="检查短剧文档与素材是否齐备")
+    material_commands = materials.add_subparsers(dest="action", required=True)
+    check = material_commands.add_parser("check", help="离线输出缺图清单，不调用 API")
+    check.add_argument("manifest", type=Path)
+    check.add_argument("--shot", help="核对镜头 ID；仍检查整份清单的必要素材")
     task = commands.add_parser("task", help="恢复查询和下载，不会重新提交任务")
     task_commands = task.add_subparsers(dest="action", required=True)
     task_commands.add_parser("list", help="列出本地任务记录")
@@ -103,6 +109,10 @@ def main(argv: list[str] | None = None) -> int:
             last_status = status
 
     try:
+        if args.command == "materials":
+            report = check_materials(args.manifest, args.shot)
+            print_json(report)
+            return 0 if report["ready"] else 1
         if args.command == "models":
             if args.action == "sync":
                 with AutoDLClient() as client:

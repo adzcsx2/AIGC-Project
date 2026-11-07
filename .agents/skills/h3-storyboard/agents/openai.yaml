@@ -1,0 +1,4 @@
+interface:
+  display_name: "H3 分镜与表演"
+  short_description: "为 MiniMax H3 设计镜头节拍、面部表演和动作，把情绪变为可见行为"
+  default_prompt: "使用 $h3-storyboard，为我的短剧设计适合 MiniMax H3 的镜头、动作节拍和人物表演。"

@@ -1,0 +1,2 @@
+# Preserve the pinned upstream document's final blank line.
+references/generability.md whitespace=-blank-at-eof

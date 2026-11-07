@@ -1,0 +1,4 @@
+interface:
+  display_name: "短剧技能检索"
+  short_description: "从短剧技能索引筛选符合创作阶段和视频模型的源仓库，支持后续按需扩展"
+  default_prompt: "使用 $short-drama-skill-finder，查找能补足本项目短剧制作需求的实际源仓库技能。"

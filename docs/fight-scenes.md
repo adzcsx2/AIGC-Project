@@ -1,5 +1,9 @@
 # 打斗戏工作流
 
+短剧里的打斗戏通过 [短剧工作流](short-drama-workflow.md) 衔接：武指负责动作编排，
+剧本分镜沿用统一角色与场景，缺少必要素材时先列 Midjourney 补图清单。
+所有短剧镜头 YAML 带 materials_manifest/shot_id，素材检查通过后才进入 AutoDL 视频生成。
+
 本项目已安装 [martial-arts-director-cy](../.agents/skills/martial-arts-director-cy/SKILL.md)。
 来源为 [CY-CHENYUE/martial-arts-director-cy](https://github.com/CY-CHENYUE/martial-arts-director-cy)，
 固定版本及许可见技能目录的 UPSTREAM.md 和 LICENSE。

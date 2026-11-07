@@ -30,6 +30,11 @@ description: 使用本项目的 Python 工具查询和更新 AutoDL ComfyUI 模�
 
 ## 配置与生成
 
+短剧项目先用 `short-drama-workflow` 衔接创作；每镜 YAML 必须同时有
+`materials_manifest` 和 `shot_id`，通过 `autodl materials check 清单路径` 及 `autodl validate 镜头配置路径`。
+任一必要素材缺失、未检查或输入绑错图都不得生成；不能直接用底层 submit 绕过此检查。
+素材清单格式见根目录 `docs/short-drama-workflow.md`。单独非短剧的现有演示配置保持原用法。
+
 1. 用 `autodl models template ID --output examples/自定义名称.yaml` 创建实际参数模板，
    或选择 `examples/` 中相近示例。填写用户提示词、素材、时长和分辨率。
 2. 素材可用 URL、Base64 data URL 或本地路径；本地路径相对 YAML 目录。

@@ -2,6 +2,21 @@
 
 这是 Python + YAML 的 AutoDL ComfyUI 集成项目。先读 `README.md`。
 
+- 跨阶段短剧创作默认使用 `.agents/skills/short-drama-workflow/SKILL.md`，
+  按角色/风格提示词 → 剧本分镜 → 补齐素材 → MiniMax 图生视频衔接。
+  用户去 Midjourney 生成图；助手提供可复制提示词并检查回传图。
+- 原创作能力来自已安装的 zenstory-ai/drama-skills 八项技能，H3 表演补充来自
+  phileiny/h3-storyboard-skill；具体来源、版本及取舍见 `docs/short-drama-skills-analysis.md`。
+  需要哪个阶段就读对应 skill；不要求把全部技能、全部参考一次读入。
+- 用户明确要求必要素材满足后才进入视频生成。缺图时给出用途、影响镜头、提示词与保存路径，
+  不把 PLAN 槽位或提示词当现成图片，不自动改走文生视频。
+  实际查看图并确认符合需求后才标 ready；改图或改分镜时重新检查受影响状态。
+- 所有短剧生产 YAML 必须带 `materials_manifest` 与 `shot_id`，使用 CLI `validate/run`
+  或 `VideoProject.generate`。素材检查与媒体绑定检查由 Python 执行，缺图不提交。
+  五份 Markdown 拥有创作正文，materials.yaml 只登记生产就绪与文件绑定。
+- 上游路由提及的 short-drama-produce 未安装，真实生成由本项目 autodl-aigc 接管；
+  未安装的小说拆解、对标视频拆解、后期剪辑阶段仅在用户确有需要时扩展。
+
 - 对 AutoDL 模型选择、参数解释、目录更新和生成请求，使用
   `.agents/skills/autodl-aigc/SKILL.md`；不要凭记忆编造工作流 ID 或参数。
 - 对打斗戏、武术指导、武打分镜、动作编排和动作分解海报，使用

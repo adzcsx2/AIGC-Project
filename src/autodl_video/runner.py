@@ -11,6 +11,7 @@ from .catalog import entry_from_detail, get_workflow, utc_now
 from .client import SUCCESS, AutoDLClient, safe_id, task_status
 from .config import atomic_json, load_token, load_yaml, project_root
 from .errors import AutoDLError, SubmissionUncertain
+from .materials import check_config_materials
 from .schema import estimate_cost, validate_inputs
 from .storage import TaskStore, download_results
 
@@ -51,6 +52,8 @@ class VideoProject:
             "timeout",
             "poll_interval",
             "max_cost_cny",
+            "materials_manifest",
+            "shot_id",
         }
         if config.keys() - allowed:
             raise AutoDLError(f"Unknown config key(s): {sorted(config.keys() - allowed, key=str)}")
@@ -59,6 +62,7 @@ class VideoProject:
             raise AutoDLError("workflow_id is required")
         local = get_workflow(self.root, workflow_id)
         inputs = config.get("inputs", {})
+        check_config_materials(config, local["input_rules"], config_path.parent)
         preview = validate_inputs(
             inputs, local["input_rules"], base_dir=config_path.parent, encode_media=False
         )
@@ -94,6 +98,7 @@ class VideoProject:
 
         with AutoDLClient() as public:
             live = entry_from_detail(public.workflow(workflow_id))
+        check_config_materials(config, live["input_rules"], config_path.parent)
         payload = validate_inputs(inputs, live["input_rules"], base_dir=config_path.parent)
         estimate = estimate_cost(live, inputs)
         self._check_budget(budget, estimate)

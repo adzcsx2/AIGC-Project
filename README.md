@@ -146,7 +146,20 @@ with AutoDLClient(load_token(Path(r"E:\AutoDL"))) as client:
 可以直接说“用武术指导 skill，给这张角色图设计一段雨夜打斗戏”。
 与 Midjourney 和 AutoDL 的配合方式见 [打斗戏工作流](docs/fight-scenes.md)。
 
-## 开发验证
+## 短剧制作工作流
+
+已按 [Awesome Short Drama Skills 索引](https://github.com/UnderleveledBuilder/awesome-short-drama-skills)
+安装实际源仓库的 10 项技能，并增加本项目的 `$short-drama-workflow` 衔接技能。
+现在可以直接说“按这段提示词的画风设计我的角色”“把这个想法写成剧本和分镜”。
+缺角色图、场景图或关键帧时会列出补图清单和 Midjourney 提示词；你补齐图片后才进入 MiniMax 视频生成。
+完整流程、清单检查和 YAML 用法见 [短剧工作流](docs/short-drama-workflow.md)，
+安装来源与取舍见 [技能分析](docs/short-drama-skills-analysis.md)。
+
+```powershell
+.\.venv\Scripts\python.exe -m autodl_video materials check projects/我的短剧/剧集/EP001/materials.yaml
+```
+
+## 开发验证命令
 
 ```powershell
 .\.venv\Scripts\python.exe -m pytest --cov=autodl_video --cov-report=term-missing

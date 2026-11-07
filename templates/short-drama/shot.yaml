@@ -1,0 +1,12 @@
+# 与 materials.yaml 放在同一目录；替换成最终逐镜视频提示词。
+materials_manifest: materials.yaml
+shot_id: SHOT-01
+workflow_id: minimax_h3_lightx2v_v5_15s
+inputs:
+  prompt: 请在素材齐备后将视频提示词.md中本镜完整的 H3 参考模式提示词填入此处
+  ref_image_0: assets/CHAR-01.png
+  ref_image_1: assets/SCENE-01.png
+  duration: 5
+  resolution: 480p横
+output_dir: outputs/short-drama/SHOT-01
+max_cost_cny: 0.25
