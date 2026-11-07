@@ -5,34 +5,45 @@
 | 检查 | 结果 |
 |---|---|
 | 真实公开目录同步 | 27 个工作流，逐一取得结构化 input_rules |
-| 二次同步检查 | 无新增、移除或参数变化，`models sync --check` 退出 0 |
+| 二次同步检查 | 无新增、移除或参数变化，models sync --check 退出 0 |
 | 全量模板离线校验 | 27/27 通过；媒体占位路径替换为示例 URL，未提交推理 |
-| 文生视频示例预览 | 通过，1 秒、480p 横屏，按最高时段估算 ¥0.04 |
 | pytest | 101 项通过，整体覆盖率 88.69%（要求至少 80%） |
 | ruff check / format | 通过 |
-| skill-creator quick_validate | 通过（Windows 使用 Python `-X utf8`） |
-| pip-audit | 未发现已知漏洞；仅升级了本项目虚拟环境的 pip |
-| 真实样片生成 | 尚未通过：正确读取令牌后，只读接口返回 HTTP 403，缺少 ComfyUI 权限 |
+| skill-creator quick_validate | 通过（Windows 使用 Python -X utf8） |
+| pip-audit | 未发现已知漏洞 |
+| 真实文生视频 | 已通过：QUEUED → RUNNING → SUCCESS |
+| 结果下载 | 已通过，文件落盘 1,463,769 字节 |
+| 媒体可播放性 | ffprobe 识别 H.264 视频和 AAC 音频，ffmpeg 完整解码无错误 |
 
-样片使用 `examples/text-to-video.yaml`，用户批准预算 ¥0.10。
-初次提交返回 `Invalid authentication credentials`（401）。后续定位到用户 `.env`
-为 `autodl_apikey:...`，旧解析器错误地把整行作为 Token，已修正并加入格式回归测试。
-目前支持大小写变量名、冒号、等号及一行裸 Token，始终不修改用户 `.env`。
+## 真实样片
 
-修正后，通过正式 CLI 对全零任务 ID 做只读查询，返回 HTTP 403：
-`This token does not have permission to access ComfyUI APIs`。
-这是令牌缺少 ComfyUI API 权限，不能继续归因为密钥无效。
-没有再次发送生成 POST，也没有取得 task_id；视频生成和下载链路尚未通过线上验收。
+- 工作流：`minimax_h3_lightx2v_no_pic`。
+- 配置：`examples/text-to-video.yaml`；提示词为橘猫走过雨后的街道。
+- 用户授权预算：¥0.10；提交前按实时最高时段价格估算 ¥0.04。
+- 任务 ID：`43423f3a-f720-41ec-901f-84c040be5268`。
+- 查询接口报告的实际 `cost`：**¥0.04**，执行耗时字段 `duration` 为 83 秒。
+- 请求视频时长：1 秒；实际输出时长：**1.625 秒**（39 帧、24 fps）。服务端输出时长并不总是与请求的整数秒完全相同，后期精确时长需按实际媒体调整。
+- 分辨率：864 × 480，横屏。
+- 本地视频：`outputs/demo/43423f3a-f720-41ec-901f-84c040be5268_01.mp4`。
+- 预览帧：`outputs/demo/43423f3a-f720-41ec-901f-84c040be5268_preview.png`。
 
-待本机 `.env` 更新为有效 ComfyUI 分组令牌后，在已授权范围内继续：
+本次使用先提交取得 ID、再通过 `task wait` 恢复查询并下载的方式，验证了任务持久化和恢复流程。
+只创建了一次成功生成任务，没有为等待或下载重新提交生成。
+输出和 `.autodl/` 任务记录按项目规则保存在本机，不提交 Git。
 
-```powershell
-.\.venv\Scripts\autodl.exe run examples/text-to-video.yaml --max-cost 0.10
-```
+## 鉴权兼容
 
-若已得到 task_id 但等待中断，使用 `task wait TASK_ID`，不要重新提交。
-实际生成、CDN 下载和视频可播放性的线上验收需要在有效凭证下完成。
+`.env` 支持标准等号赋值、`autodl_apikey:...`（变量名不区分大小写）及一行裸 Token。
+解析器不会把变量名前缀作为密钥发送，也不会修改源文件。
+早期解析兼容问题已修复并加入回归测试；旧令牌曾明确返回 403、缺少 ComfyUI API 权限。
+用户提供新令牌后，已按授权更新本机原有密钥条目，保留变量名和冒号格式；新令牌生成实测成功。
+密钥未写入本文、代码、示例或 Git。
 
-自动化测试已覆盖：收费 POST 不重试、408/5xx/连接中断的状态不确定处理、
+## 验证范围
+
+真实付费验收覆盖上述文生视频工作流；其余模型完成目录、参数规则及模板验证，
+未逐一进行收费生成。带本地媒体的模型仍需用用户素材进行对应线上验收。
+
+自动化测试覆盖收费 POST 不重试、408/5xx/连接中断的状态不确定处理、
 鉴权错误信息脱敏、离线模式不读密钥不联网、实时涨价拦截、YAML 类型/范围/格式、
 任务状态与恢复、目录失败保留旧文件、下载跳转不带 Token、部分文件清理。
