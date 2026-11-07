@@ -1,0 +1,8 @@
+workflow_id: minimax_h3_lightx2v_v5_15s
+inputs:
+  prompt: 参考图片中的人物缓慢转头看向镜头，保持人物和服装一致，镜头轻轻推进
+  ref_image_0: ../assets/reference.png
+  duration: 5
+  resolution: 480p横
+output_dir: outputs/image-to-video
+max_cost_cny: 0.25

@@ -1,0 +1,5680 @@
+schema_version: 1
+provider: autodl
+source_url: https://autodl.art/large-model/comfyui
+synced_at: '2026-11-07T08:22:05+00:00'
+workflows:
+  indextts2-v1:
+    name: indextts2
+    description: indextts2
+    category: text-to-speech
+    source_url: https://autodl.art/large-model/comfyui/indextts2-v1
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/indextts2-v1
+    version: latest
+    updated_at: '2026-04-25 01:41:21'
+    input_rules:
+      emo_afraid:
+        node_id: data
+        field: '8'
+        required: false
+        type: number
+        default: 0
+        min: 0
+        max: 1.4
+      emo_angry:
+        node_id: data
+        field: '6'
+        required: false
+        type: number
+        default: 0
+        min: 0
+        max: 1.4
+      emo_calm:
+        node_id: data
+        field: '12'
+        required: false
+        type: number
+        default: 0
+        min: 0
+        max: 1.4
+      emo_control_method:
+        node_id: data
+        field: '0'
+        required: true
+        type: enum
+        default: 与音色参考音频相同
+        options:
+        - label: 与音色参考音频相同
+          values:
+            '0': 与音色参考音频相同
+        - label: 使用情感参考音频
+          values:
+            '0': 使用情感参考音频
+        - label: 使用情感向量控制
+          values:
+            '0': 使用情感向量控制
+      emo_disgusted:
+        node_id: data
+        field: '9'
+        required: false
+        type: number
+        default: 0
+        min: 0
+        max: 1.4
+      emo_happy:
+        node_id: data
+        field: '5'
+        required: false
+        type: number
+        default: 0
+        min: 0
+        max: 1.4
+      emo_melancholic:
+        node_id: data
+        field: '10'
+        required: false
+        type: number
+        default: 0
+        min: 0
+        max: 1.4
+      emo_random:
+        node_id: data
+        field: '14'
+        required: false
+        type: boolean
+        default: false
+      emo_ref_audio:
+        node_id: data
+        field: 3.path
+        required: false
+        type: audio
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+      emo_sad:
+        node_id: data
+        field: '7'
+        required: false
+        type: number
+        default: 0
+        min: 0
+        max: 1.4
+      emo_surprised:
+        node_id: data
+        field: '11'
+        required: false
+        type: number
+        default: 0
+        min: 0
+        max: 1.4
+      prompt_simple:
+        node_id: data
+        field: 1.path
+        required: true
+        type: audio
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+      prompt_text:
+        node_id: data
+        field: '2'
+        required: true
+        type: string
+        min_length: 1
+        max_length: 2048
+    input_example: '{"emo_sad": 0, "emo_calm": 0.3, "emo_angry": 0, "emo_happy": 0.5, "emo_afraid": 0,
+      "emo_random": false, "prompt_text": "你好，这是一段测试文本", "emo_disgusted": 0, "emo_ref_audio": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+      "emo_surprised": 0, "prompt_simple": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+      "emo_melancholic": 0, "emo_control_method": "与音色参考音频相同"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://codewithgpu-test-1310972338.cos.ap-beijing.myqcloud.com/comfyui/outputs/3/2026/04/16/671ce5ca-80b3-4a18-8b5c-af6013f0f03d/ComfyUI_00010_.wav",
+      "type": "audio", "node_id": "9", "file_type": "wav", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: audio_sec_cost
+    billing_config:
+      audio_sec_cost:
+        price: 1
+        off_peak_price: 1
+        minimum_price: 10
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/indextts2-v1
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '**功能**： 基于文本 + 参考音频，生成目标语音。
+
+
+      **特点**：保留说话人音色、支持情绪表达
+
+
+      **适用场景**：AI配音、有声书、AI客服、数字人语音、视频旁白
+
+      '
+  minimax_h3_801:
+    name: H3九图15s(无字幕版)
+    description: MiniMax H3九图15s(无字幕版)，使用 9 张参考图和提示词生成最长 15 秒、字幕强抑制的 AI 视频，无需上传音频。
+    category: reference-to-video
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_801
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_801
+    version: latest
+    updated_at: '2026-10-21 18:13:49'
+    input_rules:
+      duration:
+        node_id: '630'
+        field: inputs.value
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 15
+      mode:
+        node_id: '706'
+        field: inputs.value
+        required: false
+        type: enum
+        default: 高质模式
+        options:
+        - label: 高速模式
+          values:
+            706.inputs.value: 1
+        - label: 高质模式
+          values:
+            706.inputs.value: 2
+      prompt:
+        node_id: '695'
+        field: inputs.text
+        required: true
+        type: string
+        min_length: 1
+        max_length: 20000
+      ref_image_0:
+        node_id: '668'
+        field: inputs.image
+        required: true
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_1:
+        node_id: '669'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_2:
+        node_id: '670'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_3:
+        node_id: '671'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_4:
+        node_id: '672'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_5:
+        node_id: '673'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_6:
+        node_id: '674'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_7:
+        node_id: '675'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_8:
+        node_id: '676'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      resolution:
+        required: false
+        type: enum
+        default: 768p竖(768*1376)
+        options:
+        - label: 480p竖(480*864)
+          values:
+            631.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            631.inputs.megapixels: 0.4
+        - label: 768p竖(768*1376)
+          values:
+            631.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            631.inputs.megapixels: 1
+        - label: 1088p竖(1088*1920)
+          values:
+            631.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            631.inputs.megapixels: 2
+        - label: 1440p竖(1440*2560)
+          values:
+            631.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            631.inputs.megapixels: 3.5
+        - label: 480p横(864*480)
+          values:
+            631.inputs.aspect_ratio: 16:9 (Widescreen)
+            631.inputs.megapixels: 0.4
+        - label: 768p横(1376*768)
+          values:
+            631.inputs.aspect_ratio: 16:9 (Widescreen)
+            631.inputs.megapixels: 1
+        - label: 1088p横(1920*1088)
+          values:
+            631.inputs.aspect_ratio: 16:9 (Widescreen)
+            631.inputs.megapixels: 2
+        - label: 1440p横(2560*1440)
+          values:
+            631.inputs.aspect_ratio: 16:9 (Widescreen)
+            631.inputs.megapixels: 3.5
+      seed:
+        node_id: '622'
+        field: inputs.noise_seed
+        required: false
+        type: integer
+        default: 803729153365684
+        min: 1
+        max: 999999999999999
+    input_example: '{"mode": "支持（高速模式、高质模式）两个模式，高速模式处理速度更快，高质模式画面质量和人脸处理更好,默认高质模式", "seed": "随机种子（选填，整数，用于控制生成结果的随机性，相同参数和相同Seed通常可获得相近的生成结果）",
+      "prompt": "视频生成提示词（必填，1-20000个字符，建议描述主体、动作、场景、镜头运动等）", "duration": "视频时长（选填，整数，1-15秒，默认5秒）", "resolution":
+      "输出分辨率（选填，可选值：480p竖(480*864)、480p横(864*480)、768p竖(768*1376)、768p横(1376*768)、1088p竖(1088*1920)、1088p横(1920*1088)、1440p竖(1440*2560)、1440p横(2560*1440)，默认768p竖(768*1376)）",
+      "ref_image_0": "参考图片URL（必填，支持JPG/PNG/WebP）", "ref_image_1": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_2":
+      "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_3": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_4": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_5": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_6": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_7":
+      "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_8": "参考图片URL（选填，支持JPG/PNG/WebP）"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 480p
+        price: 50
+        off_peak_price: 40
+      - resolution: 768p
+        price: 60
+        off_peak_price: 50
+      - resolution: 1088p
+        price: 70
+        off_peak_price: 60
+      - resolution: 1440p
+        price: 80
+        off_peak_price: 70
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_801
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '### MiniMax H3九图15s(无字幕版)
+
+
+      针对的是"竖屏+真人剧"解决画面上出现字幕的问题。若是"横屏+真人剧",则提示词可以适当放松自行适配，出字幕的概率也不会太高,请自行尝试.
+
+
+      这版能力对提示词写法有明确要求：**必须先在开篇飞书文档中预览[《去字幕-API-提示词模版》](https://hcnp6acwrpmt.feishu.cn/wiki/WU04wSYfHiRL3ukRQHVcLDHDnbd)，按其中的角色卡参考图和结构化提示词方式提交。**
+      只用一句普通描述去生成，甚至标准的H3提示词,仍然会出现字幕! 请务必注意!!!。
+
+
+      文档里有可直接参考的模板，重点记住两点：
+
+
+      1. 参考图按飞书要求生成角色卡，同一人物多角度保持一致；
+
+      2. 让AI学习提示词格式, 严格准守飞书文档方案A或方案B的范本格式。
+
+
+      模板全文较长，建议先照抄飞书模板跑通一次，再按自己的角色和剧本进行修改。
+
+
+      **因需要保持低字幕,使用低字幕主模型:**
+
+      不兼容：<audio 0>  <audio 1>  <audio 2>的正向提示词音色参考特殊格式.
+
+      必须使用：角色A dialogue：<d>[Chinese]「宝子你好。」<d> 的H3标准音色参考格式.
+
+
+      ### 核心能力
+
+
+      **字幕强抑制：** 配合专用提示词写法，明显减少成片中的字幕和印刷文字。
+
+      **九图参考：** 支持 9 张参考图，可同时提供多个角色和场景。
+
+      **分镜控制：** 提示词支持按时间段、景别、角色、动作和台词组织剧情。
+
+      **多种清晰度：** 支持 480P 到 2K（QHD）顶配档位。
+
+      **竖屏横屏：** 支持 `9:16` 和 `16:9` 两种画幅。
+
+      **速度可调：** 支持高速和高质两个模式，高速模式处理速度更快，高质模式画面质量和人脸处理更好。
+
+
+      ### 适用场景
+
+
+      **情景短剧：** 短剧,真人剧等对话片段。
+
+      **剧情片段：** 有明确分镜和台词的短剧情内容。
+
+      **角色展示：** 多个人物依次出场、基本不同框的展示片段。
+
+      **自媒体内容：** 需要干净画面、不带字幕的短视频素材。
+
+
+      ### 使用方式
+
+
+      打开飞书模板文档并预览 → 按角色卡方式准备 9 张参考图 → 按结构化模板写提示词 → 设置时长、画幅、清晰度、模式 → 提交生成。
+
+      '
+  minimax_h3_802:
+    name: H3九图15s(画质增强版)
+    description: MiniMax H3九图15s(画质增强版)，使用 9 张参考图和提示词生成最长 15 秒的高画质 AI 视频，无需上传音频。
+    category: reference-to-video
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_802
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_802
+    version: latest
+    updated_at: '2026-10-21 18:13:46'
+    input_rules:
+      duration:
+        node_id: '162'
+        field: inputs.value
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 15
+      mode:
+        node_id: '402'
+        field: inputs.value
+        required: false
+        type: enum
+        default: 高质模式
+        options:
+        - label: 高速模式
+          values:
+            402.inputs.value: 1
+        - label: 高质模式
+          values:
+            402.inputs.value: 2
+      prompt:
+        node_id: '197'
+        field: inputs.text
+        required: true
+        type: string
+        min_length: 1
+        max_length: 20000
+      ref_image_0:
+        node_id: '198'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_1:
+        node_id: '199'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_2:
+        node_id: '200'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_3:
+        node_id: '201'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_4:
+        node_id: '202'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_5:
+        node_id: '203'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_6:
+        node_id: '204'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_7:
+        node_id: '205'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_8:
+        node_id: '206'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      resolution:
+        required: false
+        type: enum
+        default: 768p竖(768*1376)
+        options:
+        - label: 480p竖(480*864)
+          values:
+            163.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            163.inputs.megapixels: 0.4
+        - label: 768p竖(768*1376)
+          values:
+            163.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            163.inputs.megapixels: 1
+        - label: 1088p竖(1088*1920)
+          values:
+            163.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            163.inputs.megapixels: 2
+        - label: 1440p竖(1440*2560)
+          values:
+            163.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            163.inputs.megapixels: 3.5
+        - label: 480p横(864*480)
+          values:
+            163.inputs.aspect_ratio: 16:9 (Widescreen)
+            163.inputs.megapixels: 0.4
+        - label: 768p横(1376*768)
+          values:
+            163.inputs.aspect_ratio: 16:9 (Widescreen)
+            163.inputs.megapixels: 1
+        - label: 1088p横(1920*1088)
+          values:
+            163.inputs.aspect_ratio: 16:9 (Widescreen)
+            163.inputs.megapixels: 2
+        - label: 1440p横(2560*1440)
+          values:
+            163.inputs.aspect_ratio: 16:9 (Widescreen)
+            163.inputs.megapixels: 3.5
+      seed:
+        node_id: '144'
+        field: inputs.noise_seed
+        required: false
+        type: integer
+        default: 513879206753813
+        min: 1
+        max: 999999999999999
+    input_example: '{"mode": "支持（高速模式、高质模式）两个模式，高速模式处理速度更快，高质模式画面质量和人脸处理更好,默认高质模式", "seed": "随机种子（选填，整数，用于控制生成结果的随机性，相同参数和相同Seed通常可获得相近的生成结果）",
+      "prompt": "视频生成提示词（必填，1-20000个字符，建议描述主体、动作、场景、镜头运动等）", "duration": "视频时长（选填，整数，1-15秒，默认5秒）", "resolution":
+      "输出分辨率（选填，可选值：480p竖(480*864)、480p横(864*480)、768p竖(768*1376)、768p横(1376*768)、1088p竖(1088*1920)、1088p横(1920*1088)、1440p竖(1440*2560)、1440p横(2560*1440)，默认768p竖(768*1376)）",
+      "ref_image_0": "参考图片URL（必填，支持JPG/PNG/WebP）", "ref_image_1": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_2":
+      "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_3": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_4": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_5": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_6": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_7":
+      "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_8": "参考图片URL（选填，支持JPG/PNG/WebP）"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 480p
+        price: 40
+        off_peak_price: 30
+      - resolution: 768p
+        price: 50
+        off_peak_price: 40
+      - resolution: 1088p
+        price: 60
+        off_peak_price: 50
+      - resolution: 1440p
+        price: 70
+        off_peak_price: 60
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_802
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '### MiniMax H3九图15s(画质增强版)
+
+
+      面向对画质要求更高的客户。它同样使用 9 张参考图，适合人物密集、场景复杂、需要更多参考素材的创作任务，例如多位模特轮流出场、多个产品连续展示、复杂分镜片段等。
+
+
+      **因需要保持低字幕,使用低字幕主模型:**
+
+      不兼容：<audio 0>  <audio 1>  <audio 2>的正向提示词音色参考特殊格式.
+
+      必须使用：角色A dialogue：<d>[Chinese]「宝子你好。」<d> 的H3标准音色参考格式.
+
+
+      ### 核心能力
+
+
+      **画质优先：** 针对细节、材质和清晰度做增强处理。
+
+      **九图参考：** 支持 9 张参考图，可组合多个角色、产品和场景。
+
+      **多人出场：** 适合多人物依次独立出场的卡点、展示类视频。
+
+      **多种清晰度：** 支持从 480P 到 2K（QHD）顶配的档位。
+
+      **竖屏横屏：** 支持 `9:16` 和 `16:9` 两种画幅。
+
+      **速度可调：** 支持高速和高质两个模式，高速模式处理速度更快，高质模式画面质量和人脸处理更好。
+
+
+      ### 适用场景
+
+
+      **电商带货：** 多位模特轮流出场展示服装、美妆、配饰。
+
+      **短剧与卡点视频：** 人物依次出场、快速硬切的内容。
+
+      **产品展示：** 多个产品或多角度素材组合成宣传片段。
+
+      **数字人素材：** 需要干净画面和高清晰度的人物视频。
+
+
+      ### 使用方式
+
+
+      准备 9 张参考图（前 8 张人物或产品，第 9 张场景）→ 编写提示词 → 设置时长、画幅、清晰度、模式 → 提交生成。
+
+      '
+  minimax_h3_803:
+    name: H3九图三音15s(画质增强版)
+    description: MiniMax H3九图三音15s(画质增强版)，使用 9 张参考图和最多 3 段参考音频，生成最长 15 秒的高画质音画融合 AI 视频。
+    category: reference-to-video
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_803
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_803
+    version: latest
+    updated_at: '2026-10-21 18:13:43'
+    input_rules:
+      duration:
+        node_id: '162'
+        field: inputs.value
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 15
+      mode:
+        node_id: '402'
+        field: inputs.value
+        required: false
+        type: enum
+        default: 高质模式
+        options:
+        - label: 高速模式
+          values:
+            402.inputs.value: 1
+        - label: 高质模式
+          values:
+            402.inputs.value: 2
+      prompt:
+        node_id: '197'
+        field: inputs.text
+        required: true
+        type: string
+        min_length: 1
+        max_length: 20000
+      ref_audio_0:
+        node_id: '552'
+        field: inputs.audio
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_audio_1:
+        node_id: '553'
+        field: inputs.audio
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_audio_2:
+        node_id: '554'
+        field: inputs.audio
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_image_0:
+        node_id: '198'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_1:
+        node_id: '199'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_2:
+        node_id: '200'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_3:
+        node_id: '201'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_4:
+        node_id: '202'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_5:
+        node_id: '203'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_6:
+        node_id: '204'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_7:
+        node_id: '205'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_8:
+        node_id: '206'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      resolution:
+        required: false
+        type: enum
+        default: 768p竖(768*1376)
+        options:
+        - label: 480p竖(480*864)
+          values:
+            163.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            163.inputs.megapixels: 0.4
+        - label: 768p竖(768*1376)
+          values:
+            163.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            163.inputs.megapixels: 1
+        - label: 1088p竖(1088*1920)
+          values:
+            163.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            163.inputs.megapixels: 2
+        - label: 1440p竖(1440*2560)
+          values:
+            163.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            163.inputs.megapixels: 3.5
+        - label: 480p横(864*480)
+          values:
+            163.inputs.aspect_ratio: 16:9 (Widescreen)
+            163.inputs.megapixels: 0.4
+        - label: 768p横(1376*768)
+          values:
+            163.inputs.aspect_ratio: 16:9 (Widescreen)
+            163.inputs.megapixels: 1
+        - label: 1088p横(1920*1088)
+          values:
+            163.inputs.aspect_ratio: 16:9 (Widescreen)
+            163.inputs.megapixels: 2
+        - label: 1440p横(2560*1440)
+          values:
+            163.inputs.aspect_ratio: 16:9 (Widescreen)
+            163.inputs.megapixels: 3.5
+      seed:
+        node_id: '144'
+        field: inputs.noise_seed
+        required: false
+        type: integer
+        default: 803729153365684
+        min: 1
+        max: 999999999999999
+    input_example: '{"mode": "支持（高速模式、高质模式）两个模式，高速模式处理速度更快，高质模式画面质量和人脸处理更好,默认高质模式", "seed": "随机种子（选填，整数，用于控制生成结果的随机性，相同参数和相同Seed通常可获得相近的生成结果）",
+      "prompt": "视频生成提示词（必填，1-20000个字符，建议描述主体、动作、场景、镜头运动等）", "duration": "视频时长（选填，整数，1-15秒，默认5秒）", "resolution":
+      "输出分辨率（选填，可选值：480p竖(480*864)、480p横(864*480)、768p竖(768*1376)、768p横(1376*768)、1088p竖(1088*1920)、1088p横(1920*1088)、1440p竖(1440*2560)、1440p横(2560*1440)，默认768p竖(768*1376)）",
+      "ref_audio_0": "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_audio_1": "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_audio_2":
+      "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_image_0": "参考图片URL（必填，支持JPG/PNG/WebP）", "ref_image_1": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_2": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_3": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_4":
+      "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_5": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_6": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_7": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_8": "参考图片URL（选填，支持JPG/PNG/WebP）"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 480p
+        price: 40
+        off_peak_price: 30
+      - resolution: 768p
+        price: 50
+        off_peak_price: 40
+      - resolution: 1088p
+        price: 60
+        off_peak_price: 50
+      - resolution: 1440p
+        price: 70
+        off_peak_price: 60
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_803
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '### MiniMax H3九图三音15s(画质增强版)
+
+
+      在H3九图15s(画质增强版)基础上增加了多段声音支持，可让三个角色分别对应三段音频进行表达，适合口播、多人对话、直播间带货、访谈片段和内容讲解。
+
+
+      使用时注意两个对应关系：
+
+
+      - 角色顺序：9 张参考图中的人物顺序要和画面出场顺序一致；
+
+      - 声音顺序：第 1、2、3 段音频分别对应当场说话 1、2、3 个角色。
+
+
+      音频数量不足时可以只填 1 段或 2 段，剩余角色位留空即可，不要传无效音频。建议在提示词中写明“按顺序说话、不抢话、不串音、声音不重叠”，并保留“无字幕、无文字、无水印”约束。
+
+
+      **字幕出现概率稍微增加,使用多参音频参考主模型:**
+
+      兼容：<audio 0>  <audio 1>  <audio 2>的正向提示词音色参考格式.  带不带音频文件都可以.
+
+      兼容：角色A dialogue：<d>[Chinese]「宝子你好。」<d> 的H3标准音色参考格式.
+
+
+      ### 核心能力
+
+
+      **画质优先：** 在九图基础上做画质增强处理。
+
+      **多段音频：** 最多支持 3 段参考音频，分别驱动不同角色。
+
+      **口型与表演：** 说话时保持自然口型、轻微转头和简洁手势。
+
+      **九图参考：** 支持多个角色、产品和场景参考。
+
+      **多种清晰度：** 支持 480P 到 2K（QHD）顶配档位。
+
+      **竖屏横屏：** 支持 `9:16` 和 `16:9` 两种画幅。
+
+      **速度可调：** 支持高速和高质两个模式，高速模式处理速度更快，高质模式画面质量和人脸处理更好。
+
+
+      ### 适用场景
+
+
+      **多人对话：** 三个角色轮流说话的剧情或访谈片段。
+
+      **直播带货：** 多位主播分别讲解不同产品。
+
+      **口播与讲解：** 需要人物说话、配合画面展示的内容。
+
+      **音乐短视频：** 角色配合音乐节奏完成表情和动作。
+
+
+      ### 使用方式
+
+
+      准备 9 张参考图和最多 3 段音频 → 编写提示词并写清说话顺序 → 设置时长、画幅、清晰度、模式 → 提交生成。
+
+      '
+  minimax_h3_804:
+    name: H3九图15s(多模式版)
+    description: MiniMax H3九图15s(多模式版)，使用 9 张参考图和正向提示词生成最长 15 秒的视频，支持真人 / 漫剧、文戏 / 武戏六种内容风格，不需要上传音频。
+    category: reference-to-video
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_804
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_804
+    version: latest
+    updated_at: '2026-10-28 10:43:13'
+    input_rules:
+      duration:
+        node_id: '162'
+        field: inputs.value
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 15
+      prompt:
+        node_id: '197'
+        field: inputs.text
+        required: true
+        type: string
+        min_length: 1
+        max_length: 20000
+      ref_image_0:
+        node_id: '198'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_1:
+        node_id: '199'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_2:
+        node_id: '200'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_3:
+        node_id: '201'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_4:
+        node_id: '202'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_5:
+        node_id: '203'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_6:
+        node_id: '204'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_7:
+        node_id: '205'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_8:
+        node_id: '206'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      resolution:
+        required: false
+        type: enum
+        default: 768p竖(768*1376)
+        options:
+        - label: 480p竖(480*864)
+          values:
+            163.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            163.inputs.megapixels: 0.4
+        - label: 480p横(864*480)
+          values:
+            163.inputs.aspect_ratio: 16:9 (Widescreen)
+            163.inputs.megapixels: 0.4
+        - label: 768p竖(768*1376)
+          values:
+            163.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            163.inputs.megapixels: 1
+        - label: 768p横(1376*768)
+          values:
+            163.inputs.aspect_ratio: 16:9 (Widescreen)
+            163.inputs.megapixels: 1
+        - label: 1088p竖(1088*1920)
+          values:
+            163.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            163.inputs.megapixels: 2
+        - label: 1088p横(1920*1088)
+          values:
+            163.inputs.aspect_ratio: 16:9 (Widescreen)
+            163.inputs.megapixels: 2
+        - label: 1440p竖(1440*2560)
+          values:
+            163.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            163.inputs.megapixels: 3.5
+        - label: 1440p横(2560*1440)
+          values:
+            163.inputs.aspect_ratio: 16:9 (Widescreen)
+            163.inputs.megapixels: 3.5
+      seed:
+        node_id: '144'
+        field: inputs.noise_seed
+        required: false
+        type: integer
+        default: 1022956482512850
+        min: 1
+        max: 100000000000000000
+      style_preset:
+        node_id: '588'
+        field: inputs.value
+        required: false
+        type: enum
+        default: 武打模式-真人-武戏+真实质感
+        options:
+        - label: 文戏模式-真人-文戏
+          values:
+            588.inputs.value: 1
+        - label: 文戏模式-真人-文戏+真实质感
+          values:
+            588.inputs.value: 2
+        - label: 武打模式-真人-武戏
+          values:
+            588.inputs.value: 3
+        - label: 武打模式-真人-武戏+真实质感
+          values:
+            588.inputs.value: 4
+        - label: 漫剧模式-漫剧-文戏
+          values:
+            588.inputs.value: 5
+        - label: 漫剧模式-漫剧-武戏
+          values:
+            588.inputs.value: 6
+    input_example: '{"seed": "随机种子（选填，整数，用于控制生成结果的随机性，相同参数和相同Seed通常可获得相近的生成结果）", "prompt": "视频生成提示词（必填，1-20000个字符，建议描述主体、动作、场景、镜头运动等）",
+      "duration": "视频时长（选填，整数，1-15秒，默认5秒）", "resolution": "输出分辨率（选填，可选值：480p竖(480*864)、480p横(864*480)、768p竖(768*1376)、768p横(1376*768)、1088p竖(1088*1920)、1088p横(1920*1088)、1440p竖(1440*2560)、1440p横(2560*1440)，默认768p竖(768*1376)）",
+      "ref_image_0": "参考图片URL（必填，支持JPG/PNG/WebP）", "ref_image_1": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_2":
+      "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_3": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_4": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_5": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_6": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_7":
+      "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_8": "参考图片URL（选填，支持JPG/PNG/WebP）", "style_preset": "支持以下六个模式：文戏模式-真人-文戏、文戏模式-真人-文戏+真实质感、武打模式-真人-武戏、武打模式-真人-武戏+真实质感、漫剧模式-漫剧-文戏、漫剧模式-漫剧-武戏。默认模式为：武打模式-真人-武戏+真实质感"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 480p
+        price: 40
+        off_peak_price: 30
+      - resolution: 768p
+        price: 50
+        off_peak_price: 40
+      - resolution: 1088p
+        price: 60
+        off_peak_price: 50
+      - resolution: 1440p
+        price: 70
+        off_peak_price: 60
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_804
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '### H3九图15s(多模式版)
+
+
+      适合多个角色或主体依次出场、同时需要控制真人与漫剧风格的视频内容。调用时先上传 9 张参考图，再按目标内容选择内容风格模式。
+
+
+      **为什么要选模式：**
+
+
+      真人和漫剧是靠不同的风格适配组合（LoRA）生成的，一套组合只会往一个方向强化：
+
+
+      - 真人组合：强化真实皮肤、自然光影和实拍动作质感；
+
+      - 漫剧组合：强化线条、色彩和夸张的动漫表现力；
+
+      - 如果强行共用同一套组合，两边的特征会互相拉扯、一起变弱，最容易出现「本来想做漫剧，结果出来却像仿真人」的情况。
+
+
+      所以提交前只需要确认两件事：做真人还是漫剧，以及是文戏还是武戏。
+
+
+      **模式取值：**
+
+
+      - 模式 `1`（文戏模式-真人-文戏）：真人对话、口播、展示、走秀等自然表演
+
+      - 模式 `2`（文戏模式-真人-文戏+真实质感）：真人文戏，同时要求皮肤、光影、材质高度写实
+
+      - 模式 `3`（武打模式-真人-武戏）：真人打斗、冲刺、挥击、跳跃
+
+      - 模式 `4`（武打模式-真人-武戏+真实质感）：真人武打、连续战斗、多人对战，同时要求高度写实
+
+      - 模式 `5`（漫剧模式-漫剧-文戏）：漫剧对话、剧情推进、表情、人物展示
+
+      - 模式 `6`（漫剧模式-漫剧-武戏）：漫剧打斗、追逐、跳跃、夸张动作
+
+
+      仍无法判断时：真人取 `1`，漫剧取 `5`。
+
+
+      按画面里的动作量来选戏型即可：人物以说话、展示、站立、缓慢走动为主时，选文戏模式，让人物保持稳定、动作克制，保留古装剧应有的安静气质；人物有打斗、追逐、挥击、跳跃、大幅位移时，选武戏模式，让动作获得更足的速度、幅度和冲击感。
+
+
+      **默认模式提醒：** 默认模式为 `4`（武打模式-真人-武戏+真实质感）。如果要生成文戏或漫剧内容，必须改成对应模式值，不要沿用默认值。
+
+
+      **参数说明：**
+
+
+      - 画幅：`9:16`（竖屏）或 `16:9`（横屏）
+
+      - 时长：最长 15 秒
+
+      - 清晰度：按平台开放的清晰度档位传入，实际输出宽高以接口返回值为准
+
+      - 速度 / 质量：`1` 高速、`2` 高质，高速模式处理速度更快，高质模式画面质量和人脸处理更好
+
+      - 内容风格模式：`1`–`6`，见上方模式取值
+
+      - 参考图：9 张，顺序与画面出场顺序一致，建议前 8 张人物、第 9 张场景
+
+      - 音频：不传音频
+
+
+      ### 核心能力
+
+
+      **九图参考：** 支持 9 张参考图，适合多人物、多主体和场景组合。
+
+
+      **六种内容风格：** 可在真人 / 漫剧、文戏 / 武戏之间选择表现方向。
+
+
+      **人物切换：** 支持多个人物依次独立出场，适合卡点、展示和剧情片段。
+
+
+      **动作表现：** 根据文戏或武戏模式调整动作幅度、节奏和表现重点。
+
+
+      **多种清晰度：** 可根据预览、测试或正式交付需求选择清晰度档位。
+
+
+      **双处理档位：** 支持高速模式和高质模式。
+
+
+      ### 适用场景
+
+
+      **真人短视频：** 真人对话、走秀、展示、剧情和动作片段。
+
+
+      **漫剧内容：** 漫剧角色展示、剧情推进、对话、战斗和追逐。
+
+
+      **多人物卡点：** 多位人物按顺序独立出场的卡点视频。
+
+
+      **商品与角色展示：** 使用多张人物或产品参考图制作连续展示内容。
+
+
+      ### 使用方式
+
+
+      准备 9 张参考图 → 判断真人 / 漫剧与文戏 / 武戏方向 → 选择内容风格模式 → 编写正向提示词 → 设置画幅、清晰度、时长和高速 / 高质档位 → 提交生成。
+
+      '
+  minimax_h3_805:
+    name: H3九图三音15s(多模式版)
+    description: MiniMax H3九图三音15s(多模式版)，使用 9 张参考图和最多 3 段角色音频生成最长 15 秒的视频，支持真人 / 漫剧、文戏 / 武戏六种内容风格，并支持多角色声音驱动。
+    category: reference-to-video
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_805
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_805
+    version: latest
+    updated_at: '2026-10-28 10:43:09'
+    input_rules:
+      duration:
+        node_id: '162'
+        field: inputs.value
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 15
+      prompt:
+        node_id: '197'
+        field: inputs.text
+        required: true
+        type: string
+        min_length: 1
+        max_length: 20000
+      ref_audio_0:
+        node_id: '552'
+        field: inputs.audio
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_audio_1:
+        node_id: '553'
+        field: inputs.audio
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_audio_2:
+        node_id: '554'
+        field: inputs.audio
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_image_0:
+        node_id: '198'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_1:
+        node_id: '199'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_2:
+        node_id: '200'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_3:
+        node_id: '201'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_4:
+        node_id: '202'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_5:
+        node_id: '203'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_6:
+        node_id: '204'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_7:
+        node_id: '205'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_8:
+        node_id: '206'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      resolution:
+        required: false
+        type: enum
+        default: 768p竖(768*1376)
+        options:
+        - label: 480p竖(480*864)
+          values:
+            163.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            163.inputs.megapixels: 0.4
+        - label: 480p横(864*480)
+          values:
+            163.inputs.aspect_ratio: 16:9 (Widescreen)
+            163.inputs.megapixels: 0.4
+        - label: 768p竖(768*1376)
+          values:
+            163.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            163.inputs.megapixels: 1
+        - label: 768p横(1376*768)
+          values:
+            163.inputs.aspect_ratio: 16:9 (Widescreen)
+            163.inputs.megapixels: 1
+        - label: 1088p竖(1088*1920)
+          values:
+            163.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            163.inputs.megapixels: 2
+        - label: 1088p横(1920*1088)
+          values:
+            163.inputs.aspect_ratio: 16:9 (Widescreen)
+            163.inputs.megapixels: 2
+        - label: 1440p竖(1440*2560)
+          values:
+            163.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            163.inputs.megapixels: 3.5
+        - label: 1440p横(2560*1440)
+          values:
+            163.inputs.aspect_ratio: 16:9 (Widescreen)
+            163.inputs.megapixels: 3.5
+      seed:
+        node_id: '144'
+        field: inputs.noise_seed
+        required: false
+        type: integer
+        default: 309132325113668
+        min: 1
+        max: 999999999999999
+      style_preset:
+        node_id: '588'
+        field: inputs.value
+        required: false
+        type: enum
+        default: 武打模式-真人-武戏+真实质感
+        options:
+        - label: 文戏模式-真人-文戏
+          values:
+            588.inputs.value: 1
+        - label: 文戏模式-真人-文戏+真实质感
+          values:
+            588.inputs.value: 2
+        - label: 武打模式-真人-武戏
+          values:
+            588.inputs.value: 3
+        - label: 武打模式-真人-武戏+真实质感
+          values:
+            588.inputs.value: 4
+        - label: 漫剧模式-漫剧-文戏
+          values:
+            588.inputs.value: 5
+        - label: 漫剧模式-漫剧-武戏
+          values:
+            588.inputs.value: 6
+    input_example: '{"seed": "随机种子（选填，整数，用于控制生成结果的随机性，相同参数和相同Seed通常可获得相近的生成结果）", "prompt": "视频生成提示词（必填，1-20000个字符，建议描述主体、动作、场景、镜头运动等）",
+      "duration": "视频时长（选填，整数，1-15秒，默认5秒）", "resolution": "输出分辨率（选填，可选值：480p竖(480*864)、480p横(864*480)、768p竖(768*1376)、768p横(1376*768)、1088p竖(1088*1920)、1088p横(1920*1088)、1440p竖(1440*2560)、1440p横(2560*1440)，默认768p竖(768*1376)）",
+      "ref_audio_0": "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_audio_1": "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_audio_2":
+      "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_image_0": "参考图片URL（必填，支持JPG/PNG/WebP）", "ref_image_1": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_2": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_3": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_4":
+      "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_5": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_6": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_7": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_8": "参考图片URL（选填，支持JPG/PNG/WebP）", "style_preset":
+      "支持以下六个模式：文戏模式-真人-文戏、文戏模式-真人-文戏+真实质感、武打模式-真人-武戏、武打模式-真人-武戏+真实质感、漫剧模式-漫剧-文戏、漫剧模式-漫剧-武戏。默认模式为：武打模式-真人-武戏+真实质感"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 480p
+        price: 40
+        off_peak_price: 30
+      - resolution: 768p
+        price: 50
+        off_peak_price: 40
+      - resolution: 1088p
+        price: 60
+        off_peak_price: 50
+      - resolution: 1440p
+        price: 70
+        off_peak_price: 60
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_805
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '### H3 九图三音15s(多模式版)
+
+
+      适合多人对话、角色口播、访谈、直播带货和有明确声音对应关系的视频内容。它在 `804` 的九参考图和多模式基础上增加了最多 3 段角色音频。
+
+
+      **为什么要选模式：**
+
+
+      真人和漫剧是靠不同的风格适配组合（LoRA）生成的，一套组合只会往一个方向强化：
+
+
+      - 真人组合：强化真实皮肤、自然光影和实拍动作质感；
+
+      - 漫剧组合：强化线条、色彩和夸张的动漫表现力；
+
+      - 如果强行共用同一套组合，两边的特征会互相拉扯、一起变弱，最容易出现「本来想做漫剧，结果出来却像仿真人」的情况。
+
+
+      所以提交前只需要确认两件事：做真人还是漫剧，以及是文戏还是武戏。
+
+
+      **模式取值：**
+
+
+      - 模式 `1`（文戏模式-真人-文戏）：真人对话、口播、展示、走秀等自然表演
+
+      - 模式 `2`（文戏模式-真人-文戏+真实质感）：真人文戏，同时要求皮肤、光影、材质高度写实
+
+      - 模式 `3`（武打模式-真人-武戏）：真人打斗、冲刺、挥击、跳跃
+
+      - 模式 `4`（武打模式-真人-武戏+真实质感）：真人武打、连续战斗、多人对战，同时要求高度写实
+
+      - 模式 `5`（漫剧模式-漫剧-文戏）：漫剧对话、剧情推进、表情、人物展示
+
+      - 模式 `6`（漫剧模式-漫剧-武戏）：漫剧打斗、追逐、跳跃、夸张动作
+
+
+      仍无法判断时：真人取 `1`，漫剧取 `5`。
+
+
+      按画面里的动作量来选戏型即可：人物以说话、展示、站立、缓慢走动为主时，选文戏模式，让人物保持稳定、动作克制，保留古装剧应有的安静气质；人物有打斗、追逐、挥击、跳跃、大幅位移时，选武戏模式，让动作获得更足的速度、幅度和冲击感。
+
+
+      **默认模式提醒：** 默认模式为 `4`（武打模式-真人-武戏+真实质感）。如果要生成文戏或漫剧内容，必须改成对应模式值，不要沿用默认值。
+
+
+      **参数说明：**
+
+
+      - 画幅：`9:16`（竖屏）或 `16:9`（横屏）
+
+      - 时长：最长 15 秒
+
+      - 清晰度：按平台开放的清晰度档位传入，实际输出宽高以接口返回值为准
+
+      - 速度 / 质量：`1` 高速、`2` 高质，高速模式处理速度更快，高质模式画面质量和人脸处理更好
+
+      - 内容风格模式：`1`–`6`，见上方模式取值
+
+      - 参考图：9 张，顺序与画面出场顺序一致，建议前 8 张人物、第 9 张场景
+
+      - 音频：最多 3 段，分别对应角色 1、2、3
+
+
+      ### 核心能力
+
+
+      **九图参考：** 支持 9 张人物、主体和场景参考图。
+
+
+      **三角色音频：** 最多支持 3 段音频，分别对应第 1、2、3 个角色。
+
+
+      **音画联动：** 根据角色音频驱动说话、口型和表演动作。
+
+
+      **六种内容风格：** 支持真人 / 漫剧、文戏 / 武戏组合选择。
+
+
+      **多人表达：** 适合多人轮流说话、角色口播和对话内容。
+
+
+      **双处理档位：** 支持高速模式和高质模式。
+
+
+      ### 适用场景
+
+
+      **多人对话：** 三个角色按顺序进行剧情对话。
+
+
+      **直播带货：** 多位主播或角色分别讲解产品。
+
+
+      **访谈与口播：** 角色根据各自音频进行表达。
+
+
+      **漫剧配音：** 漫剧角色配合不同音频完成对话和剧情推进。
+
+
+      **动作内容：** 根据模式选择真人或漫剧的文戏、武戏表现方向。
+
+
+      ### 音频使用规则
+
+
+      - 音频 1 对应角色 1，音频 2 对应角色 2，音频 3 对应角色 3；
+
+      - 音频顺序必须与参考图人物顺序和画面出场顺序一致；
+
+      - 音频不足 3 段时，只传实际使用的音频，不要用无效文件占位；
+
+      - 三段音频长度不要差异过大，避免口型等待或截断；
+
+      - 如果不需要声音驱动，应选择 `804`，不要为 `805` 传入空音频。
+
+
+      ### 使用方式
+
+
+      准备 9 张参考图和最多 3 段角色音频 → 判断真人 / 漫剧与文戏 / 武戏方向 → 选择内容风格模式 → 写清人物位置和说话顺序 → 设置画幅、清晰度、时长和高速 / 高质档位 → 提交生成。
+
+      '
+  minimax_h3_b99_001:
+    name: H3文生视频
+    description: MiniMax H3文生视频
+    category: text-to-video
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_b99_001
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_b99_001
+    version: latest
+    updated_at: '2026-08-28 18:48:52'
+    input_rules:
+      duration:
+        node_id: '142'
+        field: inputs.value
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 15
+      prompt:
+        node_id: '143'
+        field: inputs.text
+        required: true
+        type: string
+        min_length: 1
+        max_length: 20000
+      resolution:
+        required: false
+        type: enum
+        default: 736p竖
+        options:
+        - label: 736p竖
+          values:
+            155.inputs.Number: 736
+            156.inputs.Number: 1280
+        - label: 736p横
+          values:
+            155.inputs.Number: 1280
+            156.inputs.Number: 736
+        - label: 736p(1:1)
+          values:
+            155.inputs.Number: 736
+            156.inputs.Number: 736
+      seed:
+        node_id: '129'
+        field: inputs.noise_seed
+        required: false
+        type: integer
+        default: 865339729647738
+        min: 1
+        max: 999999999999999
+    input_example: '{"seed": "随机种子（选填，整数，用于控制生成结果的随机性，相同参数和相同Seed通常可获得相近的生成结果）", "prompt": "视频生成提示词（必填，建议描述主体、动作、场景、镜头等）",
+      "duration": "视频时长（选填，整数，1-15 秒，默认5秒）", "resolution": "输出分辨率（选填，可选值：736p竖、736p横、736p(1:1)，默认值736p竖）"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 736p
+        price: 60
+        off_peak_price: 40
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_b99_001
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: 'szreaper
+
+
+      **MiniMax H3 文生视频**
+
+
+      将您的创意转化为生动影像，只需一句提示词即可生成高质量 AI 视频。MiniMax H3 能够理解自然语言描述，智能构建人物、场景、动作、镜头和光影效果，生成具有电影级画面表现、流畅运动效果和高时序一致性的视频内容。支持多种分辨率及时长设置，适用于创意短片、品牌营销、产品展示、社交媒体内容、影视预演等多种创作场景，为视频创作带来更高效率与更多可能。
+
+      '
+  minimax_h3_b99_002:
+    name: H3首尾帧生成视频
+    description: MiniMax H3首尾帧生视频
+    category: first-last-frame
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_b99_002
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_b99_002
+    version: latest
+    updated_at: '2026-08-28 18:48:56'
+    input_rules:
+      duration:
+        node_id: '243'
+        field: inputs.value
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 15
+      first_frame:
+        node_id: '259'
+        field: inputs.image
+        required: true
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      last_frame:
+        node_id: '260'
+        field: inputs.image
+        required: true
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      prompt:
+        node_id: '253'
+        field: inputs.text
+        required: true
+        type: string
+        min_length: 1
+        max_length: 20000
+      resolution:
+        required: false
+        type: enum
+        default: 736p竖
+        options:
+        - label: 736p竖
+          values:
+            271.inputs.Number: 1280
+            272.inputs.Number: 736
+        - label: 736p横
+          values:
+            271.inputs.Number: 736
+            272.inputs.Number: 1280
+        - label: 736p(1:1)
+          values:
+            271.inputs.Number: 736
+            272.inputs.Number: 736
+      seed:
+        node_id: '254'
+        field: inputs.noise_seed
+        required: false
+        type: integer
+        default: 865339729647738
+        min: 1
+        max: 999999999999999
+    input_example: '{"seed": "随机种子（选填，整数，用于控制生成结果的随机性，相同参数和相同Seed通常可获得相近的生成结果）", "prompt": "视频生成提示词（必填，建议描述主体、动作、场景、镜头等）",
+      "duration": "视频时长（选填，整数，1-15 秒，默认5秒）", "last_frame": "尾帧图片 URL（必填，支持 JPG/PNG/WebP）", "resolution":
+      "输出分辨率（选填，可选值：736p竖、736p横、736p(1:1)，默认值736p竖）", "first_frame": "首帧图片 URL（必填，支持 JPG/PNG/WebP）"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 736p
+        price: 60
+        off_peak_price: 40
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_b99_002
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: 'szreaper
+
+
+      **MiniMax H3 首尾帧生成视频**
+
+
+      上传首帧与尾帧图片，并结合提示词，即可让静态画面自然衔接成完整的视频。MiniMax H3 能够智能推演两帧之间的运动轨迹、人物动作、镜头变化和场景演化，生成流畅自然、细节丰富、时序一致的视频内容，让创意从静态图片延伸为生动影像，广泛适用于
+      AI 动画、广告创意、影视分镜、产品演示及内容创作等场景。
+
+      '
+  minimax_h3_b99_003_12s:
+    name: H3多图生视频12秒
+    description: MiniMax H3多图参考生成视频，最长支持12秒视频
+    category: reference-to-video
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_b99_003_12s
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_b99_003_12s
+    version: latest
+    updated_at: '2026-08-27 18:33:48'
+    input_rules:
+      duration:
+        node_id: '172'
+        field: inputs.value
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 15
+      prompt:
+        node_id: '173'
+        field: inputs.text
+        required: true
+        type: string
+        min_length: 1
+        max_length: 20000
+      ref_image_0:
+        node_id: '270'
+        field: inputs.image
+        required: true
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_1:
+        node_id: '271'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_2:
+        node_id: '272'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_3:
+        node_id: '273'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_4:
+        node_id: '274'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_5:
+        node_id: '275'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_6:
+        node_id: '276'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_7:
+        node_id: '277'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_8:
+        node_id: '278'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      resolution:
+        required: false
+        type: enum
+        default: 736p竖
+        options:
+        - label: 736p竖
+          values:
+            174.inputs.Number: 736
+            175.inputs.Number: 1280
+        - label: 736p横
+          values:
+            174.inputs.Number: 1280
+            175.inputs.Number: 736
+        - label: 736p(1:1)
+          values:
+            174.inputs.Number: 736
+            175.inputs.Number: 736
+      seed:
+        node_id: '129'
+        field: inputs.noise_seed
+        required: false
+        type: integer
+        default: 865339729647738
+        min: 1
+        max: 999999999999999
+    input_example: '{"seed": "随机种子（选填，整数，用于控制生成结果的随机性，相同参数和相同Seed通常可获得相近的生成结果）", "prompt": "视频生成提示词（必填，1-20000个字符，建议描述主体、动作、场景、镜头运动等）",
+      "duration": "视频时长（选填，整数，1-12秒，默认5秒）", "resolution": "输出分辨率（选填，可选值：736p竖、736p横、736p(1:1)，默认736p竖）",
+      "ref_image_0": "参考图片URL（必填，支持JPG/PNG/WebP）", "ref_image_1": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_2":
+      "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_3": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_4": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_5": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_6": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_7":
+      "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_8": "参考图片URL（选填，支持JPG/PNG/WebP）"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 736p
+        price: 60
+        off_peak_price: 40
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_b99_003_12s
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '**MiniMax H3 多图参考生成视频**
+
+
+      一次上传多张参考图片，让 AI 理解并延续你的创意。模型能够融合人物形象、服饰细节、场景氛围和视觉风格，生成高度一致、流畅自然的视频效果。无论是角色动态演绎、故事场景构建，还是产品创意展示，都可以快速将多张图片转化为具有表现力的视频作品。
+
+      '
+  minimax_h3_image_audio_to_video:
+    name: H3图生视频-音频同步(自动对口型)
+    description: MiniMax H3图生视频-音频同步
+    category: lip-sync
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_image_audio_to_video
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_image_audio_to_video
+    version: latest
+    updated_at: '2026-08-19 15:06:11'
+    input_rules:
+      audio_duration:
+        node_id: '155'
+        field: inputs.duration
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 15
+      ref_audio_0:
+        node_id: '155'
+        field: inputs.audio
+        required: true
+        type: audio
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_image_0:
+        node_id: '233'
+        field: inputs.image
+        required: true
+        type: image
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      resolution:
+        node_id: '202'
+        required: false
+        type: enum
+        default: 768p竖
+        options:
+        - label: 480p竖
+          values:
+            inputs.自定义宽: 480
+            inputs.自定义高: 864
+        - label: 768p竖
+          values:
+            inputs.自定义宽: 768
+            inputs.自定义高: 1344
+        - label: 1080p竖
+          values:
+            inputs.自定义宽: 1080
+            inputs.自定义高: 1920
+        - label: 480p横
+          values:
+            inputs.自定义宽: 864
+            inputs.自定义高: 480
+        - label: 768p横
+          values:
+            inputs.自定义宽: 1344
+            inputs.自定义高: 768
+        - label: 1080p横
+          values:
+            inputs.自定义宽: 1920
+            inputs.自定义高: 1080
+    input_example: '{"resolution": "输出视频分辨率（选填，可选值：480p竖、768p竖、1080p竖、480p横、768p横、1080p横，默认值：768p竖）",
+      "ref_audio_0": "参考音频 URL（必填，支持 MP3、WAV、FLAC）", "ref_image_0": "参考图片 URL（必填，支持 JPG、PNG、WebP）", "audio_duration":
+      "音频截取时长，单位为秒（选填，1-15秒，默认值：5秒）"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 480p
+        price: 40
+        off_peak_price: 30
+      - resolution: 768p
+        price: 50
+        off_peak_price: 40
+      - resolution: 1080p
+        price: 100
+        off_peak_price: 60
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_image_audio_to_video
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '### MiniMax H3 图生视频-音频同步
+
+
+      基于 **MiniMax H3** 的图生视频音频同步工作流，上传人物或角色图片及对应音频，生成与音频内容同步的动态视频。支持人物口型、表情及动作与音频节奏进行匹配，适用于 **数字人、人物口播、角色对话、音乐视频等场景**
+      。
+
+
+      **核心特点：**
+
+
+      * 🖼️  **图片驱动** ：以输入图片作为人物/角色视觉基础
+
+      * 🎵  **音频同步** ：根据输入音频生成匹配的口型、表情和动作
+
+      * 🎬  **动态生成** ：将静态人物图片转换为自然的动态视频
+
+      * 🎭  **角色保持** ：尽可能保持原图人物的外观、服饰和整体特征
+
+      * 🔊  **音画同步** ：生成视频与输入音频保持时间上的同步
+
+
+      **适用场景：**数字人口播、AI 对话、角色配音、人物演绎、短视频创作等。
+
+      '
+  minimax_h3_image_audio_to_video_v2:
+    name: H3多图多音频生视频
+    description: MiniMax H3多图多音频参考生视频，该工作流未做任何包装门槛较高，需精确控制提示词来使用
+    category: reference-to-video
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_image_audio_to_video_v2
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_image_audio_to_video_v2
+    version: latest
+    updated_at: '2026-08-19 20:59:01'
+    input_rules:
+      duration:
+        node_id: '132'
+        field: inputs.value
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 10
+      prompt:
+        node_id: '664'
+        field: inputs.prompt
+        required: true
+        type: prompt
+        min_length: 1
+        max_length: 20000
+      ref_audio_0:
+        node_id: '719'
+        field: inputs.audio
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_audio_1:
+        node_id: '720'
+        field: inputs.audio
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_audio_2:
+        node_id: '721'
+        field: inputs.audio
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_image_0:
+        node_id: '137'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_1:
+        node_id: '139'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_2:
+        node_id: '144'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_3:
+        node_id: '151'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_4:
+        node_id: '653'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_5:
+        node_id: '654'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_6:
+        node_id: '655'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_7:
+        node_id: '656'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_8:
+        node_id: '657'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      resolution:
+        node_id: '665'
+        required: false
+        type: enum
+        default: 768p竖
+        options:
+        - label: 480p竖
+          values:
+            inputs.自定义宽: 480
+            inputs.自定义高: 864
+        - label: 768p竖
+          values:
+            inputs.自定义宽: 768
+            inputs.自定义高: 1344
+        - label: 1080p竖
+          values:
+            inputs.自定义宽: 1080
+            inputs.自定义高: 1920
+        - label: 480p横
+          values:
+            inputs.自定义宽: 864
+            inputs.自定义高: 480
+        - label: 768p横
+          values:
+            inputs.自定义宽: 1344
+            inputs.自定义高: 768
+        - label: 1080p横
+          values:
+            inputs.自定义宽: 1920
+            inputs.自定义高: 1080
+      seed:
+        node_id: '142'
+        field: inputs.seed
+        required: false
+        type: integer
+        default: 731242627237534
+        min: 1
+        max: 999999999999999
+    input_example: '{"seed": "随机种子（选填，整数，用于控制生成结果的随机性，相同参数和相同Seed通常可获得相近的生成结果）", "prompt": "视频生成提示词（必填，1-20000个字符，建议描述主体、动作、场景、镜头运动等）",
+      "duration": "视频时长（选填，整数，1-10秒，默认5秒）", "resolution": "输出分辨率（选填，可选值：480p竖、768p竖、1080p竖、480p横、768p横、1080p横，默认768p竖）",
+      "ref_audio_0": "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_audio_1": "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_audio_2":
+      "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_image_0": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_1": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_2": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_3": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_4":
+      "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_5": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_6": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_7": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_8": "参考图片URL（选填，支持JPG/PNG/WebP）"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 480p
+        price: 40
+        off_peak_price: 30
+      - resolution: 768p
+        price: 50
+        off_peak_price: 40
+      - resolution: 1080p
+        price: 110
+        off_peak_price: 70
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_image_audio_to_video_v2
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '# MiniMax-H3 多图多音频生视频
+
+
+      **MiniMax-H3 多图多音频生视频**是一款支持多张参考图片与多段参考音频协同生成的视频创作能力。用户只需上传图片、音频并输入视频生成提示词，即可将多个视觉素材与声音素材融合到同一视频中，快速生成具有连贯动作、自然镜头运动和丰富表现力的
+      AI 视频。
+
+
+      支持  **最多 9 张参考图片 + 3 段参考音频** ，可用于人物、场景、产品、角色关系等多素材创作。通过提示词控制主体动作、场景变化、镜头运动及整体画面表现，让多个参考素材在同一视频中实现更自然的融合。
+
+
+      ### 核心能力
+
+
+      * **多图参考** ：支持最多 9 张参考图片，可同时提供人物、动物、产品、场景等视觉素材。
+
+      * **多音频参考** ：支持最多 3 段参考音频，可结合不同声音素材进行视频创作。
+
+      * **音画融合** ：将视觉内容与音频素材结合，增强视频的沉浸感和表现力。
+
+      * **提示词控制** ：通过自然语言描述主体、动作、场景、镜头运动等内容，控制视频生成效果。
+
+      * **灵活时长** ：支持 1～10 秒视频生成，可根据实际创作需求自由设置。
+
+      * **多种分辨率** ：支持 480p、768p、1080p 横竖屏输出，满足不同场景的视频制作需求。
+
+      * **多素材创作** ：适用于角色互动、产品展示、故事片段、广告宣传、短视频内容等多种场景。
+
+
+      ### 适用场景
+
+
+      **人物与角色创作** ：结合多个人物参考图，生成角色互动、对话、动作等视频内容。
+
+
+      **产品与广告展示** ：使用产品图片、场景图片和音频素材，快速生成产品宣传及广告视频。
+
+
+      **故事与剧情创作** ：通过多张角色、场景参考图配合音频，构建连续的剧情画面。
+
+
+      **短视频创作** ：输入图片、音频和简单提示词，即可快速生成适合短视频平台使用的 AI 视频。
+
+
+      **创意视觉内容** ：将不同图片和声音素材进行组合，通过提示词实现更加丰富的视觉表达。
+
+
+      ### 使用方式
+
+
+      上传所需的参考图片和音频 → 输入视频生成提示词 → 设置视频时长与输出分辨率 → 提交生成，即可获得 AI 视频。
+
+
+      **让多张图片、多段声音与 AI 视频生成能力结合，快速将静态素材转化为动态、连续且富有表现力的视频内容。**
+
+      '
+  minimax_h3_image_audio_to_video_v2_15s:
+    name: H3多图多音频生视频15秒
+    description: MiniMax H3多图多音频参考生视频，最长支持15秒视频，该工作流未做任何包装门槛较高，需精确控制提示词来使用
+    category: reference-to-video
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_image_audio_to_video_v2_15s
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_image_audio_to_video_v2_15s
+    version: latest
+    updated_at: '2026-08-21 16:46:26'
+    input_rules:
+      duration:
+        node_id: '132'
+        field: inputs.value
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 15
+      prompt:
+        node_id: '664'
+        field: inputs.prompt
+        required: true
+        type: prompt
+        min_length: 1
+        max_length: 20000
+      ref_audio_0:
+        node_id: '719'
+        field: inputs.audio
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_audio_1:
+        node_id: '720'
+        field: inputs.audio
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_audio_2:
+        node_id: '721'
+        field: inputs.audio
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_image_0:
+        node_id: '137'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_1:
+        node_id: '139'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_2:
+        node_id: '144'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_3:
+        node_id: '151'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_4:
+        node_id: '653'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_5:
+        node_id: '654'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_6:
+        node_id: '655'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_7:
+        node_id: '656'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_8:
+        node_id: '657'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      resolution:
+        node_id: '665'
+        required: false
+        type: enum
+        default: 768p竖
+        options:
+        - label: 480p竖
+          values:
+            inputs.自定义宽: 480
+            inputs.自定义高: 864
+        - label: 768p竖
+          values:
+            inputs.自定义宽: 768
+            inputs.自定义高: 1344
+        - label: 480p横
+          values:
+            inputs.自定义宽: 864
+            inputs.自定义高: 480
+        - label: 768p横
+          values:
+            inputs.自定义宽: 1344
+            inputs.自定义高: 768
+      seed:
+        node_id: '142'
+        field: inputs.seed
+        required: false
+        type: integer
+        default: 731242627237534
+        min: 1
+        max: 999999999999999
+    input_example: '{"seed": "随机种子（选填，整数，用于控制生成结果的随机性，相同参数和相同Seed通常可获得相近的生成结果）", "prompt": "视频生成提示词（必填，1-20000个字符，建议描述主体、动作、场景、镜头运动等）",
+      "duration": "视频时长（选填，整数，1-15秒，默认5秒）", "resolution": "输出分辨率（选填，可选值：480p竖、768p竖、480p横、768p横，默认768p竖）",
+      "ref_audio_0": "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_audio_1": "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_audio_2":
+      "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_image_0": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_1": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_2": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_3": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_4":
+      "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_5": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_6": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_7": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_8": "参考图片URL（选填，支持JPG/PNG/WebP）"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 480p
+        price: 40
+        off_peak_price: 30
+      - resolution: 768p
+        price: 50
+        off_peak_price: 40
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_image_audio_to_video_v2_15s
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '# MiniMax-H3 多图多音频生视频
+
+
+      **MiniMax-H3 多图多音频生视频**是一款支持多张参考图片与多段参考音频协同生成的视频创作能力。用户只需上传图片、音频并输入视频生成提示词，即可将多个视觉素材与声音素材融合到同一视频中，快速生成具有连贯动作、自然镜头运动和丰富表现力的
+      AI 视频。
+
+
+      支持  **最多 9 张参考图片 + 3 段参考音频** ，可用于人物、场景、产品、角色关系等多素材创作。通过提示词控制主体动作、场景变化、镜头运动及整体画面表现，让多个参考素材在同一视频中实现更自然的融合。
+
+
+      ### 核心能力
+
+
+      * **多图参考** ：支持最多 9 张参考图片，可同时提供人物、动物、产品、场景等视觉素材。
+
+      * **多音频参考** ：支持最多 3 段参考音频，可结合不同声音素材进行视频创作。
+
+      * **音画融合** ：将视觉内容与音频素材结合，增强视频的沉浸感和表现力。
+
+      * **提示词控制** ：通过自然语言描述主体、动作、场景、镜头运动等内容，控制视频生成效果。
+
+      * **灵活时长** ：支持 1～15 秒视频生成，可根据实际创作需求自由设置。
+
+      * **多种分辨率** ：支持 480p、768p横竖屏输出，满足不同场景的视频制作需求。
+
+      * **多素材创作** ：适用于角色互动、产品展示、故事片段、广告宣传、短视频内容等多种场景。
+
+
+      ### 适用场景
+
+
+      **人物与角色创作** ：结合多个人物参考图，生成角色互动、对话、动作等视频内容。
+
+
+      **产品与广告展示** ：使用产品图片、场景图片和音频素材，快速生成产品宣传及广告视频。
+
+
+      **故事与剧情创作** ：通过多张角色、场景参考图配合音频，构建连续的剧情画面。
+
+
+      **短视频创作** ：输入图片、音频和简单提示词，即可快速生成适合短视频平台使用的 AI 视频。
+
+
+      **创意视觉内容** ：将不同图片和声音素材进行组合，通过提示词实现更加丰富的视觉表达。
+
+
+      ### 使用方式
+
+
+      上传所需的参考图片和音频 → 输入视频生成提示词 → 设置视频时长与输出分辨率 → 提交生成，即可获得 AI 视频。
+
+
+      **让多张图片、多段声音与 AI 视频生成能力结合，快速将静态素材转化为动态、连续且富有表现力的视频内容。**
+
+      '
+  minimax_h3_lightx2v:
+    name: H3首尾帧生成视频
+    description: MiniMax H3首尾帧生视频
+    category: first-last-frame
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_lightx2v
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_lightx2v
+    version: latest
+    updated_at: '2026-08-13 17:34:10'
+    input_rules:
+      duration:
+        node_id: 105:111
+        field: inputs.value
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 15
+      first_frame:
+        node_id: '114'
+        field: inputs.image
+        required: true
+        type: image
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      last_frame:
+        node_id: '128'
+        field: inputs.image
+        required: true
+        type: image
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      prompt:
+        node_id: '136'
+        field: inputs.prompt
+        required: true
+        type: prompt
+        min_length: 1
+        max_length: 20000
+      resolution:
+        node_id: '122'
+        required: false
+        type: enum
+        default: 768p竖
+        options:
+        - label: 480p竖
+          values:
+            inputs.自定义宽: 480
+            inputs.自定义高: 864
+        - label: 768p竖
+          values:
+            inputs.自定义宽: 768
+            inputs.自定义高: 1344
+        - label: 480p横
+          values:
+            inputs.自定义宽: 864
+            inputs.自定义高: 480
+        - label: 768p横
+          values:
+            inputs.自定义宽: 1344
+            inputs.自定义高: 768
+        - label: 480p(1:1)
+          values:
+            inputs.自定义宽: 480
+            inputs.自定义高: 480
+        - label: 768p(1:1)
+          values:
+            inputs.自定义宽: 768
+            inputs.自定义高: 768
+      seed:
+        node_id: '105:15'
+        field: inputs.noise_seed
+        required: false
+        type: integer
+        default: 479044338007328
+        min: 1
+        max: 999999999999999
+    input_example: '{"seed": "随机种子（选填，整数，用于控制生成结果的随机性，相同参数和相同Seed通常可获得相近的生成结果）", "prompt": "视频生成提示词（必填，建议描述主体、动作、场景、镜头等）",
+      "duration": "视频时长（选填，整数，1-15 秒，默认5秒）", "last_frame": "尾帧图片 URL（必填，支持 JPG/PNG/WebP）", "resolution":
+      "输出分辨率（选填，可选值：480p竖、480p横、768p竖、768p横、480p(1:1)、768p(1:1)，默认值768竖）", "first_frame": "首帧图片 URL（必填，支持
+      JPG/PNG/WebP）"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 480p
+        price: 40
+        off_peak_price: 30
+      - resolution: 768p
+        price: 50
+        off_peak_price: 40
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_lightx2v
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: 'zealman
+
+
+      **MiniMax H3 首尾帧生成视频**
+
+
+      上传首帧与尾帧图片，并结合提示词，即可让静态画面自然衔接成完整的视频。MiniMax H3 能够智能推演两帧之间的运动轨迹、人物动作、镜头变化和场景演化，生成流畅自然、细节丰富、时序一致的视频内容，让创意从静态图片延伸为生动影像，广泛适用于
+      AI 动画、广告创意、影视分镜、产品演示及内容创作等场景。
+
+      '
+  minimax_h3_lightx2v_no_pic:
+    name: H3文生视频
+    description: MiniMax H3文生视频
+    category: text-to-video
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_lightx2v_no_pic
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_lightx2v_no_pic
+    version: latest
+    updated_at: '2026-08-13 17:36:23'
+    input_rules:
+      duration:
+        node_id: 105:111
+        field: inputs.value
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 15
+      prompt:
+        node_id: '136'
+        field: inputs.prompt
+        required: true
+        type: prompt
+        min_length: 1
+        max_length: 20000
+      resolution:
+        node_id: '122'
+        required: false
+        type: enum
+        default: 768p竖
+        options:
+        - label: 480p竖
+          values:
+            inputs.自定义宽: 480
+            inputs.自定义高: 864
+        - label: 768p竖
+          values:
+            inputs.自定义宽: 768
+            inputs.自定义高: 1344
+        - label: 480p横
+          values:
+            inputs.自定义宽: 864
+            inputs.自定义高: 480
+        - label: 768p横
+          values:
+            inputs.自定义宽: 1344
+            inputs.自定义高: 768
+        - label: 480p(1:1)
+          values:
+            inputs.自定义宽: 480
+            inputs.自定义高: 480
+        - label: 768p(1:1)
+          values:
+            inputs.自定义宽: 768
+            inputs.自定义高: 768
+      seed:
+        node_id: '105:15'
+        field: inputs.noise_seed
+        required: false
+        type: integer
+        default: 479044338007328
+        min: 1
+        max: 999999999999999
+    input_example: '{"seed": "随机种子（选填，整数，用于控制生成结果的随机性，相同参数和相同Seed通常可获得相近的生成结果）", "prompt": "视频生成提示词（必填，建议描述主体、动作、场景、镜头等）",
+      "duration": "视频时长（选填，整数，1-15 秒，默认5秒）", "resolution": "输出分辨率（选填，可选值：480p竖、480p横、768p竖、768p横、480p(1:1)、768p(1:1)，默认值768竖）"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 480p
+        price: 40
+        off_peak_price: 30
+      - resolution: 768p
+        price: 50
+        off_peak_price: 40
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_lightx2v_no_pic
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '**MiniMax H3 文生视频**
+
+
+      将您的创意转化为生动影像，只需一句提示词即可生成高质量 AI 视频。MiniMax H3 能够理解自然语言描述，智能构建人物、场景、动作、镜头和光影效果，生成具有电影级画面表现、流畅运动效果和高时序一致性的视频内容。支持多种分辨率及时长设置，适用于创意短片、品牌营销、产品展示、社交媒体内容、影视预演等多种创作场景，为视频创作带来更高效率与更多可能。
+
+      '
+  minimax_h3_lightx2v_v5:
+    name: H3多图参考生视频
+    description: MiniMax H3多图参考生成视频
+    category: reference-to-video
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_lightx2v_v5
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_lightx2v_v5
+    version: latest
+    updated_at: '2026-08-14 18:47:56'
+    input_rules:
+      duration:
+        node_id: '132'
+        field: inputs.value
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 10
+      prompt:
+        node_id: '664'
+        field: inputs.prompt
+        required: true
+        type: prompt
+        min_length: 1
+        max_length: 20000
+      ref_image_0:
+        node_id: '137'
+        field: inputs.image
+        required: true
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_1:
+        node_id: '139'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_2:
+        node_id: '144'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_3:
+        node_id: '151'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_4:
+        node_id: '653'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_5:
+        node_id: '654'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_6:
+        node_id: '655'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_7:
+        node_id: '656'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_8:
+        node_id: '657'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      resolution:
+        node_id: '665'
+        required: false
+        type: enum
+        default: 768p竖
+        options:
+        - label: 480p竖
+          values:
+            inputs.自定义宽: 480
+            inputs.自定义高: 864
+        - label: 768p竖
+          values:
+            inputs.自定义宽: 768
+            inputs.自定义高: 1344
+        - label: 1080p竖
+          values:
+            inputs.自定义宽: 1080
+            inputs.自定义高: 1920
+        - label: 480p横
+          values:
+            inputs.自定义宽: 864
+            inputs.自定义高: 480
+        - label: 768p横
+          values:
+            inputs.自定义宽: 1344
+            inputs.自定义高: 768
+        - label: 1080p横
+          values:
+            inputs.自定义宽: 1920
+            inputs.自定义高: 1080
+        - label: 480p(1:1)
+          values:
+            inputs.自定义宽: 480
+            inputs.自定义高: 480
+        - label: 768p(1:1)
+          values:
+            inputs.自定义宽: 768
+            inputs.自定义高: 768
+        - label: 1080p(1:1)
+          values:
+            inputs.自定义宽: 1080
+            inputs.自定义高: 1080
+      seed:
+        node_id: '142'
+        field: inputs.seed
+        required: false
+        type: integer
+        default: 212238359716024
+        min: 1
+        max: 999999999999999
+    input_example: '{"seed": "随机种子（选填，整数，用于控制生成结果的随机性，相同参数和相同Seed通常可获得相近的生成结果）", "prompt": "视频生成提示词（必填，建议描述主体、动作、场景、镜头等）",
+      "duration": "视频时长（选填，整数，1-10 秒，默认5秒）", "resolution": "输出分辨率（选填，可选值：480p竖、480p横、1080p横、768p竖、768p横、1080p竖、480p(1:1)、768p(1:1)、1080p(1:1)，默认值768p竖）",
+      "ref_image_0": "图片 URL（必填，支持 JPG/PNG/WebP）", "ref_image_1": "图片 URL（选填，支持 JPG/PNG/WebP）", "ref_image_2":
+      "图片 URL（选填，支持 JPG/PNG/WebP）", "ref_image_3": "图片 URL（选填，支持 JPG/PNG/WebP）", "ref_image_4": "图片 URL（选填，支持
+      JPG/PNG/WebP）", "ref_image_5": "图片 URL（选填，支持 JPG/PNG/WebP）", "ref_image_6": "图片 URL（选填，支持 JPG/PNG/WebP）",
+      "ref_image_7": "图片 URL（选填，支持 JPG/PNG/WebP）", "ref_image_8": "图片 URL（选填，支持 JPG/PNG/WebP）"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 480p
+        price: 40
+        off_peak_price: 30
+      - resolution: 768p
+        price: 50
+        off_peak_price: 40
+      - resolution: 1080p
+        price: 100
+        off_peak_price: 60
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_lightx2v_v5
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '**MiniMax H3 多图参考生成视频**
+
+
+      一次上传多张参考图片，让 AI 理解并延续你的创意。模型能够融合人物形象、服饰细节、场景氛围和视觉风格，生成高度一致、流畅自然的视频效果。无论是角色动态演绎、故事场景构建，还是产品创意展示，都可以快速将多张图片转化为具有表现力的视频作品。
+
+      '
+  minimax_h3_lightx2v_v5_15s:
+    name: H3多图生视频15秒
+    description: MiniMax H3多图参考生成视频，最长支持15秒视频
+    category: reference-to-video
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_lightx2v_v5_15s
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_lightx2v_v5_15s
+    version: latest
+    updated_at: '2026-08-21 16:12:48'
+    input_rules:
+      duration:
+        node_id: '132'
+        field: inputs.value
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 15
+      prompt:
+        node_id: '664'
+        field: inputs.prompt
+        required: true
+        type: prompt
+        min_length: 1
+        max_length: 20000
+      ref_image_0:
+        node_id: '137'
+        field: inputs.image
+        required: true
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_1:
+        node_id: '139'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_2:
+        node_id: '144'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_3:
+        node_id: '151'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_4:
+        node_id: '653'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_5:
+        node_id: '654'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_6:
+        node_id: '655'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_7:
+        node_id: '656'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_8:
+        node_id: '657'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      resolution:
+        node_id: '665'
+        required: false
+        type: enum
+        default: 768p竖
+        options:
+        - label: 480p竖
+          values:
+            inputs.自定义宽: 480
+            inputs.自定义高: 864
+        - label: 768p竖
+          values:
+            inputs.自定义宽: 768
+            inputs.自定义高: 1344
+        - label: 480p横
+          values:
+            inputs.自定义宽: 864
+            inputs.自定义高: 480
+        - label: 768p横
+          values:
+            inputs.自定义宽: 1344
+            inputs.自定义高: 768
+        - label: 480p(1:1)
+          values:
+            inputs.自定义宽: 480
+            inputs.自定义高: 480
+        - label: 768p(1:1)
+          values:
+            inputs.自定义宽: 768
+            inputs.自定义高: 768
+      seed:
+        node_id: '142'
+        field: inputs.seed
+        required: false
+        type: integer
+        default: 212238359716024
+        min: 1
+        max: 999999999999999
+    input_example: '{"seed": "随机种子（选填，整数，用于控制生成结果的随机性，相同参数和相同Seed通常可获得相近的生成结果）", "prompt": "视频生成提示词（必填，建议描述主体、动作、场景、镜头等）",
+      "duration": "视频时长（选填，整数，1-15 秒，默认5秒）", "resolution": "输出分辨率（选填，可选值：480p竖、480p横、768p竖、768p横、480p(1:1)、768p(1:1)，默认值768p竖）",
+      "ref_image_0": "图片 URL（必填，支持 JPG/PNG/WebP）", "ref_image_1": "图片 URL（选填，支持 JPG/PNG/WebP）", "ref_image_2":
+      "图片 URL（选填，支持 JPG/PNG/WebP）", "ref_image_3": "图片 URL（选填，支持 JPG/PNG/WebP）", "ref_image_4": "图片 URL（选填，支持
+      JPG/PNG/WebP）", "ref_image_5": "图片 URL（选填，支持 JPG/PNG/WebP）", "ref_image_6": "图片 URL（选填，支持 JPG/PNG/WebP）",
+      "ref_image_7": "图片 URL（选填，支持 JPG/PNG/WebP）", "ref_image_8": "图片 URL（选填，支持 JPG/PNG/WebP）"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 480p
+        price: 40
+        off_peak_price: 30
+      - resolution: 768p
+        price: 50
+        off_peak_price: 40
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_lightx2v_v5_15s
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '**MiniMax H3 多图参考生成视频**
+
+
+      一次上传多张参考图片，让 AI 理解并延续你的创意。模型能够融合人物形象、服饰细节、场景氛围和视觉风格，生成高度一致、流畅自然的视频效果。无论是角色动态演绎、故事场景构建，还是产品创意展示，都可以快速将多张图片转化为具有表现力的视频作品。
+
+      '
+  minimax_h3_z0901:
+    name: H3文生视频（高质量创意直出）
+    description: MiniMax H3 文生视频（高质量创意直出），通过文字描述直接生成最长 15 秒的高质量 AI 视频，无需上传参考图片或音频。
+    category: text-to-video
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_z0901
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_z0901
+    version: latest
+    updated_at: '2026-09-15 18:44:10'
+    input_rules:
+      duration:
+        node_id: '142'
+        field: inputs.value
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 15
+      prompt:
+        node_id: '143'
+        field: inputs.text
+        required: true
+        type: string
+        min_length: 1
+        max_length: 20000
+      resolution:
+        required: false
+        type: enum
+        default: 768p竖(768*1344)
+        options:
+        - label: 480p竖(480*864)
+          values:
+            240.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            240.inputs.megapixels: 0.4
+        - label: 480p横(864*480)
+          values:
+            240.inputs.aspect_ratio: 16:9 (Widescreen)
+            240.inputs.megapixels: 0.4
+        - label: 768p竖(768*1344)
+          values:
+            240.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            240.inputs.megapixels: 0.98
+        - label: 768p横(1344*768)
+          values:
+            240.inputs.aspect_ratio: 16:9 (Widescreen)
+            240.inputs.megapixels: 0.98
+        - label: 1088p竖(1088*1920)
+          values:
+            240.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            240.inputs.megapixels: 2
+        - label: 1088p横(1920*1088)
+          values:
+            240.inputs.aspect_ratio: 16:9 (Widescreen)
+            240.inputs.megapixels: 2
+        - label: 1440p竖(1440*2560)
+          values:
+            240.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            240.inputs.megapixels: 3.55
+        - label: 1440p横(2560*1440)
+          values:
+            240.inputs.aspect_ratio: 16:9 (Widescreen)
+            240.inputs.megapixels: 3.55
+      seed:
+        node_id: '129'
+        field: inputs.noise_seed
+        required: false
+        type: integer
+        default: 865339729647738
+        min: 1
+        max: 999999999999999
+    input_example: '{"seed": "随机种子（选填，整数，用于控制生成结果的随机性，相同参数和相同Seed通常可获得相近的生成结果）", "prompt": "视频生成提示词（必填，1-20000个字符，建议描述主体、动作、场景、镜头运动等）",
+      "duration": "视频时长（选填，整数，1-15秒，默认5秒）", "resolution": "输出分辨率（选填，可选值：480p竖(480*864)、480p横(864*480)、768p竖(768*1376)、768p横(1376*768)、1088p竖(1088*1920)、1088p横(1920*1088)、1440p竖(1440*2560)、1440p横(2560*1440)，默认768p竖(768*1376)）"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 480p
+        price: 50
+        off_peak_price: 40
+      - resolution: 768p
+        price: 80
+        off_peak_price: 60
+      - resolution: 1088p
+        price: 80
+        off_peak_price: 60
+      - resolution: 1440p
+        price: 90
+        off_peak_price: 70
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_z0901
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '#### MiniMax H3 文生视频
+
+
+      MiniMax H3 文生视频是一款使用自然语言直接创作视频的生成能力。用户只需描述人物、动物、产品、场景、动作、镜头和画面风格，即可将文字创意转化为连贯的视频内容。
+
+
+      该工作流采用一次采样方式直出视频，并通过扩图模型提升输出分辨率，效果绝非二次采样扩图混血工作流可比！适合重视画面质量、动作表现和成片稳定性的创作任务。
+
+
+      ### 核心能力
+
+
+      **文字生成视频：** 无需准备图片或音频，仅使用文字描述即可创作视频。
+
+      **提示词控制：** 可描述主体、动作、场景、镜头运动、光线和艺术风格。
+
+      **灵活时长：** 支持 1～15 秒视频生成，可根据内容需求设置时长。
+
+      **多种画幅：** 支持常见横屏、竖屏及其他画幅输出。
+
+      **多种清晰度：** 可选择不同输出清晰度，满足预览、短视频和高质量成片需求。
+
+      **高质量直出：** 一次采样完成视频生成，兼顾清晰度、速度和稳定性。
+
+
+      ### 适用场景
+
+
+      **创意短视频：** 将一句创意描述快速转化为动态画面。
+
+      **广告概念制作：** 生成产品宣传、品牌氛围和视觉创意片段。
+
+      **故事与剧情创作：** 制作人物动作、环境变化和镜头叙事内容。
+
+      **自媒体内容：** 生成适合不同内容平台的横屏或竖屏视频。
+
+      **视觉方案预览：** 在正式制作前快速查看场景、动作和镜头效果。
+
+
+      ### 使用方式
+
+
+      输入视频生成提示词 → 设置视频时长 → 选择输出画幅和清晰度 → 提交生成，即可获得 AI 视频。
+
+
+      让文字创意直接变成清晰、连贯、具有镜头表现力的视频内容。
+
+      '
+  minimax_h3_z0902:
+    name: H3六图生视频（多图一致性创作）
+    description: MiniMax H3 六图生视频（多图一致性创作），使用 6 张参考图片和文字提示生成最长 15 秒的高质量 AI 视频。
+    category: reference-to-video
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_z0902
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_z0902
+    version: latest
+    updated_at: '2026-09-15 19:17:29'
+    input_rules:
+      duration:
+        node_id: '172'
+        field: inputs.value
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 15
+      prompt:
+        node_id: '173'
+        field: inputs.text
+        required: true
+        type: string
+        min_length: 1
+        max_length: 20000
+      ref_image_0:
+        node_id: '157'
+        field: inputs.image
+        required: true
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_1:
+        node_id: '158'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_2:
+        node_id: '159'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_3:
+        node_id: '160'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_4:
+        node_id: '161'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_5:
+        node_id: '162'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      resolution:
+        required: false
+        type: enum
+        default: 768p竖(768*1376)
+        options:
+        - label: 480p竖(480*864)
+          values:
+            276.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            276.inputs.megapixels: 0.4
+        - label: 480p横(864*480)
+          values:
+            276.inputs.aspect_ratio: 16:9 (Widescreen)
+            276.inputs.megapixels: 0.4
+        - label: 768p竖(768*1376)
+          values:
+            276.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            276.inputs.megapixels: 1.03
+        - label: 768p横(1376*768)
+          values:
+            276.inputs.aspect_ratio: 16:9 (Widescreen)
+            276.inputs.megapixels: 1.03
+        - label: 1088p竖(1088*1920)
+          values:
+            276.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            276.inputs.megapixels: 2
+        - label: 1088p横(1920*1088)
+          values:
+            276.inputs.aspect_ratio: 16:9 (Widescreen)
+            276.inputs.megapixels: 2
+        - label: 1440p竖(1440*2560)
+          values:
+            276.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            276.inputs.megapixels: 3.55
+        - label: 1440p横(2560*1440)
+          values:
+            276.inputs.aspect_ratio: 16:9 (Widescreen)
+            276.inputs.megapixels: 3.55
+      seed:
+        node_id: '129'
+        field: inputs.noise_seed
+        required: false
+        type: integer
+        default: 629515677062289
+        min: 1
+        max: 999999999999999
+    input_example: '{"seed": "随机种子（选填，整数，用于控制生成结果的随机性，相同参数和相同Seed通常可获得相近的生成结果）", "prompt": "视频生成提示词（必填，1-20000个字符，建议描述主体、动作、场景、镜头运动等）",
+      "duration": "视频时长（选填，整数，1-15秒，默认5秒）", "resolution": "输出分辨率（选填，可选值：480p竖(480*864)、480p横(864*480)、768p竖(768*1376)、768p横(1376*768)、1088p竖(1088*1920)、1088p横(1920*1088)、1440p竖(1440*2560)、1440p横(2560*1440)，默认768p竖(768*1376)）",
+      "ref_image_0": "参考图片URL（必填，支持JPG/PNG/WebP）", "ref_image_1": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_2":
+      "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_3": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_4": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_5": "参考图片URL（选填，支持JPG/PNG/WebP）"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 480p
+        price: 50
+        off_peak_price: 40
+      - resolution: 768p
+        price: 80
+        off_peak_price: 60
+      - resolution: 1088p
+        price: 80
+        off_peak_price: 60
+      - resolution: 1440p
+        price: 90
+        off_peak_price: 70
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_z0902
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '#### MiniMax H3 六图生视频
+
+
+      MiniMax H3 六图生视频是一款支持多张参考图片协同生成的视频创作能力。用户上传 6 张参考图片并输入视频生成提示词，即可将人物、动物、产品、场景或造型等视觉素材融合到同一个视频中。
+
+
+      多张图片可以从不同角度补充主体信息，也可以分别提供角色、产品和场景参考，使生成内容具有更丰富的视觉依据。
+
+
+      该工作流采用一次采样方式直出视频，并通过扩图模型提升输出分辨率，效果绝非二次采样扩图混血工作流可比！适合重视画面质量、动作表现和成片稳定性的创作任务。
+
+
+      ### 核心能力
+
+
+      **六图参考：** 支持 6 张参考图片共同参与视频创作。
+
+      **多素材融合：** 可组合人物、动物、产品、服装、道具和场景图片。
+
+      **提示词控制：** 通过文字描述主体动作、场景变化和镜头运动。
+
+      **角色表现：** 适合需要人物、角色或产品外观参考的视频。
+
+      **灵活时长：** 支持 1～15 秒视频生成。
+
+      **高质量输出：** 采用一次采样直出，并提升最终画面清晰度。
+
+
+      ### 适用场景
+
+
+      **人物与角色展示：** 使用多张人物图表现角色外观、服装和不同角度。
+
+      **产品展示：** 结合产品正面、侧面、细节和使用场景生成宣传视频。
+
+      **分镜创作：** 使用多张分镜或场景图构建连续的视频内容。
+
+      **广告内容：** 将人物、产品和环境素材组合成品牌宣传片段。
+
+      **短视频创作：** 把多张静态图片转化为连贯、有动作的视频。
+
+
+      ### 使用方式
+
+
+      上传 6 张参考图片 → 输入视频生成提示词 → 设置视频时长、画幅和清晰度 → 提交生成，即可获得多图参考 AI 视频。
+
+
+      让多张视觉素材共同参与创作，使静态图片自然转化为连续的视频画面。
+
+      '
+  minimax_h3_z0903:
+    name: H3六图三音频生视频（高质量音画融合）
+    description: MiniMax H3六图三音频生视频（高质量音画融合），使用 6 张参考图片和最多 3 段参考音频，生成最长 15 秒的高质量音画融合视频。
+    category: reference-to-video
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_z0903
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_z0903
+    version: latest
+    updated_at: '2026-09-15 19:17:52'
+    input_rules:
+      duration:
+        node_id: '172'
+        field: inputs.value
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 15
+      prompt:
+        node_id: '173'
+        field: inputs.text
+        required: true
+        type: string
+        min_length: 1
+        max_length: 20000
+      ref_audio_0:
+        node_id: '273'
+        field: inputs.audio
+        required: true
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_audio_1:
+        node_id: '275'
+        field: inputs.audio
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_audio_2:
+        node_id: '276'
+        field: inputs.audio
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_image_0:
+        node_id: '157'
+        field: inputs.image
+        required: true
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_1:
+        node_id: '158'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_2:
+        node_id: '159'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_3:
+        node_id: '160'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_4:
+        node_id: '161'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_5:
+        node_id: '162'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      resolution:
+        required: false
+        type: enum
+        default: 768p竖(768*1376)
+        options:
+        - label: 480p竖(480*864)
+          values:
+            306.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            306.inputs.megapixels: 0.4
+        - label: 480p横(864*480)
+          values:
+            306.inputs.aspect_ratio: 16:9 (Widescreen)
+            306.inputs.megapixels: 0.4
+        - label: 768p竖(768*1376)
+          values:
+            306.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            306.inputs.megapixels: 1.03
+        - label: 768p横(1376*768)
+          values:
+            306.inputs.aspect_ratio: 16:9 (Widescreen)
+            306.inputs.megapixels: 1.03
+        - label: 1088p竖(1088*1920)
+          values:
+            306.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            306.inputs.megapixels: 2
+        - label: 1088p横(1920*1088)
+          values:
+            306.inputs.aspect_ratio: 16:9 (Widescreen)
+            306.inputs.megapixels: 2
+        - label: 1440p竖(1440*2560)
+          values:
+            306.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            306.inputs.megapixels: 3.55
+        - label: 1440p横(2560*1440)
+          values:
+            306.inputs.aspect_ratio: 16:9 (Widescreen)
+            306.inputs.megapixels: 3.55
+      seed:
+        node_id: '129'
+        field: inputs.noise_seed
+        required: false
+        type: integer
+        default: 757947932117433
+        min: 1
+        max: 999999999999999
+    input_example: '{"seed": "随机种子（选填，整数，用于控制生成结果的随机性，相同参数和相同Seed通常可获得相近的生成结果）", "prompt": "视频生成提示词（必填，1-20000个字符，建议描述主体、动作、场景、镜头运动等）",
+      "duration": "视频时长（选填，整数，1-15秒，默认5秒）", "resolution": "输出分辨率（选填，可选值：480p竖(480*864)、480p横(864*480)、768p竖(768*1376)、768p横(1376*768)、1088p竖(1088*1920)、1088p横(1920*1088)、1440p竖(1440*2560)、1440p横(2560*1440)，默认768p竖(768*1376)）",
+      "ref_audio_0": "参考音频URL（必填，支持MP3/WAV/FLAC）", "ref_audio_1": "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_audio_2":
+      "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_image_0": "参考图片URL（必填，支持JPG/PNG/WebP）", "ref_image_1": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_2": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_3": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_4":
+      "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_5": "参考图片URL（选填，支持JPG/PNG/WebP）"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 480p
+        price: 50
+        off_peak_price: 40
+      - resolution: 768p
+        price: 80
+        off_peak_price: 60
+      - resolution: 1088p
+        price: 80
+        off_peak_price: 60
+      - resolution: 1440p
+        price: 90
+        off_peak_price: 70
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_z0903
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '#### MiniMax H3 六图三音频生视频
+
+
+      MiniMax H3 六图三音频生视频是一款支持多张参考图片与多段参考音频协同生成的视频创作能力。用户上传 6 张图片和最多 3 段音频，并输入视频生成提示词，即可将视觉素材与声音素材融合到同一个视频中。
+
+
+      图片可用于提供人物、动物、产品和场景参考，音频可用于补充声音、节奏和氛围，让生成视频拥有更完整的音画表达。
+
+
+      该工作流采用一次采样方式直出视频，并通过扩图模型提升输出分辨率，效果绝非二次采样扩图混血工作流可比！适合重视画面质量、动作表现和成片稳定性的创作任务。
+
+
+      ### 核心能力
+
+
+      **六图参考：** 支持 6 张参考图片，可提供角色、产品和场景等视觉素材。
+
+      **多音频参考：** 支持最多 3 段参考音频，可结合不同声音素材进行创作。
+
+      **音画融合：** 将视觉内容与音频素材结合，增强视频表现力。
+
+      **提示词控制：** 可描述主体动作、场景变化、镜头运动和整体风格。
+
+      **灵活时长：** 支持 1～15 秒视频生成。
+
+      **高质量输出：** 适合对画面清晰度、动作连贯性和音画效果有要求的内容。
+
+
+      ### 适用场景
+
+
+      **人物与声音创作：** 结合人物参考图和声音素材生成角色视频。
+
+      **产品与广告展示：** 使用产品图片、场景图片和音频制作宣传内容。
+
+      **音乐短视频：** 将图片素材与音乐、节奏或环境声音组合。
+
+      **故事片段：** 使用角色图、场景图和声音构建短篇剧情。
+
+      **创意视觉内容：** 将多个视觉与声音素材融合成完整视频。
+
+
+      ### 使用方式
+
+
+      上传 6 张参考图片和所需音频 → 输入视频生成提示词 → 设置视频时长、画幅和清晰度 → 提交生成，即可获得音画融合 AI 视频。
+
+
+      让多张图片与多段声音自然结合，快速生成清晰、连贯且富有表现力的视频内容。
+
+      '
+  minimax_h3_zm_nono:
+    name: H3多图多音频生视频(影视画质)
+    description: MiniMax H3多图参考生成视频，最长支持15秒视频
+    category: reference-to-video
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_zm_nono
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_zm_nono
+    version: latest
+    updated_at: '2026-10-26 19:00:06'
+    input_rules:
+      duration:
+        node_id: '259'
+        field: inputs.seconds
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 15
+      prompt:
+        node_id: '259'
+        field: inputs.prompt
+        required: true
+        type: prompt
+        min_length: 1
+        max_length: 20000
+      ref_audio_0:
+        node_id: '259'
+        field: inputs.ref_audio_0
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+      ref_audio_1:
+        node_id: '259'
+        field: inputs.ref_audio_1
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+      ref_audio_2:
+        node_id: '259'
+        field: inputs.ref_audio_2
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+      ref_image_0:
+        node_id: '259'
+        field: inputs.ref_image_0
+        required: true
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_1:
+        node_id: '259'
+        field: inputs.ref_image_1
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_2:
+        node_id: '259'
+        field: inputs.ref_image_2
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_3:
+        node_id: '259'
+        field: inputs.ref_image_3
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_4:
+        node_id: '259'
+        field: inputs.ref_image_4
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_5:
+        node_id: '259'
+        field: inputs.ref_image_5
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_6:
+        node_id: '259'
+        field: inputs.ref_image_6
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_7:
+        node_id: '259'
+        field: inputs.ref_image_7
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_8:
+        node_id: '259'
+        field: inputs.ref_image_8
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      resolution:
+        required: false
+        type: enum
+        default: 768p竖
+        options:
+        - label: 480p横
+          values:
+            259.inputs.aspect_ratio: 16:9 (Widescreen)
+            259.inputs.megapixels: 0.18
+        - label: 480p竖
+          values:
+            259.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            259.inputs.megapixels: 0.18
+        - label: 768p横
+          values:
+            259.inputs.aspect_ratio: 16:9 (Widescreen)
+            259.inputs.megapixels: 0.44
+        - label: 768p竖
+          values:
+            259.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            259.inputs.megapixels: 0.44
+        - label: 960p横
+          values:
+            259.inputs.aspect_ratio: 16:9 (Widescreen)
+            259.inputs.megapixels: 0.7
+        - label: 960p竖
+          values:
+            259.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            259.inputs.megapixels: 0.7
+    input_example: '{"prompt": "视频生成提示词（必填，1-20000个字符，建议描述主体、动作、场景、镜头运动等）", "duration": "视频时长（选填，整数，1-15秒，默认5秒）",
+      "resolution": "输出分辨率（选填，可选值：480p竖、768p竖、960p竖、480p横、768p横、960p竖，默认768p竖）", "ref_audio_0": "参考音频URL（选填，支持MP3/WAV）",
+      "ref_audio_1": "参考音频URL（选填，支持MP3/WAV）", "ref_audio_2": "参考音频URL（选填，支持MP3/WAV）", "ref_image_0": "参考图片URL（必填，支持JPG/PNG/WebP）",
+      "ref_image_1": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_2": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_3":
+      "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_4": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_5": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_6": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_7": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_8":
+      "参考图片URL（选填，支持JPG/PNG/WebP）"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 480p
+        price: 40
+        off_peak_price: 30
+      - resolution: 768p
+        price: 50
+        off_peak_price: 40
+      - resolution: 960p
+        price: 100
+        off_peak_price: 90
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_zm_nono
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '# MiniMax-H3 多图多音频生视频
+
+
+      **MiniMax-H3 多图多音频生视频**是一款支持多张参考图片与多段参考音频协同生成的视频创作能力。用户只需上传图片、音频并输入视频生成提示词，即可将多个视觉素材与声音素材融合到同一视频中，快速生成具有连贯动作、自然镜头运动和丰富表现力的
+      AI 视频。
+
+
+      支持 **最多 9 张参考图片 + 3 段参考音频** ，可用于人物、场景、产品、角色关系等多素材创作。通过提示词控制主体动作、场景变化、镜头运动及整体画面表现，让多个参考素材在同一视频中实现更自然的融合。
+
+
+      ### 核心能力
+
+
+      * **多图参考** ：支持最多 9 张参考图片，可同时提供人物、动物、产品、场景等视觉素材。
+
+      * **多音频参考** ：支持最多 3 段参考音频，可结合不同声音素材进行视频创作。
+
+      * **音画融合** ：将视觉内容与音频素材结合，增强视频的沉浸感和表现力。
+
+      * **提示词控制** ：通过自然语言描述主体、动作、场景、镜头运动等内容，控制视频生成效果。
+
+      * **灵活时长** ：支持 1～15 秒视频生成，可根据实际创作需求自由设置。
+
+      * **多种分辨率** ：支持 480p、768p横竖屏输出，满足不同场景的视频制作需求。
+
+      * **多素材创作** ：适用于角色互动、产品展示、故事片段、广告宣传、短视频内容等多种场景。
+
+
+      ### 适用场景
+
+
+      **人物与角色创作** ：结合多个人物参考图，生成角色互动、对话、动作等视频内容。
+
+
+      **产品与广告展示** ：使用产品图片、场景图片和音频素材，快速生成产品宣传及广告视频。
+
+
+      **故事与剧情创作** ：通过多张角色、场景参考图配合音频，构建连续的剧情画面。
+
+
+      **短视频创作** ：输入图片、音频和简单提示词，即可快速生成适合短视频平台使用的 AI 视频。
+
+
+      **创意视觉内容** ：将不同图片和声音素材进行组合，通过提示词实现更加丰富的视觉表达。
+
+
+      ### 使用方式
+
+
+      上传所需的参考图片和音频 → 输入视频生成提示词 → 设置视频时长与输出分辨率 → 提交生成，即可获得 AI 视频。
+
+
+      **让多张图片、多段声音与 AI 视频生成能力结合，快速将静态素材转化为动态、连续且富有表现力的视频内容。**
+
+      '
+  minimax_h3_zm_titi:
+    name: H3全自动角色动迁替换
+    description: MiniMax H3全自动角色动迁替换，用一张参考图里的角色替换视频角色，最长支持25秒
+    category: motion-transfer
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_zm_titi
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_zm_titi
+    version: latest
+    updated_at: '2026-11-03 15:22:30'
+    input_rules:
+      duration:
+        node_id: '258'
+        field: inputs.seconds
+        required: false
+        type: integer
+        default: 10
+        min: 5
+        max: 25
+      prompt:
+        node_id: '258'
+        field: inputs.prompt
+        required: false
+        type: prompt
+        default: ' '
+        min_length: 1
+        max_length: 2048
+      ref_image:
+        node_id: '258'
+        field: inputs.ref_image_0
+        required: true
+        type: image
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_video:
+        node_id: '258'
+        field: inputs.ref_video_0
+        required: true
+        type: video
+        accept_types:
+        - video/mp4
+        - video/webm
+      resolution:
+        required: false
+        type: enum
+        default: 768p竖
+        options:
+        - label: 768p竖
+          values:
+            258.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            258.inputs.megapixels: 0.98
+        - label: 768p横
+          values:
+            258.inputs.aspect_ratio: 16:9 (Widescreen)
+            258.inputs.megapixels: 0.98
+    input_example: '{"prompt": "视频生成提示词（选填，2048个字符,通常会自动识别角色，无需单独写提示词。替换后想保持某些物品不变，比如视频中角色手拿话筒，则需要提示词“保留手里的话筒”,替换后的同时修改文字，比如视频中的某个招牌文字，替换后想变成了其他文字，则需要提示词“招牌文字改为：某某面馆”,替换的同时想增强某些方面，比如视频中的角色手中武器火焰特效，可以再提示词写“增强角色手中武器火焰特效”）",
+      "duration": "视频时长（选填，整数，5-25秒，默认10秒）", "ref_image": "参考图片URL(必填，支持 JPG/PNG/WebP)", "ref_video":
+      "参考视频URL(必填，支持 MP4/WebM)", "resolution": "输出分辨率(选填，可选值：768p竖、768p横，默认768p竖)"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 768p
+        price: 100
+        off_peak_price: 90
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_zm_TiTi
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '## MiniMax-H3 视频单角色替换+动迁（最大支持25秒）
+
+
+      MiniMax-H3 视频角色替换，用一张参考图里的角色，替换引导视频里已经存在的一个角色。角色可以是人、动物、机器人，或任何能单独指认的主体。
+
+
+      ### 核心能力
+
+
+      单角色替换：一次只替换引导视频里的一个角色。默认无需写提示词，自动替换正在表演或被镜头对着的那个角色。
+
+      跨种类替换：可以用人物替换动物，也可以用机器人替换人物。只换这一个身份，动作、位置、节奏和镜头仍跟引导视频。
+
+      原声保留：引导视频的原声已经对齐，成片带上这条原声，口型按原声对齐。
+
+
+      ### 适用场景
+
+
+      角色重演：用新的人物形象，重演一段已有视频里的动作和表演。
+
+      跨形象替换：把视频里的人物换成动物或机器人，或把动物换成人物，镜头和节奏保持原片。
+
+      表演迁移：保留原片的走位、接触、停顿和突变，只更换其中一个角色的身份与服装。
+
+      短视频二创：上传一张角色图和一段引导视频，得到原片运镜下的新角色成片。
+
+
+      ### 提示词是否需要单独写？
+
+
+      通常会自动识别角色，无需单独写提示词。
+
+
+      ### 什么时候需要提示词？
+
+
+      替换后想保持某些物品不变，比如视频中角色手拿话筒，则需要提示词“保留手里的话筒”
+
+      替换后的同时修改文字，比如视频中的某个招牌文字，替换后想变成了其他文字，则需要提示词“招牌文字改为：某某面馆”
+
+      替换的同时想增强某些方面，比如视频中的角色手中武器火焰特效，可以再提示词写“增强角色手中武器火焰特效”
+
+
+      ### 提示词是否需要按照MINIMAX-H3的提示词格式？
+
+
+      不需要，只需要按照上面的简单格式写即可。按照H3格式写可能会影响替换效果。
+
+
+      ### 视频长度比设定时间短能用吗？
+
+
+      可以，视频长度小于设定时间时，能正常生成单角色替换，但后面无参考视频段可能会自由发挥，建议不要输入低于设定时间的视频。也可以通过提示词来改变无参考视频中的视频走向，例如原本5秒视频参考，但设置输出10，就可以提示词写”5秒后角色开始跳舞“
+
+
+      ### 输入竖版视频参考，但输出横板视频能用吗？
+
+
+      输出视频会根据输入视频的宽高比进行裁剪，可能会将视频有用画面裁剪掉一部分。建议输入视频时，尽量使用目标比例的视频
+
+
+      ### 能完全使用自己写的提示词吗？
+
+
+      目前已经内置了替换的提示词，如果需要完全使用自己写的提示词，可能不符合预期效果。所以目前暂时不支持完全使用自己写的提示词。
+
+      '
+  minimax_h3_zm_titim:
+    name: H3全自动多角色动迁替换
+    description: MiniMax H3全自动多角色动迁替换，用一张参考图里的角色替换视频角色，最长支持25秒
+    category: motion-transfer
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_zm_titim
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_zm_titim
+    version: latest
+    updated_at: '2026-11-04 18:29:11'
+    input_rules:
+      duration:
+        node_id: '258'
+        field: inputs.seconds
+        required: false
+        type: integer
+        default: 10
+        min: 5
+        max: 25
+      prompt:
+        node_id: '258'
+        field: inputs.prompt
+        required: false
+        type: prompt
+        default: ' '
+        min_length: 1
+        max_length: 2048
+      ref_image_0:
+        node_id: '258'
+        field: inputs.ref_image_0
+        required: true
+        type: image
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_1:
+        node_id: '258'
+        field: inputs.ref_image_1
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_2:
+        node_id: '258'
+        field: inputs.ref_image_2
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_3:
+        node_id: '258'
+        field: inputs.ref_image_3
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_4:
+        node_id: '258'
+        field: inputs.ref_image_4
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_5:
+        node_id: '258'
+        field: inputs.ref_image_5
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_6:
+        node_id: '258'
+        field: inputs.ref_image_6
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_7:
+        node_id: '258'
+        field: inputs.ref_image_7
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_8:
+        node_id: '258'
+        field: inputs.ref_image_8
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_video:
+        node_id: '258'
+        field: inputs.ref_video_0
+        required: true
+        type: video
+        accept_types:
+        - video/mp4
+        - video/webm
+      resolution:
+        required: false
+        type: enum
+        default: 768p竖
+        options:
+        - label: 768p竖
+          values:
+            258.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            258.inputs.megapixels: 0.98
+        - label: 768p横
+          values:
+            258.inputs.aspect_ratio: 16:9 (Widescreen)
+            258.inputs.megapixels: 0.98
+      video_subject_to_replace:
+        node_id: '384'
+        field: inputs.prompt
+        required: false
+        type: string
+        default: person
+        min_length: 1
+        max_length: 100
+    input_example: '{"prompt": "视频生成提示词（选填，2048个字符。多图输入时，提示词写法可参考工作流详情介绍）", "duration": "视频时长（必填，整数，5-25秒，默认10秒）",
+      "ref_video": "参考视频URL(必填，支持 MP4/WebM，需要被处理的源视频)", "resolution": "输出分辨率(选填，可选值：768p竖、768p横，默认768p竖)",
+      "ref_image_0": "主参考图片URL(必填，支持 JPG/PNG/WebP)", "ref_image_1": "参考图片2 URL(选填，支持 JPG/PNG/WebP)", "ref_image_2":
+      "参考图片3 URL(选填，支持 JPG/PNG/WebP)", "ref_image_3": "参考图片4 URL(选填，支持 JPG/PNG/WebP)", "ref_image_4":
+      "参考图片5 URL(选填，支持 JPG/PNG/WebP)", "ref_image_5": "参考图片6 URL(选填，支持 JPG/PNG/WebP)", "ref_image_6":
+      "参考图片7 URL(选填，支持 JPG/PNG/WebP)", "ref_image_7": "参考图片8 URL(选填，支持 JPG/PNG/WebP)", "ref_image_8":
+      "参考图片9 URL(选填，支持 JPG/PNG/WebP)", "video_subject_to_replace": "视频中要替换的主体(选填，视频中需要识别/替换的目标（默认 person，可选其他，必须英文，多个用英文逗号隔开)"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 768p
+        price: 110
+        off_peak_price: 100
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_zm_titim
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '### MiniMax-H3 视频多角色替换（最大支持25秒9角色）
+
+
+      MiniMax-H3 视频多角色替换用多张参考图里的角色，同时替换引导视频里已经存在的多个角色。角色可以是人、动物、机器人，或任何能单独指认的主体。
+
+
+      ### 核心能力
+
+
+      多角色替换：一次替换引导视频里的多个角色。每张参考图换一个角色。默认无需写提示词。
+
+
+      自定义检测类型：默认检测人。也可以改成检测动物、物品或其他主体，类型对照见文末。一次只填一种。
+
+
+      跨种类替换：可以用人物替换动物，也可以用机器人替换人物。只换身份，动作、位置、节奏和镜头仍跟引导视频。没被换到的角色保持原样。
+
+
+      原声保留：引导视频的原声已经对齐，成片带上这条原声，口型按原声对齐。
+
+
+      ### 适用场景
+
+
+      多人重演：用新的人物形象，重演一段已有视频里几个人的动作和表演。
+
+
+      主唱或 C 位替换：群舞、MV 里参考图比人少时，默认换出镜最久、占画面最大、站在中间的那几个人，伴舞保持原样。
+
+
+      跨形象替换：把视频里的人物换成动物或机器人，或把动物换成人物，镜头和节奏保持原片。
+
+
+      表演迁移：保留原片的走位、接触、遮挡、停顿和突变，只更换被点名的那几个角色的身份与服装。
+
+
+      短视频二创：上传几张角色图和一段引导视频，得到原片运镜下的新角色成片。
+
+
+      ### 参考图和人物怎么对应？
+
+
+      用户写明了换谁，以用户为准。没写时按下面的规则：
+
+
+      参考图张数和画面里的人数一样：从左到右对应，图1换人物1，图2换人物2。
+
+
+      参考图比人少：换最主要的几个人，通常是主唱、领舞或站在中间的人。挑出来的人按从左到右对应图1、图2。
+
+
+      参考图比人多：多出来的图不使用。
+
+
+      用户写了某个人不换：那个人保持原样。
+
+
+      想指定某一个人时，直接写位置或特征，例如「图1换左边穿黑甲的」「图2换主唱」。
+
+
+      ### 提示词是否需要单独写？
+
+
+      通常会自动识别角色，无需单独写提示词。
+
+
+      ### 什么时候需要提示词？
+
+
+      想指定谁换谁，比如「图1换中间金发的主唱，图3换最右边的人」
+
+
+      想让某个人不换，比如「右边穿白背心的伴舞不换」
+
+
+      替换后想保持某些物品不变，比如视频中角色手拿话筒，则需要提示词「保留手里的话筒」
+
+
+      替换的同时修改文字，比如视频中的某个招牌文字，替换后想变成其他文字，则需要提示词「招牌文字改为：某某面馆」
+
+
+      替换的同时想增强某些方面，比如视频中的角色手中武器火焰特效，可以在提示词写「增强角色手中武器火焰特效」
+
+
+      想改某个替换者的穿着，比如「图1换成红色外套」。只影响这一个人，其余仍按参考图。
+
+
+      生成时长比引导视频长，想规定后面发生什么，比如「5秒后角色开始跳舞」
+
+
+      一次替换的人太多，每个人的长相会越来越不稳定。建议一次换 3 到 4 个人，优先换主要角色。
+
+
+      ### 提示词是否需要按照MINIMAX-H3的提示词格式？
+
+
+      不需要，只需要按照上面的简单格式写即可。按照H3格式写可能会影响替换效果。
+
+
+      ### 检测类型怎么填？（底部有对照表）
+
+
+      在「追踪对象」里填写下表的英文，一次只填一种。想检测得更准，可以自己写更具体的英文，例如 man with blonde hair、white dog。人和其他种类不能同一次一起检测。
+
+
+      目标很小，或是卡通、毛绒、造型特殊的角色时，可能漏检。
+
+
+      ### 视频长度比设定时间短能用吗？
+
+
+      可以，视频长度小于设定时间时，能正常生成多角色替换，但后面无参考视频段可能会自由发挥，建议不要输入低于设定时间的视频。也可以通过提示词来改变无参考视频中的视频走向，例如原本5秒视频参考，但设置输出10，就可以提示词写「5秒后角色开始跳舞」。
+
+
+      ### 输入竖版视频参考，但输出横板视频能用吗？
+
+
+      输出视频会根据输入视频的宽高比进行裁剪，可能会将视频有用画面裁剪掉一部分。建议输入视频时，尽量使用目标比例的视频。
+
+
+      ### 能完全使用自己写的提示词吗？
+
+
+      目前已经内置了替换的提示词，如果需要完全使用自己写的提示词，可能不符合预期效果。所以目前暂时不支持完全使用自己写的提示词。
+
+
+      ### 视频中有几个人没换正确怎么办？
+
+
+      由于模型的能力有限，对切镜头或人物走位穿插的替换效果多个替换效果不好，建议使用人数少的例如5人以内，通常3人的较好。
+
+
+      ### 视频中人脸不清晰怎么办？
+
+
+      由于模型的能力有限，尽量选择脸部比例不要过小的参考视频来做。
+
+
+      ### 可支持自定义的检测类型对照（使用时输入英文）H3全自动角色动迁替换
+
+
+      | 类别     | 中文 英文                                                                                                                                                                                                       |
+
+      | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      |
+
+      | 人物     | 人 person、男人 man、女人 woman、小孩 child、婴儿 baby、老人 old man、脸 face、头发 hair、手 hand                                                                                                               |
+
+      | 宠物     | 狗 dog、猫 cat、兔子 rabbit、仓鼠 hamster、鹦鹉 parrot、鸟 bird、金鱼 goldfish、乌龟 turtle                                                                                                                     |
+
+      | 动物     | 马 horse、牛 cow、羊 sheep、猪 pig、鸡 chicken、鸭 duck、猴子 monkey、熊猫 panda、熊 bear、老虎 tiger、狮子 lion、狼
+      wolf、狐狸 fox、大象 elephant、鹿 deer、海豚 dolphin、鲨鱼 shark、蛇 snake、蝴蝶 butterfly |
+
+      | 幻想角色 | 恐龙 dinosaur、龙 dragon、机器人 robot、玩偶 doll、毛绒玩具 stuffed toy、雕像 statue                                                                                                                            |
+
+      | 服装     | 衣服 clothes、上衣 shirt、T恤 t-shirt、外套 jacket、西装 suit、连衣裙 dress、裤子 pants、裙子 skirt、鞋 shoe、运动鞋
+      sneaker、帽子 hat、制服 uniform                                                            |
+
+      | 配饰     | 眼镜 glasses、墨镜 sunglasses、口罩 face mask、围巾 scarf、领带 tie、手表 watch、项链 necklace、耳环 earring、戒指
+      ring、包 bag、背包 backpack、手提包 handbag                                                  |
+
+      | 数码     | 手机 cell phone、笔记本电脑 laptop、平板 tablet、耳机 headphones、相机 camera、麦克风 microphone、游戏手柄 game
+      controller、电视 tv                                                                             |
+
+      | 美妆个护 | 口红 lipstick、香水 perfume、化妆品瓶 cosmetic bottle、镜子 mirror、梳子 comb                                                                                                                                   |
+
+      | 食物饮品 | 杯子 cup、咖啡杯 coffee cup、奶茶 milk tea、瓶子 bottle、酒杯 wine glass、蛋糕 cake、汉堡 burger、披萨 pizza、冰淇淋
+      ice cream、水果 fruit、苹果 apple、碗 bowl、盘子 plate                                     |
+
+      | 道具     | 花 flower、花束 bouquet、气球 balloon、礼物盒 gift box、球 ball、书 book、雨伞 umbrella、剑 sword、枪 gun、吉他
+      guitar、滑板 skateboard、行李箱 suitcase                                                        |
+
+      | 家居     | 椅子 chair、沙发 couch、桌子 table、床 bed、台灯 lamp、时钟 clock、花瓶 vase、相框 picture frame                                                                                                                |
+
+      | 交通工具 | 汽车 car、跑车 sports car、自行车 bicycle、摩托车 motorcycle、公交车 bus、飞机 airplane、船 boat、火车 train                                                                                                    |
+
+
+      填英文，多个用英文逗号隔开，例如 person, cell phone 或 dog, cat。可以加颜色：red cup、white car。不要写中文，也不要写「左边那个」这种位置。
+
+      '
+  minimax_h3_zm_u08:
+    name: H3多图多音频生视频(高速版)
+    description: MiniMax H3多图参考生成视频，最长支持15秒视频
+    category: reference-to-video
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_zm_u08
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_zm_u08
+    version: latest
+    updated_at: '2026-09-07 19:09:28'
+    input_rules:
+      duration:
+        node_id: '8'
+        field: inputs.value
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 15
+      prompt:
+        node_id: '148'
+        field: inputs.prompt
+        required: true
+        type: prompt
+        min_length: 1
+        max_length: 20000
+      ref_audio_0:
+        node_id: '136'
+        field: inputs.audio
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_audio_1:
+        node_id: '137'
+        field: inputs.audio
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_audio_2:
+        node_id: '138'
+        field: inputs.audio
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_image_0:
+        node_id: '104'
+        field: inputs.image
+        required: true
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_1:
+        node_id: '105'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_2:
+        node_id: '139'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_3:
+        node_id: '140'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_4:
+        node_id: '141'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_5:
+        node_id: '142'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_6:
+        node_id: '143'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_7:
+        node_id: '144'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_8:
+        node_id: '145'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      resolution:
+        required: false
+        type: enum
+        default: 768p竖
+        options:
+        - label: 480p横
+          values:
+            7.inputs.aspect_ratio: 16:9 (Widescreen)
+            7.inputs.megapixels: 0.4
+            81.inputs.aspect_ratio: 16:9 (Widescreen)
+            81.inputs.megapixels: 0.4
+        - label: 480p竖
+          values:
+            7.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            7.inputs.megapixels: 0.4
+            81.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            81.inputs.megapixels: 0.4
+        - label: 768p横
+          values:
+            7.inputs.aspect_ratio: 16:9 (Widescreen)
+            7.inputs.megapixels: 0.98
+            81.inputs.aspect_ratio: 16:9 (Widescreen)
+            81.inputs.megapixels: 0.98
+        - label: 768p竖
+          values:
+            7.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            7.inputs.megapixels: 0.98
+            81.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            81.inputs.megapixels: 0.98
+        - label: 480p(1:1)
+          values:
+            7.inputs.aspect_ratio: 1:1 (Square)
+            7.inputs.megapixels: 0.23
+            81.inputs.aspect_ratio: 1:1 (Square)
+            81.inputs.megapixels: 0.23
+        - label: 768p(1:1)
+          values:
+            7.inputs.aspect_ratio: 1:1 (Square)
+            7.inputs.megapixels: 0.4
+            81.inputs.aspect_ratio: 1:1 (Square)
+            81.inputs.megapixels: 0.56
+      seed:
+        node_id: '11'
+        field: inputs.noise_seed
+        required: false
+        type: integer
+        default: 806661161901022
+        min: 0
+        max: 999999999999999
+    input_example: '{"seed": "随机种子（选填，整数，用于控制生成结果的随机性，相同参数和相同Seed通常可获得相近的生成结果）", "prompt": "视频生成提示词（必填，1-20000个字符，建议描述主体、动作、场景、镜头运动等）",
+      "duration": "视频时长（选填，整数，1-15秒，默认5秒）", "resolution": "输出分辨率（选填，可选值：480p竖、768p竖、480p横、768p横、480p(1:1)、768p(1:1)，默认768p竖）",
+      "ref_audio_0": "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_audio_1": "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_audio_2":
+      "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_image_0": "参考图片URL（必填，支持JPG/PNG/WebP）", "ref_image_1": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_2": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_3": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_4":
+      "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_5": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_6": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_7": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_8": "参考图片URL（选填，支持JPG/PNG/WebP）"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 480p
+        price: 40
+        off_peak_price: 30
+      - resolution: 768p
+        price: 50
+        off_peak_price: 40
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_zm_u08
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '# MiniMax-H3 多图多音频生视频
+
+
+      **MiniMax-H3 多图多音频生视频**是一款支持多张参考图片与多段参考音频协同生成的视频创作能力。用户只需上传图片、音频并输入视频生成提示词，即可将多个视觉素材与声音素材融合到同一视频中，快速生成具有连贯动作、自然镜头运动和丰富表现力的
+      AI 视频。
+
+
+      支持  **最多 9 张参考图片 + 3 段参考音频** ，可用于人物、场景、产品、角色关系等多素材创作。通过提示词控制主体动作、场景变化、镜头运动及整体画面表现，让多个参考素材在同一视频中实现更自然的融合。
+
+
+      ### 核心能力
+
+
+      * **多图参考** ：支持最多 9 张参考图片，可同时提供人物、动物、产品、场景等视觉素材。
+
+      * **多音频参考** ：支持最多 3 段参考音频，可结合不同声音素材进行视频创作。
+
+      * **音画融合** ：将视觉内容与音频素材结合，增强视频的沉浸感和表现力。
+
+      * **提示词控制** ：通过自然语言描述主体、动作、场景、镜头运动等内容，控制视频生成效果。
+
+      * **灵活时长** ：支持 1～15 秒视频生成，可根据实际创作需求自由设置。
+
+      * **多种分辨率** ：支持 480p、768p横竖屏输出，满足不同场景的视频制作需求。
+
+      * **多素材创作** ：适用于角色互动、产品展示、故事片段、广告宣传、短视频内容等多种场景。
+
+
+      ### 适用场景
+
+
+      **人物与角色创作** ：结合多个人物参考图，生成角色互动、对话、动作等视频内容。
+
+
+      **产品与广告展示** ：使用产品图片、场景图片和音频素材，快速生成产品宣传及广告视频。
+
+
+      **故事与剧情创作** ：通过多张角色、场景参考图配合音频，构建连续的剧情画面。
+
+
+      **短视频创作** ：输入图片、音频和简单提示词，即可快速生成适合短视频平台使用的 AI 视频。
+
+
+      **创意视觉内容** ：将不同图片和声音素材进行组合，通过提示词实现更加丰富的视觉表达。
+
+
+      ### 使用方式
+
+
+      上传所需的参考图片和音频 → 输入视频生成提示词 → 设置视频时长与输出分辨率 → 提交生成，即可获得 AI 视频。
+
+
+      **让多张图片、多段声音与 AI 视频生成能力结合，快速将静态素材转化为动态、连续且富有表现力的视频内容。**
+
+      '
+  minimax_h3_zm_u22:
+    name: H3多图多音频生视频(短剧带货版)
+    description: MiniMax H3多图参考生成视频，最长支持15秒视频
+    category: reference-to-video
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_zm_u22
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_zm_u22
+    version: latest
+    updated_at: '2026-10-30 18:52:09'
+    input_rules:
+      duration:
+        node_id: '290'
+        field: inputs.seconds
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 15
+      prompt:
+        node_id: '290'
+        field: inputs.prompt
+        required: true
+        type: prompt
+        min_length: 1
+        max_length: 20000
+      ref_audio_0:
+        node_id: '290'
+        field: inputs.ref_audio_0
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+      ref_audio_1:
+        node_id: '290'
+        field: inputs.ref_audio_1
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+      ref_audio_2:
+        node_id: '290'
+        field: inputs.ref_audio_2
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+      ref_image_0:
+        node_id: '290'
+        field: inputs.ref_image_0
+        required: true
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_1:
+        node_id: '290'
+        field: inputs.ref_image_1
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_2:
+        node_id: '290'
+        field: inputs.ref_image_2
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_3:
+        node_id: '290'
+        field: inputs.ref_image_3
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_4:
+        node_id: '290'
+        field: inputs.ref_image_4
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_5:
+        node_id: '290'
+        field: inputs.ref_image_5
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_6:
+        node_id: '290'
+        field: inputs.ref_image_6
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_7:
+        node_id: '290'
+        field: inputs.ref_image_7
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_8:
+        node_id: '290'
+        field: inputs.ref_image_8
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      resolution:
+        required: false
+        type: enum
+        default: 768p竖
+        options:
+        - label: 480p横
+          values:
+            290.inputs.aspect_ratio: 16:9 (Widescreen)
+            290.inputs.megapixels: 0.18
+        - label: 480p竖
+          values:
+            290.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            290.inputs.megapixels: 0.18
+        - label: 768p横
+          values:
+            290.inputs.aspect_ratio: 16:9 (Widescreen)
+            290.inputs.megapixels: 0.44
+        - label: 768p竖
+          values:
+            290.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            290.inputs.megapixels: 0.44
+      seed:
+        node_id: '256'
+        field: inputs.noise_seed
+        required: false
+        type: integer
+        default: 836327771708943
+        min: 0
+        max: 999999999999999
+    input_example: '{"prompt": "视频生成提示词（必填，1-20000个字符，建议描述主体、动作、场景、镜头运动等）", "duration": "视频时长（选填，整数，1-15秒，默认5秒）",
+      "resolution": "输出分辨率（选填，可选值：480p竖、768p竖、480p横、768p横，默认768p竖）", "ref_audio_0": "参考音频URL（选填，支持MP3/WAV）",
+      "ref_audio_1": "参考音频URL（选填，支持MP3/WAV）", "ref_audio_2": "参考音频URL（选填，支持MP3/WAV）", "ref_image_0": "参考图片URL（必填，支持JPG/PNG/WebP）",
+      "ref_image_1": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_2": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_3":
+      "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_4": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_5": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_6": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_7": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_8":
+      "参考图片URL（选填，支持JPG/PNG/WebP）"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 480p
+        price: 40
+        off_peak_price: 30
+      - resolution: 768p
+        price: 50
+        off_peak_price: 40
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_zm_u22
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '# MiniMax-H3 多图多音频生视频
+
+
+      **MiniMax-H3 多图多音频生视频**是一款支持多张参考图片与多段参考音频协同生成的视频创作能力。用户只需上传图片、音频并输入视频生成提示词，即可将多个视觉素材与声音素材融合到同一视频中，快速生成具有连贯动作、自然镜头运动和丰富表现力的
+      AI 视频。
+
+
+      支持  **最多 9 张参考图片 + 3 段参考音频** ，可用于人物、场景、产品、角色关系等多素材创作。通过提示词控制主体动作、场景变化、镜头运动及整体画面表现，让多个参考素材在同一视频中实现更自然的融合。
+
+
+      ### 核心能力
+
+
+      * **多图参考** ：支持最多 9 张参考图片，可同时提供人物、动物、产品、场景等视觉素材。
+
+      * **多音频参考** ：支持最多 3 段参考音频，可结合不同声音素材进行视频创作。
+
+      * **音画融合** ：将视觉内容与音频素材结合，增强视频的沉浸感和表现力。
+
+      * **提示词控制** ：通过自然语言描述主体、动作、场景、镜头运动等内容，控制视频生成效果。
+
+      * **灵活时长** ：支持 1～15 秒视频生成，可根据实际创作需求自由设置。
+
+      * **多种分辨率** ：支持 480p、768p横竖屏输出，满足不同场景的视频制作需求。
+
+      * **多素材创作** ：适用于角色互动、产品展示、故事片段、广告宣传、短视频内容等多种场景。
+
+
+      ### 适用场景
+
+
+      **人物与角色创作** ：结合多个人物参考图，生成角色互动、对话、动作等视频内容。
+
+
+      **产品与广告展示** ：使用产品图片、场景图片和音频素材，快速生成产品宣传及广告视频。
+
+
+      **故事与剧情创作** ：通过多张角色、场景参考图配合音频，构建连续的剧情画面。
+
+
+      **短视频创作** ：输入图片、音频和简单提示词，即可快速生成适合短视频平台使用的 AI 视频。
+
+
+      **创意视觉内容** ：将不同图片和声音素材进行组合，通过提示词实现更加丰富的视觉表达。
+
+
+      ### 使用方式
+
+
+      上传所需的参考图片和音频 → 输入视频生成提示词 → 设置视频时长与输出分辨率 → 提交生成，即可获得 AI 视频。
+
+
+      **让多张图片、多段声音与 AI 视频生成能力结合，快速将静态素材转化为动态、连续且富有表现力的视频内容。**
+
+      '
+  minimax_h3_zm_u24:
+    name: H3多图多音频生视频(升级画质)
+    description: MiniMax H3多图参考生成视频，最长支持15秒视频
+    category: reference-to-video
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_zm_u24
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_zm_u24
+    version: latest
+    updated_at: '2026-09-07 19:09:33'
+    input_rules:
+      duration:
+        node_id: '27'
+        field: inputs.value
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 15
+      prompt:
+        node_id: '28'
+        field: inputs.prompt
+        required: true
+        type: prompt
+        min_length: 1
+        max_length: 20000
+      ref_audio_0:
+        node_id: '107'
+        field: inputs.audio
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_audio_1:
+        node_id: '108'
+        field: inputs.audio
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_audio_2:
+        node_id: '109'
+        field: inputs.audio
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_image_0:
+        node_id: '66'
+        field: inputs.image
+        required: true
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_1:
+        node_id: '65'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_2:
+        node_id: '58'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_3:
+        node_id: '59'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_4:
+        node_id: '60'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_5:
+        node_id: '61'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_6:
+        node_id: '62'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_7:
+        node_id: '63'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_8:
+        node_id: '64'
+        field: inputs.image
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      resolution:
+        required: false
+        type: enum
+        default: 768p竖
+        options:
+        - label: 480p横
+          values:
+            29.inputs.aspect_ratio: 16:9 (Widescreen)
+            29.inputs.megapixels: 0.4
+            54.inputs.value: 1
+        - label: 480p竖
+          values:
+            29.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            29.inputs.megapixels: 0.4
+            54.inputs.value: 1
+        - label: 768p横
+          values:
+            29.inputs.aspect_ratio: 16:9 (Widescreen)
+            29.inputs.megapixels: 0.98
+            54.inputs.value: 1
+        - label: 768p竖
+          values:
+            29.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            29.inputs.megapixels: 0.98
+            54.inputs.value: 1
+        - label: 480p(1:1)
+          values:
+            29.inputs.aspect_ratio: 1:1 (Square)
+            29.inputs.megapixels: 0.23
+            54.inputs.value: 1
+        - label: 768p(1:1)
+          values:
+            29.inputs.aspect_ratio: 1:1 (Square)
+            29.inputs.megapixels: 0.56
+            54.inputs.value: 1
+      seed:
+        node_id: '11'
+        field: inputs.noise_seed
+        required: false
+        type: integer
+        default: 683072603085674
+        min: 0
+        max: 999999999999999
+    input_example: '{"seed": "随机种子（选填，整数，用于控制生成结果的随机性，相同参数和相同Seed通常可获得相近的生成结果）", "prompt": "视频生成提示词（必填，1-20000个字符，建议描述主体、动作、场景、镜头运动等）",
+      "duration": "视频时长（选填，整数，1-15秒，默认5秒）", "resolution": "输出分辨率（选填，可选值：480p竖、768p竖、480p横、768p横、480p(1:1)、768p(1:1)，默认768p竖）",
+      "ref_audio_0": "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_audio_1": "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_audio_2":
+      "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_image_0": "参考图片URL（必填，支持JPG/PNG/WebP）", "ref_image_1": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_2": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_3": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_4":
+      "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_5": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_6": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_7": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_8": "参考图片URL（选填，支持JPG/PNG/WebP）"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 480p
+        price: 40
+        off_peak_price: 30
+      - resolution: 768p
+        price: 50
+        off_peak_price: 40
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_zm_u24
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '# MiniMax-H3 多图多音频生视频
+
+
+      **MiniMax-H3 多图多音频生视频**是一款支持多张参考图片与多段参考音频协同生成的视频创作能力。用户只需上传图片、音频并输入视频生成提示词，即可将多个视觉素材与声音素材融合到同一视频中，快速生成具有连贯动作、自然镜头运动和丰富表现力的
+      AI 视频。
+
+
+      支持  **最多 9 张参考图片 + 3 段参考音频** ，可用于人物、场景、产品、角色关系等多素材创作。通过提示词控制主体动作、场景变化、镜头运动及整体画面表现，让多个参考素材在同一视频中实现更自然的融合。
+
+
+      ### 核心能力
+
+
+      * **多图参考** ：支持最多 9 张参考图片，可同时提供人物、动物、产品、场景等视觉素材。
+
+      * **多音频参考** ：支持最多 3 段参考音频，可结合不同声音素材进行视频创作。
+
+      * **音画融合** ：将视觉内容与音频素材结合，增强视频的沉浸感和表现力。
+
+      * **提示词控制** ：通过自然语言描述主体、动作、场景、镜头运动等内容，控制视频生成效果。
+
+      * **灵活时长** ：支持 1～15 秒视频生成，可根据实际创作需求自由设置。
+
+      * **多种分辨率** ：支持 480p、768p横竖屏输出，满足不同场景的视频制作需求。
+
+      * **多素材创作** ：适用于角色互动、产品展示、故事片段、广告宣传、短视频内容等多种场景。
+
+
+      ### 适用场景
+
+
+      **人物与角色创作** ：结合多个人物参考图，生成角色互动、对话、动作等视频内容。
+
+
+      **产品与广告展示** ：使用产品图片、场景图片和音频素材，快速生成产品宣传及广告视频。
+
+
+      **故事与剧情创作** ：通过多张角色、场景参考图配合音频，构建连续的剧情画面。
+
+
+      **短视频创作** ：输入图片、音频和简单提示词，即可快速生成适合短视频平台使用的 AI 视频。
+
+
+      **创意视觉内容** ：将不同图片和声音素材进行组合，通过提示词实现更加丰富的视觉表达。
+
+
+      ### 使用方式
+
+
+      上传所需的参考图片和音频 → 输入视频生成提示词 → 设置视频时长与输出分辨率 → 提交生成，即可获得 AI 视频。
+
+
+      **让多张图片、多段声音与 AI 视频生成能力结合，快速将静态素材转化为动态、连续且富有表现力的视频内容。**
+
+      '
+  minimax_h3_zm_u30:
+    name: H3多图多音频生视频(超清画质)
+    description: MiniMax H3多图参考生成视频，最长支持15秒视频
+    category: reference-to-video
+    source_url: https://autodl.art/large-model/comfyui/minimax_h3_zm_u30
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/minimax_h3_zm_u30
+    version: latest
+    updated_at: '2026-10-26 19:00:08'
+    input_rules:
+      duration:
+        node_id: '202'
+        field: inputs.seconds
+        required: false
+        type: integer
+        default: 5
+        min: 1
+        max: 15
+      prompt:
+        node_id: '202'
+        field: inputs.prompt
+        required: true
+        type: prompt
+        min_length: 1
+        max_length: 20000
+      ref_audio_0:
+        node_id: '202'
+        field: inputs.ref_audio_0
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_audio_1:
+        node_id: '202'
+        field: inputs.ref_audio_1
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_audio_2:
+        node_id: '202'
+        field: inputs.ref_audio_2
+        required: false
+        type: audio
+        default: default_local_path:/blank.wav;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.wav
+        accept_types:
+        - audio/mpeg
+        - audio/wav
+        - audio/flac
+      ref_image_0:
+        node_id: '202'
+        field: inputs.ref_image_0
+        required: true
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_1:
+        node_id: '202'
+        field: inputs.ref_image_1
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_2:
+        node_id: '202'
+        field: inputs.ref_image_2
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_3:
+        node_id: '202'
+        field: inputs.ref_image_3
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_4:
+        node_id: '202'
+        field: inputs.ref_image_4
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_5:
+        node_id: '202'
+        field: inputs.ref_image_5
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_6:
+        node_id: '202'
+        field: inputs.ref_image_6
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_7:
+        node_id: '202'
+        field: inputs.ref_image_7
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_image_8:
+        node_id: '202'
+        field: inputs.ref_image_8
+        required: false
+        type: image
+        default: default_local_path:/blank.png;https://codewithgpu.ks3-cn-beijing.ksyuncs.com/comfyui_api/blank/blank.png
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      resolution:
+        required: false
+        type: enum
+        default: 768p竖
+        options:
+        - label: 480p横
+          values:
+            198.inputs.value: 1.5
+            202.inputs.aspect_ratio: 16:9 (Widescreen)
+            202.inputs.megapixels: 0.18
+        - label: 480p竖
+          values:
+            198.inputs.value: 1.5
+            202.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            202.inputs.megapixels: 0.18
+        - label: 768p横
+          values:
+            198.inputs.value: 1.5
+            202.inputs.aspect_ratio: 16:9 (Widescreen)
+            202.inputs.megapixels: 0.44
+        - label: 768p竖
+          values:
+            198.inputs.value: 1.5
+            202.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            202.inputs.megapixels: 0.44
+        - label: 960p横
+          values:
+            202.inputs.aspect_ratio: 16:9 (Widescreen)
+            202.inputs.megapixels: 0.7
+        - label: 960p竖
+          values:
+            202.inputs.aspect_ratio: 9:16 (Portrait Widescreen)
+            202.inputs.megapixels: 0.7
+      seed:
+        node_id: '63'
+        field: inputs.noise_seed
+        required: false
+        type: integer
+        default: 548628410878779
+        min: 0
+        max: 999999999999999
+    input_example: '{"seed": "随机种子（选填，整数，用于控制生成结果的随机性，相同参数和相同Seed通常可获得相近的生成结果）", "prompt": "视频生成提示词（必填，1-20000个字符，建议描述主体、动作、场景、镜头运动等）",
+      "duration": "视频时长（选填，整数，1-15秒，默认5秒）", "resolution": "输出分辨率（选填，可选值：480p竖、768p竖、960p竖、480p横、768p横、960p竖，默认768p竖）",
+      "ref_audio_0": "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_audio_1": "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_audio_2":
+      "参考音频URL（选填，支持MP3/WAV/FLAC）", "ref_image_0": "参考图片URL（必填，支持JPG/PNG/WebP）", "ref_image_1": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_2": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_3": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_4":
+      "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_5": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_6": "参考图片URL（选填，支持JPG/PNG/WebP）",
+      "ref_image_7": "参考图片URL（选填，支持JPG/PNG/WebP）", "ref_image_8": "参考图片URL（选填，支持JPG/PNG/WebP）"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: minimax_h3
+    billing_config:
+      minimax_h3:
+      - resolution: 480p
+        price: 40
+        off_peak_price: 30
+      - resolution: 768p
+        price: 50
+        off_peak_price: 40
+      - resolution: 960p
+        price: 90
+        off_peak_price: 80
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/minimax_h3_zm_u30
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '# MiniMax-H3 多图多音频生视频
+
+
+      **MiniMax-H3 多图多音频生视频**是一款支持多张参考图片与多段参考音频协同生成的视频创作能力。用户只需上传图片、音频并输入视频生成提示词，即可将多个视觉素材与声音素材融合到同一视频中，快速生成具有连贯动作、自然镜头运动和丰富表现力的
+      AI 视频。
+
+
+      支持 **最多 9 张参考图片 + 3 段参考音频** ，可用于人物、场景、产品、角色关系等多素材创作。通过提示词控制主体动作、场景变化、镜头运动及整体画面表现，让多个参考素材在同一视频中实现更自然的融合。
+
+
+      ### 核心能力
+
+
+      * **多图参考** ：支持最多 9 张参考图片，可同时提供人物、动物、产品、场景等视觉素材。
+
+      * **多音频参考** ：支持最多 3 段参考音频，可结合不同声音素材进行视频创作。
+
+      * **音画融合** ：将视觉内容与音频素材结合，增强视频的沉浸感和表现力。
+
+      * **提示词控制** ：通过自然语言描述主体、动作、场景、镜头运动等内容，控制视频生成效果。
+
+      * **灵活时长** ：支持 1～15 秒视频生成，可根据实际创作需求自由设置。
+
+      * **多种分辨率** ：支持 480p、768p横竖屏输出，满足不同场景的视频制作需求。
+
+      * **多素材创作** ：适用于角色互动、产品展示、故事片段、广告宣传、短视频内容等多种场景。
+
+
+      ### 适用场景
+
+
+      **人物与角色创作** ：结合多个人物参考图，生成角色互动、对话、动作等视频内容。
+
+
+      **产品与广告展示** ：使用产品图片、场景图片和音频素材，快速生成产品宣传及广告视频。
+
+
+      **故事与剧情创作** ：通过多张角色、场景参考图配合音频，构建连续的剧情画面。
+
+
+      **短视频创作** ：输入图片、音频和简单提示词，即可快速生成适合短视频平台使用的 AI 视频。
+
+
+      **创意视觉内容** ：将不同图片和声音素材进行组合，通过提示词实现更加丰富的视觉表达。
+
+
+      ### 使用方式
+
+
+      上传所需的参考图片和音频 → 输入视频生成提示词 → 设置视频时长与输出分辨率 → 提交生成，即可获得 AI 视频。
+
+
+      **让多张图片、多段声音与 AI 视频生成能力结合，快速将静态素材转化为动态、连续且富有表现力的视频内容。**
+
+      '
+  wan2.2animate-v4-motion_retargeting:
+    name: 动作迁移
+    description: 动作迁移
+    category: motion-transfer
+    source_url: https://autodl.art/large-model/comfyui/wan2.2animate-v4-motion_retargeting
+    metadata_url: https://autodl.art/api/v1/comfyui/workflows/wan2.2animate-v4-motion_retargeting
+    version: latest
+    updated_at: '2026-08-26 23:37:45'
+    input_rules:
+      ref_image:
+        node_id: '57'
+        field: inputs.image
+        required: true
+        type: image
+        accept_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+      ref_video:
+        node_id: '997'
+        field: inputs.video
+        required: true
+        type: video
+        accept_types:
+        - video/mp4
+        - video/webm
+      resolution:
+        required: false
+        type: enum
+        default: 464*832px(竖版)
+        options:
+        - label: 464*832px(竖版)
+          values:
+            1001.inputs.value: 468
+            1002.inputs.value: 832
+        - label: 832*464px(横版)
+          values:
+            1001.inputs.value: 832
+            1002.inputs.value: 468
+      seed:
+        node_id: '975'
+        field: inputs.seed
+        required: false
+        type: integer
+        default: 485581468409274
+        min: 1
+        max: 999999999999999
+    input_example: '{"seed": "随机种子(选填，整数，用于控制生成结果的随机性，相同参数和相同Seed通常可获得相近的生成结果)", "ref_image": "参考图片URL(必填，支持
+      JPG/PNG/WebP)", "ref_video": "参考视频URL(必填，支持 MP4/WebM)", "resolution": "输出分辨率(选填，可选值：464*832px(竖版)、832*464px(横版)，默认464*832px(竖版))"}'
+    output_example: '{"msg": "", "code": "Success", "data": {"status": "completed", "results": [{"url":
+      "https://", "type": "video", "file_type": "mp4", "output_type": "output"}], "task_id": "671ce5ca-80b3-4a18-8b5c-af6013f0f03d",
+      "client_id": "158a0bba46b6a42f9b175ecdeaea2ac4"}, "request_id": "0782accb6b05116890256ffaa01cb283"}'
+    price_type: video_sec_cost
+    billing_config:
+      video_sec_cost:
+        price: 40
+        off_peak_price: 30
+    endpoint_info:
+      endpoints:
+      - name: 提交任务
+        url: /api/v1/comfyui/comfyui_workflow/wan2.2animate-v4-motion_retargeting
+      - name: 查询任务
+        url: /api/v1/comfyui/comfyui_workflow/result/{task_id}
+    instructions: '# 动作迁移
+
+
+      > 上传一张人物照片 + 一段舞蹈/动作视频，AI 自动将视频中的动作迁移到照片人物上，生成一段人物"跳起来"的视频。
+
+
+      ---
+
+
+      ### ✨ 功能特点
+
+
+      | 特性          | 说明                                          |
+
+      | ------------- | --------------------------------------------- |
+
+      | 🖼️ 输入简单 | 仅需一张正面清晰的人物照片 + 一段动作参考视频 |
+
+      | 💃 动作精准   | 支持全身舞蹈、手势、头部转动等复杂动作迁移    |
+
+      | 🎨 画质保持   | 保留原照片的服装、发型、五官特征，不漂移      |
+
+      | ⚙️ 可调参数 | 支持面部表情强度、动作幅度、帧率等参数微调    |
+
+      | 🔁 批量生成   | 可搭配批处理节点，一次生成多个角色的同款舞蹈  |
+
+      '

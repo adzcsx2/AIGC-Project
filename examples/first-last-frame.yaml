@@ -1,0 +1,9 @@
+workflow_id: minimax_h3_lightx2v
+inputs:
+  prompt: 从起始画面自然过渡到结束画面，镜头平滑推进，主体运动连贯
+  first_frame: ../assets/first.png
+  last_frame: ../assets/last.png
+  duration: 5
+  resolution: 480p横
+output_dir: outputs/first-last-frame
+max_cost_cny: 0.25
