@@ -32,6 +32,9 @@ Token 必须属于 **ComfyUI 分组**；鉴权头是原始 `Authorization: Token
 例如 `assets/双精灵对决/角色-银发法师-全身.png`、`assets/双精灵对决/视频/镜头01-双人对峙-版本01.mp4`。
 模型 ID、API 字段和内部素材 ID 保留原值；具体约定见 `AGENTS.md`。
 
+Midjourney 目前处于 Discord 账号关联准备阶段，本机代理模板与账号准备步骤见
+[Midjourney 本机接入](docs/midjourney-local.md)。模板尚未完成账号连接及出图验证。
+
 ## 从 YAML 生成视频
 
 ```powershell
