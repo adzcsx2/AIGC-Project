@@ -45,9 +45,11 @@
   武指技能负责分镜及图像/视频提示词；API 配置和执行交给 autodl-aigc。
   用户已有 Midjourney 角色图时，以该图锁定人物、服装和风格，用户需求优先于模板默认值。
 - 项目入口为 `.venv/Scripts/python.exe -m autodl_video`（Windows）或安装后的 `autodl`。
-- Midjourney 当前只有官网会员，用户正在关联 Discord；接入状态与最小代理方案见
+- Midjourney 官方 Bot 的 `/info` 已识别会员；接入状态与最小代理方案见
   `docs/midjourney-local.md`。`deploy/midjourney/` 是待联调模板，不代表已能自动出图。
-  MJ 凭据独立保存在被忽略的 `deploy/midjourney/env.local`，不得复用或修改 AutoDL `.env`。
+  用户要求本机账号信息与凭据统一保存到项目根目录 `.env`，能用中文的说明与状态使用中文，
+  程序读取的环境变量名和 API 参数保留原文。保留现有 AutoDL 内容及密钥，不输出或提交 `.env`。
+  Midjourney `/info` 中的 UUID 不能替代 Discord 服务器 ID、文字频道 ID 或用户凭据。
 - `catalog/workflows.yaml` 是上游工作流规则及说明的本地快照，使用 `models sync` 更新，
   不直接手改生成目录。查询价格/最新模型时先同步或读取对应公开详情。
 - `.env` 及环境变量中的 Token 不得输出、写入示例、提交 Git 或发送给结果下载域名。

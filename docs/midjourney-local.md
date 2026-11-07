@@ -1,8 +1,10 @@
 # Midjourney 本机接入准备
 
-记录日期：2026-11-07。当前只有 Midjourney 官网会员，用户正在创建并关联 Discord。
-现有 Python/AutoDL 视频功能照常使用；本次只准备本地代理部署模板，没有新增 MJ Python 客户端，
-没有登录 Discord、启动代理或提交生成任务。Docker 客户端已安装，检查时 Docker 引擎没有运行。
+记录日期：2026-11-07。用户已提供官方 Bot 的 `/info`，Discord 已能识别有效的 Midjourney 会员。
+账号信息及当时的额度快照已按用户要求保存到根目录 `.env`，使用中文注释，具体账号标识不写入本文件。
+快照不是实时额度查询，也不是 API 凭据。仍缺 Discord 服务器 ID、文字频道 ID 和用户凭据。
+现有 Python/AutoDL 视频功能照常使用；当前已准备本地代理部署模板，没有新增 MJ Python 客户端，
+没有启动代理或提交生成任务。初始化检查时 Docker 客户端已安装，引擎没有运行。
 
 ## 先完成账号准备
 
@@ -49,9 +51,13 @@ Dooy/chatgpt-web-midjourney-proxy 的 MJ 部分依赖另一个 MJ_SERVER；
 
 ## 本机配置与联调入口
 
-`deploy/midjourney/env.example` 是空白模板。后续将其复制为同目录 `env.local`，
-填写服务器 ID、文字频道 ID、Discord 用户凭据和独立的本地代理密钥。
-`env.local` 已被 Git 忽略；不要改动存有 AutoDL Token 的项目根目录 `.env`。
+配置统一保存在项目根目录 `.env`。用户已明确授权在原文件中增加 Midjourney 信息，
+已有 AutoDL 内容保持原样；追加后验证了 AutoDL Token 的读取结果不变。
+说明、套餐和状态使用中文注释，程序和 Docker 使用的变量名保留英文。
+`deploy/midjourney/env.example` 列出需要的四个连接字段；根目录 `.env` 已预留空白字段，
+等待在本机填写服务器 ID、文字频道 ID、Discord 用户凭据和独立的本地代理密钥。
+不得用空白模板覆盖原 `.env`，也不要把 `/info` 中的 UUID 当作服务器或频道的数字 ID。
+根目录 `.env` 已被 Git 忽略，不提交其中的账号信息或凭据。
 `MJ_API_SECRET` 是给本机代理设置的鉴权密钥，不是向 MJ 官网申请的密钥。
 
 账号准备好并在本机完成配置后，助手可执行以下命令。用户不需要自己维护网站或操作后台。
@@ -59,9 +65,9 @@ Dooy/chatgpt-web-midjourney-proxy 的 MJ 部分依赖另一个 MJ_SERVER；
 ```powershell
 cd E:\AutoDL
 # 只校验配置，不连接账号、不提交任务；--quiet 避免将展开后的凭据打印出来。
-docker compose --env-file deploy/midjourney/env.local -f deploy/midjourney/compose.yaml config --quiet
+docker compose --env-file .env -f deploy/midjourney/compose.yaml config --quiet
 # Docker 引擎运行后启动代理；建立 Discord 连接，不会自行发起生图。
-docker compose --env-file deploy/midjourney/env.local -f deploy/midjourney/compose.yaml up -d
+docker compose --env-file .env -f deploy/midjourney/compose.yaml up -d
 ```
 
 参数缺失时 Compose 会拒绝启动。不要直接执行不带 `--quiet` 的 `compose config` 并转贴输出，
