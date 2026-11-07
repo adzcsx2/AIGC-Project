@@ -14,6 +14,7 @@ from .client import AutoDLClient
 from .config import atomic_text, project_root
 from .errors import AutoDLError
 from .materials import check_materials
+from .midjourney import MidjourneyClient, MidjourneyProject
 from .reference import prepare_reference, probe_video
 from .runner import VideoProject
 
@@ -73,6 +74,28 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument("--max-cost", help="按最新最高时段价格估算的预算，单位人民币")
     validate = commands.add_parser("validate", help="离线校验 YAML，不调用 API")
     validate.add_argument("config", type=Path)
+    mj = commands.add_parser("mj", help="本机 Midjourney 代理，生成会消耗会员额度")
+    mj_commands = mj.add_subparsers(dest="action", required=True)
+    mj_commands.add_parser("doctor", help="只读检查本机代理鉴权，不生成图片")
+    mj_commands.add_parser("list", help="列出本地 MJ 任务记录")
+    mj_validate = mj_commands.add_parser("validate", help="离线检查 MJ YAML，不读取密钥")
+    mj_validate.add_argument("config", type=Path)
+    mj_run = mj_commands.add_parser("run", help="提交一条 MJ 生图任务")
+    mj_run.add_argument("config", type=Path)
+    mj_run.add_argument("--dry-run", action="store_true")
+    mj_run.add_argument("--no-wait", action="store_true")
+    mj_change = mj_commands.add_parser("change", help="选图 U1～U4、变体 V1～V4 或重抽 R")
+    mj_change.add_argument("task_id")
+    mj_change.add_argument("operation")
+    mj_change.add_argument("--no-wait", action="store_true")
+    for name in ("status", "wait", "download"):
+        mj_action = mj_commands.add_parser(name, help="查询或恢复已有 MJ 任务，不重新生成")
+        mj_action.add_argument("task_id")
+        if name != "status":
+            mj_action.add_argument("--output-dir", type=Path)
+        if name == "wait":
+            mj_action.add_argument("--timeout", type=float, default=1800)
+            mj_action.add_argument("--poll-interval", type=float, default=3)
     materials = commands.add_parser("materials", help="检查短剧文档与素材是否齐备")
     material_commands = materials.add_subparsers(dest="action", required=True)
     check = material_commands.add_parser("check", help="离线输出缺图清单，不调用 API")
@@ -119,6 +142,46 @@ def main(argv: list[str] | None = None) -> int:
             last_status = status
 
     try:
+        if args.command == "mj":
+            mj_project = MidjourneyProject(root)
+            if args.action == "doctor":
+                with MidjourneyClient.from_project(root) as client:
+                    print_json(client.doctor())
+            elif args.action in {"run", "validate"}:
+                print_json(
+                    mj_project.generate(
+                        args.config,
+                        dry_run=args.action == "validate" or args.dry_run,
+                        wait=not getattr(args, "no_wait", False),
+                    )
+                )
+            elif args.action == "change":
+                print_json(mj_project.change(args.task_id, args.operation, wait=not args.no_wait))
+            elif args.action == "list":
+                print_json(
+                    [
+                        {
+                            "task_id": item["task_id"],
+                            "status": item.get("response", {}).get("status"),
+                            "files": item.get("files", []),
+                        }
+                        for item in mj_project.store.list()
+                    ]
+                )
+            elif args.action == "status":
+                print_json(mj_project.status(args.task_id))
+            elif args.action == "download":
+                print_json(mj_project.download(args.task_id, output_dir=args.output_dir))
+            else:
+                print_json(
+                    mj_project.resume(
+                        args.task_id,
+                        output_dir=args.output_dir,
+                        timeout=args.timeout,
+                        poll_interval=args.poll_interval,
+                    )
+                )
+            return 0
         if args.command == "media":
             print_json(
                 probe_video(args.source)

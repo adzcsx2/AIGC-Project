@@ -32,9 +32,10 @@ Token 必须属于 **ComfyUI 分组**；鉴权头是原始 `Authorization: Token
 例如 `assets/双精灵对决/角色-银发法师-全身.png`、`assets/双精灵对决/视频/镜头01-双人对峙-版本01.mp4`。
 模型 ID、API 字段和内部素材 ID 保留原值；具体约定见 `AGENTS.md`。
 
-Midjourney 官方 Bot 已识别会员；账号快照与后续连接配置按用户要求保存在根目录 `.env`，
-说明使用中文。本机代理模板与步骤见 [Midjourney 本机接入](docs/midjourney-local.md)，
-代理尚未完成账号连接及出图验证。
+Midjourney 本机代理已通过 Discord 账号初始化、频道读取及 API 鉴权检查，
+可用 Python `MidjourneyProject` 或 `autodl mj` 提交 YAML、选图、查询和恢复任务。
+账号及连接配置按用户要求保存在根目录 `.env`，说明使用中文。
+命令、限制与示例见 [Midjourney 本机接入](docs/midjourney-local.md)；实际出图尚未验证。
 
 ## 从 YAML 生成视频
 

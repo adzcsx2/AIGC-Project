@@ -1,0 +1,12 @@
+# 先执行 autodl mj validate 本文件；run 会消耗 Midjourney 会员额度。
+# 参考图片按普通 image prompt 上传；V8 编辑器的角色绑定能力尚未验证。
+prompt: >-
+  一位成年银发女精灵法师，保持参考图的脸型、灰绿色眼睛、尖耳、额间蓝紫色宝石和银枝头饰，
+  全身立绘，右手持细长银色法杖，杖顶为单颗蓝色水晶与窄月牙，银蓝色贴身轻甲，
+  白色丝质长裤与长靴，身材比例自然，服装和武器完整入镜，仙侠电影风格，
+  冷色柔和逆光，精致写实CG，简洁浅灰背景，竖构图 --ar 9:16 --chaos 0 --stylize 50
+reference_images:
+  - ../assets/双精灵对决/参考图-银发精灵.png
+output_dir: outputs/midjourney
+timeout: 1800
+poll_interval: 3

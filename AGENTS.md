@@ -20,7 +20,8 @@
 
 - 跨阶段短剧创作默认使用 `.agents/skills/short-drama-workflow/SKILL.md`，
   按角色/风格提示词 → 剧本分镜 → 补齐素材 → MiniMax 图生视频衔接。
-  用户去 Midjourney 生成图；助手提供可复制提示词并检查回传图。
+  默认用户去 Midjourney 生成图；助手提供可复制提示词并检查回传图。
+  用户明确授权代理生图时，可使用 `autodl mj`；生成后仍须看图、中文归档及素材就绪检查。
 - 原视频换角、去音轨、动作迁移和白模/深度路线判断使用
   `.agents/skills/video-retargeting/SKILL.md`。原片测量与抽帧用 short-drama-breakdown，
   白模预演用 huashu-seedance；不能声称已部署任意原视频到深度或3D动捕。
@@ -45,11 +46,15 @@
   武指技能负责分镜及图像/视频提示词；API 配置和执行交给 autodl-aigc。
   用户已有 Midjourney 角色图时，以该图锁定人物、服装和风格，用户需求优先于模板默认值。
 - 项目入口为 `.venv/Scripts/python.exe -m autodl_video`（Windows）或安装后的 `autodl`。
-- Midjourney 官方 Bot 的 `/info` 已识别会员；接入状态与最小代理方案见
-  `docs/midjourney-local.md`。`deploy/midjourney/` 是待联调模板，不代表已能自动出图。
+- Midjourney 本机代理已启动，Discord 账号初始化、频道读取与本机 API 鉴权已通过只读联调；
+  图片提交和新版本参考参数尚未真实生图验证。使用 `docs/midjourney-local.md` 与
+  Python `MidjourneyProject` / CLI `autodl mj`，不增加网页后台。
   用户要求本机账号信息与凭据统一保存到项目根目录 `.env`，能用中文的说明与状态使用中文，
   程序读取的环境变量名和 API 参数保留原文。保留现有 AutoDL 内容及密钥，不输出或提交 `.env`。
   Midjourney `/info` 中的 UUID 不能替代 Discord 服务器 ID、文字频道 ID 或用户凭据。
+  `mj doctor` 为只读检查，`mj validate` / `mj run --dry-run` 为离线校验；
+  `mj run` / `mj change` 会消耗会员额度，按用户明确授权的提示词、图片及次数执行。
+  创建请求不自动重试；记录位于 `.autodl/midjourney/`，已有 ID 用 `mj wait/download` 恢复。
 - `catalog/workflows.yaml` 是上游工作流规则及说明的本地快照，使用 `models sync` 更新，
   不直接手改生成目录。查询价格/最新模型时先同步或读取对应公开详情。
 - `.env` 及环境变量中的 Token 不得输出、写入示例、提交 Git 或发送给结果下载域名。

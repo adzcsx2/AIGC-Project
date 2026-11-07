@@ -6,7 +6,13 @@ services:
     image: novicezk/midjourney-proxy:2.6.3
     ports:
       - "127.0.0.1:6013:8080"
+    mem_limit: 1g
     environment:
+      # 旧版 JDK 的 cgroup 探测在当前 Docker 上崩溃；改为显式限制堆与 CPU 线程数。
+      # 覆盖镜像默认启动参数，同时关闭默认的远程 JMX。
+      JAVA_OPTS: >-
+        -XX:-UseContainerSupport -Xms128m -Xmx512m -XX:ActiveProcessorCount=2
+        -Djava.awt.headless=true -Dserver.port=8080 -Duser.timezone=Asia/Taipei
       "mj.discord.guild-id": "${MJ_DISCORD_GUILD_ID:?请填写 Discord 服务器 ID}"
       "mj.discord.channel-id": "${MJ_DISCORD_CHANNEL_ID:?请填写 Discord 文字频道 ID}"
       "mj.discord.user-token": "${MJ_DISCORD_USER_TOKEN:?请在本机填写 Discord 用户凭据}"
