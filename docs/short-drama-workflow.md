@@ -19,7 +19,7 @@
   同一份视觉设定可以拥有画风与人物设定，不必再造一份重复画风文档。
 - `assets` 以稳定 ID 登记 `character/scene/prop/keyframe/audio/video`。
   `required` 默认 true；`path` 是相对清单的本地路径；`prompt` 可存补图提示词或正文定位。
-- 状态：`missing` 待补，`provided` 有文件待检查，`ready` 已查看并符合本镜需求。
+- 状态：`missing` 待补，`provided` 有文件待检查或待用户确认，`ready` 已查看、用户确认且符合本镜需求。
   提示词、计划槽位和假路径不能标成已就绪。新增人物/场景或改镜头后，重新检查受影响素材。
 - `shots` 的 `required_assets` 列镜头依赖；`reference_bindings` 列实际 API 媒体字段到素材 ID 的映射。
   例如 `ref_image_0: CHAR-01`、`ref_image_1: SCENE-01`。
@@ -60,6 +60,7 @@ Python 能验证声明、文件存在、非空和常见图片文件头，以及�
 
 模板里的 5 秒、480p、0.25 元是示例，并非用户已授权的生成参数或对价格的保证。
 用户要求决定实际镜头与预算；正式请求使用最新公开详情估算。保存任务记录、等待并下载由现有客户端处理。
-多镜头分别生成；本次没有安装另一套 provider，也没有自动调用 Midjourney 或其他图片平台。
+多镜头分别生成。项目图片统一由 Midjourney 生成，使用本机 `autodl mj`，见 `midjourney-local.md`。
+每次图片或视频生成后展示并停下，等用户确认才能进入下一步；一次授权不自动扩展到后续图片或镜头。
 
 具体安装源与取舍见 [技能分析](short-drama-skills-analysis.md)。
