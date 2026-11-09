@@ -20,19 +20,27 @@ description: 将用户简短的打斗想法扩写为可生成的动作、运镜�
   能用不改变故事的方案继续时先完成方案；仅在缺口阻塞当前交付时集中询问。
 
 没有原剧本时，用户“帮我补充”的要求允许创建服务其想法的动作细节；有完整剧本时保留事件、逐字台词和结果。
-默认新提示词中文；用户另指定语言则按要求。中文素材命名，API 字段与引用标记保留协议值。
+新模型提示词统一英文；中文需求自动翻译，补全文案和解释仍中文。中文素材命名，API 字段与引用标记保留协议值。
+
+## 补全稿必须先确认
+
+动作细节不足时，先交中文动作草案：A如何进攻、B同步如何防守/反击、发力/接触/恢复、
+距离变化、节奏、结果与新增假设。用户确认后才做最终分镜、英文提示词和制作；
+不得把“允许补充”误当成“已确认补充结果”。完整已确认文案无需重复确认。
+摄影定稿交 `storyboard-camera`，逐小段审计最合适运镜并检查整体变化，不只通篇侧拍或环绕。
+正式状态记录与方法见 `docs/director-workflow.md`；所有路径相对项目根。
 
 ## 按用途取方法
 
-- 攻防、招式与重心：[武术指导](../martial-arts-director-cy/SKILL.md) 及其 `references/choreography-beats.md`、`martial-arts-systems.md`。
+- 攻防、招式与重心：[武术指导](../../resources/skills/martial-arts-director-cy/SKILL.md) 及其 `references/choreography-beats.md`、`martial-arts-systems.md`。
 - 节奏、连续性与摄影：读 [动作与摄影](references/动作与摄影.md)。需要追溯时再读
   [原始攻防因果](references/upstream/3d-anime-redfruit-pipeline/references/combat-causality.md)、
   [原始节奏](references/upstream/3d-anime-redfruit-pipeline/references/redfruit-pacing.md)、
   [原始镜头方法](references/upstream/3d-anime-redfruit-pipeline/references/master-shots-multicut.md)。
 - 科幻、异能、身体兵器或重击效果：读 [科幻打击与身体兵器](references/科幻打击与身体兵器.md)。
 - 台词跨镜：读来源 `references/emotion-performance.md`；核对完整台词和归属，不以原脚本通过代替人工核对。
-- 3D CG材质、发力、特效声音：按需读 [S级资料](../s-grade-3d-prompts/SKILL.md)。
-- H3动作与表演：按需读 [H3分镜](../h3-storyboard/SKILL.md)；方言用 `short-drama-video-prompts`，
+- 3D CG材质、发力、特效声音：按需读 [S级资料](../../resources/skills/s-grade-3d-prompts/SKILL.md)。
+- H3动作与表演：按需读 [H3分镜](../../resources/skills/h3-storyboard/SKILL.md)；方言由 `storyboard-camera`读取内部 `short-drama-video-prompts`资料，
   真实 API 由 `autodl-aigc` 执行。原始文档不是接口说明。
 
 ## 编写与交付
@@ -53,7 +61,7 @@ description: 将用户简短的打斗想法扩写为可生成的动作、运镜�
    记录场地尺度、空间锚点、主光方向、开场距离和结尾状态。非人角色按真实结构运动，不强套人类拳脚或表情。
 2. **编排连续交换。** 每次主要交换明确“起势/支撑→路径与目标→接触或闪避→受力结果→恢复接下一招”。
    通过距离、优势、武器或环境的实际变化增加丰富度。回收与追击重叠；不靠慢动作、转圈和随机切镜充时长。
-3. **摄影覆盖接触。** 选择有目的的机位与运动，写起止、跟随对象、切点及下一镜接口。
+3. **确认后摄影覆盖接触。** 选择有目的的机位与运动，写起止、跟随对象、切点及下一镜接口。
    接触前让攻击面和目标点可读，冲击后才给短促反馈；持续狂甩镜头不能代替速度。
 4. **添加效果与声音。** 主动作先成立，再写局部特效、材质反应、环境传递和衰减。受伤有符合身体结构的吃痛与运动影响；
    伤痕、破甲、嵌入物、断裂和地面损坏跨镜保留。对白、发力声、材质声和环境声分别安排。

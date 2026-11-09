@@ -1,4 +1,4 @@
-interface:
-  display_name: "人物三视图与运动参考板"
-  short_description: "从一张角色图制作全身正背侧、面部正侧及爬行或飞行姿态的一体参考板"
-  default_prompt: "使用 $character-reference-board，根据我的角色图生成同一人物的正面、背面、侧面全身和正侧面人脸，并在同一张灰底参考板中加入目标运动姿态，检查身份与身体结构一致。"
+"interface":
+  "display_name": "人物多视角与运动板"
+  "short_description": "从角色参考制作同图正背侧全身、正侧面脸部与实际运动姿态并逐格验收"
+  "default_prompt": "使用 $character-reference-board 按本项目最新导演规则处理当前任务；模型提示词使用英文，解释和素材命名使用中文。"

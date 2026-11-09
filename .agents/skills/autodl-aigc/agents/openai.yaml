@@ -1,6 +1,6 @@
-interface:
-  display_name: "AutoDL AIGC"
-  short_description: "查询及同步 AutoDL 模型参数，以 YAML 调用视频与语音工作流并恢复生成任务"
-  default_prompt: "使用 $autodl-aigc 查询适合的 AutoDL 工作流并准备可校验的 YAML 调用配置。"
-policy:
-  allow_implicit_invocation: true
+"interface":
+  "display_name": "AutoDL模型与生成"
+  "short_description": "核对实际工作流参数和素材确认，以YAML提交任务并恢复和检查结果"
+  "default_prompt": "使用 $autodl-aigc 按本项目最新导演规则处理当前任务；模型提示词使用英文，解释和素材命名使用中文。"
+"policy":
+  "allow_implicit_invocation": !!bool "true"

@@ -1,0 +1,4 @@
+"interface":
+  "display_name": "视觉资产与图片提示词"
+  "short_description": "检查角色场景道具缺口，逐图交付英文提示词、参考挂法和中文素材清单"
+  "default_prompt": "使用 $visual-assets 按本项目最新导演规则处理当前任务；模型提示词使用英文，解释和素材命名使用中文。"

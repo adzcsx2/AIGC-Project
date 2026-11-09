@@ -1,4 +1,4 @@
-interface:
-  display_name: "短剧制作 · 本项目"
-  short_description: "从角色风格和创意到剧本分镜，补齐图片后通过 AutoDL 生成 MiniMax 视频"
-  default_prompt: "使用 $short-drama-workflow，根据我的角色参考和创意制作短剧，先列缺图与 Midjourney 提示词，素材齐备后再生成视频。"
+"interface":
+  "display_name": "短剧总导演"
+  "short_description": "补全故事并确认文案，调度分镜运镜审计、素材和英文提示词制作"
+  "default_prompt": "使用 $short-drama-workflow 按本项目最新导演规则处理当前任务；模型提示词使用英文，解释和素材命名使用中文。"

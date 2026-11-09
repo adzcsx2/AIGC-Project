@@ -1,0 +1,4 @@
+"interface":
+  "display_name": "分镜与运镜导演"
+  "short_description": "逐段选择和审计合适运镜，保持动作连续与全片镜头变化并编写英文视频提示词"
+  "default_prompt": "使用 $storyboard-camera 按本项目最新导演规则处理当前任务；模型提示词使用英文，解释和素材命名使用中文。"

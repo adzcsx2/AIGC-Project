@@ -1,6 +1,6 @@
-interface:
-  display_name: "打斗导演 · 动作运镜与科幻打击"
-  short_description: "把简短打斗想法补齐为动作、运镜、受力、特效和声音提示词，并衔接现有生成流程"
-  default_prompt: "使用 $fight-scene-design，根据我的想法和已选参考图补齐打斗动作、运镜、打击反馈、特效与声音，二次审计后交付提示词；只有我要求生成时才调用生成接口。"
-policy:
-  allow_implicit_invocation: true
+"interface":
+  "display_name": "打斗动作导演"
+  "short_description": "补齐紧凑有力的攻防反击与因果，先确认动作草案再进入摄影和制作"
+  "default_prompt": "使用 $fight-scene-design 按本项目最新导演规则处理当前任务；模型提示词使用英文，解释和素材命名使用中文。"
+"policy":
+  "allow_implicit_invocation": !!bool "true"

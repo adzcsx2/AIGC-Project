@@ -11,10 +11,10 @@ description: 使用本项目的 Python 工具查询和更新 AutoDL ComfyUI 模�
 
 ## 回答模型与使用问题
 
-用户2026-11-09已指定后续视频默认使用 `minimax_h3_zm_u24`（H3多图多音频生视频·升级画质）。
-普通原创生成和参考图续段优先从此工作流的真实规则建立配置；不再默认804/805，不自动提交对照任务。
-用户另选时遵从。遇到不支持的输入/时长/严格续接能力时说明缺口，不能静默换接口或套用不存在的参数。
-按实时schema核对；已验证u24没有804的 `style_preset`，分辨率枚举也不同。历史任务与配置保持原样。
+用户最新路由：白模视频使用 `minimax_h3_zm_titim`，非白模使用 `minimax_h3_zm_u24`。
+详见 `docs/director-workflow.md`。u24当前没有ref_video；非白模原片复刻需要该能力时先说明缺口，
+不能静默换接口、删掉视频后谎称已绑定或绕过schema。用户明确另选时遵从。
+不要默认804/805，不自动生成对照任务；不套804的style_preset或其他入口的枚举。
 
 用 `autodl models list --search 关键词` 找到实际 ID，再用 `autodl models show ID`
 读取 `input_rules`、`instructions`、计费及来源。不能仅凭显示名称推断能力；同名 ID 可能不同。
@@ -37,16 +37,18 @@ description: 使用本项目的 Python 工具查询和更新 AutoDL ComfyUI 模�
 
 遵守根目录 AGENTS.md 的素材中文命名规则：assets 下的目录与图片/视频/音频文件名用中文，
 建议保存名、YAML 媒体路径及归档结果同步采用中文；API 参数键与工作流 ID 保持原值。
-所有模型提示词正文统一中文，YAML 与实际请求一致；中文说明和作品台词按需求保留，
-API 枚举及引用标记保持协议原值。历史已提交配置不覆盖，复用时另建中文版本。
+所有模型提示词正文统一英文，YAML 与实际请求一致；中文说明和作品台词按需求保留，
+API 枚举及引用标记保持协议原值。历史已提交配置不覆盖，复用时另建英文版本。
 
 原视频替换人物或动作迁移先使用 video-retargeting。minimax_h3_zm_titi/titim 是专用替换工作流，
-通常省略 prompt，需要调整时只用简短自然语言，不填普通 H3 六段式。
+通常省略 prompt，需要调整时只用简短英文主体映射，不填普通 H3 六段式。
 参考视频可先用 `autodl media inspect/prepare` 检查、截片与去音轨，原文件保留。
 
 短剧项目先用 `short-drama-workflow` 衔接创作；每镜 YAML 必须同时有
 `materials_manifest` 和 `shot_id`，通过 `autodl materials check 清单路径` 及 `autodl validate 镜头配置路径`。
 任一必要素材缺失、未检查或输入绑错图都不得生成；不能直接用底层 submit 绕过此检查。
+新短剧使用schema 2，先检查creative_confirmation的用户记录和剧本SHA-256；
+文案未确认或已改动则停止，不降级为schema 1绕过。历史schema 1与task_id恢复保持兼容。
 素材清单格式见根目录 `docs/short-drama-workflow.md`。单独非短剧的现有演示配置保持原用法。
 
 1. 用 `autodl models template ID --output examples/自定义名称.yaml` 创建实际参数模板，

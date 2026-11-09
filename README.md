@@ -8,21 +8,21 @@
 
 Python + YAML 驱动 AutoDL ComfyUI 工作流，支持视频、语音生成及本地结果归档。
 
-用户2026-11-09指定：后续视频默认接口为 `minimax_h3_zm_u24`（H3多图多音频生视频·升级画质）。
+用户2026-11-09指定：白模视频用 `minimax_h3_zm_titim`；非白模用 `minimax_h3_zm_u24`。
 新任务按其真实输入规则配置；用户另选或需求不兼容时依 `AGENTS.md` 处理，历史提交记录不改。
 
 项目图片生成统一使用 Midjourney。候选产生后展示供用户选择；用户选定或确认后，
-助手自动归档并执行已确认计划的下一必要步骤，包括准备下一张图片的中文提示词和手动挂图说明，不再重复询问是否继续。
+助手自动归档并执行已确认计划的下一必要步骤，包括准备下一张图片的英文提示词和手动挂图说明，不再重复询问是否继续。
 只在真正需要用户选图、验收、决定创作分歧或未定模型/预算时停下；不跳过未确认结果，不擅自重抽或扩大计划。
 视频仍须先满足素材和实际模型输入条件。用户2026-11-08最新要求：明确提出生成即直接提交当前任务，不再单独查费或重复确认；未指定预算时不设预算参数。具体规则见 `AGENTS.md`。
 
 视频会收费不再单独构成确认节点。当前蛇妖爬行修正已授权助手自行验收补图，不合格定向重做，合格后直接进入已要求的视频生成，详见`AGENTS.md`的补充授权。
 
 **Discord 方案已按用户要求放弃。** 本项目代理和限速容器、专用镜像、网络及 Docker 部署文件已移除。
-图片阶段只提供中文提示词与参考图说明，由用户在 Midjourney 官方网页手动生成，不恢复自动化提交。
+图片阶段只提供英文提示词与参考图说明，由用户在 Midjourney 官方网页手动生成，不恢复自动化提交。
 
-所有模型提示词正文统一使用中文，包括图片、视频、编辑与负面提示词；
-中文说明、剧本及素材中文命名继续保留。已提交配置保留原文作历史记录，新版本另写中文提示词。
+所有模型提示词正文统一使用英文，包括图片、视频、编辑与负面提示词；
+中文说明、剧本及素材中文命名继续保留。已提交配置保留原文作历史记录，新版本另写英文提示词。
 
 ## 安装
 
@@ -165,43 +165,26 @@ with AutoDLClient(load_token(Path(r"E:\AutoDL"))) as client:
 模型推理在 AutoDL 执行，本机不需要 GPU 或 ComfyUI。本项目集成的是指定页面的工作流 API；
 多段长视频可分别配置镜头生成，剪辑、配乐和拼接不属于这些工作流的统一 API。
 
-## 项目 skill
+## 导演与技能
 
-打斗只需给想法：默认使用 [打斗导演](.agents/skills/fight-scene-design/SKILL.md)（`$fight-scene-design`），
-主动补齐动作、运镜、受力、科幻特效、声音与连续性，并按实际模型交付提示词。
-已融合用户提供的武指与三维制作流程，保留来源并修正冲突模板；见
-[审计与取舍](docs/技能审计-武指与三维制作流程.md) 和 [打斗戏工作流](docs/fight-scenes.md)。
+已接入 [Acheng Director](https://github.com/AharaOoO/acheng-director-skill) 的故事、分镜、连续性和132个摄影示范，
+项目19个技能入口重组为9个。重复入口转为内部资料，原脚本和许可保留。
+完整分工、来源和边界见 [导演规则](docs/director-workflow.md)、[接入记录](docs/acheng-integration.md)。
 
-已将用户提供的三份人物/打斗资料转为
-[S级漫剧 · 3D人物与打斗提示词](.agents/skills/s-grade-3d-prompts/SKILL.md)（`$s-grade-3d-prompts`）。
-以后相关提示词默认参考其人物材质光影、多视角角色板、动作发力、镜头衔接和伤势连续性方法；
-打斗采用用户明确要求的 **3D CG**。完整历史原文保留在技能参考目录，新提示词统一中文。
+以后给故事/打斗想法即可：先补全中文文案让你确认，再自动拆镜，逐段审计运镜并检查整体变化，
+列出缺少素材，交付英文图片/视频提示词。动作要求紧凑、迅速、有力，攻防交叠，避免回合制。
+白模并非必需；无白模可以走原创u24，需要空间运镜预演时可调用已有白模引擎。
 
-`.agents/skills/autodl-aigc/SKILL.md` 提供模型选择、更新目录、编写配置、生成和恢复的操作指导。
-在此项目里可以直接提问“哪个模型支持首尾帧”“更新模型目录”“帮我用参考图生成视频”。
-项目 `AGENTS.md` 要求回答参数和价格时查阅目录，不依赖记忆猜测。
+默认入口是 [short-drama-workflow](.agents/skills/short-drama-workflow/SKILL.md)；
+摄影用 [storyboard-camera](.agents/skills/storyboard-camera/SKILL.md)，
+打斗用 [fight-scene-design](.agents/skills/fight-scene-design/SKILL.md)，
+资产用 [visual-assets](.agents/skills/visual-assets/SKILL.md)，
+实际生成用 [autodl-aigc](.agents/skills/autodl-aigc/SKILL.md)。
+人物板、原片复刻、白模预演和原片测量保留独立专项入口，见导演规则中的完整九项表。
 
-已安装 [martial-arts-director-cy 武术指导技能](.agents/skills/martial-arts-director-cy/SKILL.md)，
-用于打斗戏动作编排、人物锚定、多宫格分镜及配套视频提示词。
-可以直接说“用武术指导 skill，给这张角色图设计一段雨夜打斗戏”。
-与 Midjourney 和 AutoDL 的配合方式见 [打斗戏工作流](docs/fight-scenes.md)。
-
-## 短剧制作工作流
-
-已按 [Awesome Short Drama Skills 索引](https://github.com/UnderleveledBuilder/awesome-short-drama-skills)
-安装实际源仓库的 12 项技能，并增加本项目的 `$short-drama-workflow`、`$video-retargeting` 衔接技能。
-现在可以直接说“按这段提示词的画风设计我的角色”“把这个想法写成剧本和分镜”。
-缺角色图、场景图或关键帧时会列出补图清单和 Midjourney 提示词；你补齐图片后才进入 MiniMax 视频生成。
-完整流程、清单检查和 YAML 用法见 [短剧工作流](docs/short-drama-workflow.md)，
-安装来源与取舍见 [技能分析](docs/short-drama-skills-analysis.md)。
-
-原视频去音轨、截片、用自己的角色替换原片人物或迁移动作，使用
-[视频换角工作流](docs/video-retargeting.md)。已补装原片拆镜与白模预演引擎；
-任意原片到深度或3D动捕目前没有部署执行端，详情见该文的能力表。
-
-```powershell
-.\.venv\Scripts\python.exe -m autodl_video materials check projects/我的短剧/剧集/EP001/materials.yaml
-```
+新清单使用schema 2，文案确认绑定剧本版本；修改后旧确认失效。
+清单/模板/命令见 [短剧工作流](docs/short-drama-workflow.md)。历史schema 1与任务恢复保留兼容。
+u24当前不读取参考视频，非白模原片需要复刻时会说明能力缺口，不能假称已经输入视频。
 
 ## 开发验证命令
 

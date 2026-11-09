@@ -1,4 +1,4 @@
-interface:
-  display_name: "视频换角与动作迁移"
-  short_description: "保留原声审计视频与角色图，按需适配白模运动，生成并验收角色替换结果"
-  default_prompt: "使用 $video-retargeting，根据我的视频和角色图准备换角生成，保留原声，检查身体结构与动作冲突，必要时修正白模副本后提交并验收。"
+"interface":
+  "display_name": "原片与白模复刻"
+  "short_description": "分析源片动作时序与身体结构，绑定真实引导素材并检查换角结果"
+  "default_prompt": "使用 $video-retargeting 按本项目最新导演规则处理当前任务；模型提示词使用英文，解释和素材命名使用中文。"
