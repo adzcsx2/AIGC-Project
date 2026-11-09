@@ -1,0 +1,36 @@
+# 先实看白模和角色图，记录用户对源片复刻的明确要求。
+assets:
+  CHAR-01:
+    kind: character
+    path: assets/角色-多视角与运动板.png
+    state: missing
+  VIDEO-01:
+    kind: video
+    path: assets/白模-动作引导.mp4
+    state: missing
+creative_confirmation:
+  confirmation_ref: ''
+  script_sha256: ''
+  state: pending
+documents:
+  brief:
+    path: 需求.md
+    state: missing
+  script:
+    path: 剧本.md
+    state: missing
+  storyboard:
+    path: 分镜.md
+    state: missing
+  style:
+    path: 视觉设定.md
+    state: missing
+schema_version: 2
+shots:
+  SHOT-01:
+    required_assets:
+    - CHAR-01
+    - VIDEO-01
+    reference_bindings:
+      ref_image_0: CHAR-01
+      ref_video: VIDEO-01

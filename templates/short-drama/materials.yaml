@@ -1,26 +1,42 @@
-# 复制到具体剧集后填写。所有路径相对此文件；不要把示例改为 ready 来绕过补图。
-schema_version: 1
+# 新作品模板；全部待确认/待补，不直接改ready绕过检查。
+schema_version: 2
+creative_confirmation:
+  state: pending
+  script_sha256: ''
+  confirmation_ref: ''
 documents:
-  brief: {path: 需求.md, state: missing}
-  style: {path: 视觉设定.md, state: missing}
-  script: {path: 剧本.md, state: missing}
-  storyboard: {path: 分镜.md, state: missing}
+  brief:
+    path: 需求.md
+    state: missing
+  style:
+    path: 视觉设定.md
+    state: missing
+  script:
+    path: 剧本.md
+    state: missing
+  storyboard:
+    path: 分镜.md
+    state: missing
 assets:
   CHAR-01:
     kind: character
     required: true
     path: assets/角色01.png
     state: missing
-    prompt: 在图片提示词文档中编写该角色的中文 Midjourney 提示词。
+    prompt: See the approved English character prompt in 图片提示词.md; this is not a ready
+      asset.
   SCENE-01:
     kind: scene
     required: true
     path: assets/场景01.png
     state: missing
-    prompt: 在图片提示词文档中编写该场景的中文 Midjourney 提示词。
+    prompt: See the approved English scene prompt in 图片提示词.md; this is not a ready
+      asset.
 shots:
   SHOT-01:
-    required_assets: [CHAR-01, SCENE-01]
+    required_assets:
+    - CHAR-01
+    - SCENE-01
     reference_bindings:
       ref_image_0: CHAR-01
       ref_image_1: SCENE-01

@@ -1,3 +1,5 @@
+import hashlib
+
 import pytest
 import yaml
 
@@ -163,7 +165,10 @@ def test_gate_blocks_before_network_or_credentials(materials, config, project, m
             VideoProject(project).generate(config, dry_run=dry_run)
 
 
-def test_linked_ready_config_dry_run(materials, config, project):
+@pytest.mark.parametrize("schema_version", [1, 2])
+def test_linked_ready_config_dry_run(materials, config, project, schema_version):
+    if schema_version == 2:
+        confirm_script(materials)
     save(materials)
     catalog_path = project / "catalog/workflows.yaml"
     catalog = yaml.safe_load(catalog_path.read_text(encoding="utf-8"))
@@ -184,3 +189,61 @@ def test_manifest_and_shot_are_paired(config, project, field):
     config.write_text(yaml.safe_dump(cfg), encoding="utf-8")
     with pytest.raises(AutoDLError, match="together"):
         VideoProject(project).generate(config, dry_run=True)
+
+
+def confirm_script(materials):
+    path, data = materials
+    data["schema_version"] = 2
+    data["creative_confirmation"] = {
+        "state": "confirmed",
+        "script_sha256": hashlib.sha256((path.parent / "script.md").read_bytes()).hexdigest(),
+        "confirmation_ref": "用户已确认此版补全文案，聊天记录 2026-11-09/动作草案v1",
+    }
+
+
+def test_confirmed_script_revision_is_ready_but_edit_invalidates_it(materials):
+    confirm_script(materials)
+    path = save(materials)
+    assert check_materials(path)["ready"]
+    (path.parent / "script.md").write_text("新增反击与结局，尚待确认", encoding="utf-8")
+    report = check_materials(path)
+    assert not report["ready"]
+    assert any("已变化" in issue for issue in report["issues"])
+
+
+@pytest.mark.parametrize("receipt", [None, {}, "confirmed", {"state": "pending"}])
+def test_new_manifest_requires_real_confirmation_metadata(materials, receipt):
+    materials[1].update(schema_version=2, creative_confirmation=receipt)
+    report = check_materials(save(materials))
+    assert not report["ready"]
+    assert any("文案确认" in issue for issue in report["issues"])
+
+
+@pytest.mark.parametrize("field", ["script_sha256", "confirmation_ref"])
+def test_confirmation_needs_revision_and_user_record(materials, field):
+    confirm_script(materials)
+    materials[1]["creative_confirmation"][field] = ""
+    assert not check_materials(save(materials))["ready"]
+
+
+@pytest.mark.parametrize("dry_run", [True, False])
+def test_unconfirmed_draft_blocks_before_network(materials, config, project, monkeypatch, dry_run):
+    materials[1]["schema_version"] = 2
+    save(materials)
+    cfg = yaml.safe_load(config.read_text(encoding="utf-8"))
+    cfg.update(materials_manifest="episode/materials.yaml", shot_id="SHOT-01")
+    config.write_text(yaml.safe_dump(cfg), encoding="utf-8")
+
+    def forbidden(*args, **kwargs):
+        pytest.fail("Unconfirmed draft must not access credentials or network")
+
+    monkeypatch.setattr("autodl_video.runner.AutoDLClient", forbidden)
+    monkeypatch.setattr("autodl_video.runner.load_token", forbidden)
+    with pytest.raises(AutoDLError, match="文案确认"):
+        VideoProject(project).generate(config, dry_run=dry_run)
+
+
+def test_v2_confirmation_does_not_replace_visual_readiness(materials):
+    confirm_script(materials)
+    materials[1]["assets"]["CHAR-01"]["state"] = "provided"
+    assert not check_materials(save(materials))["ready"]

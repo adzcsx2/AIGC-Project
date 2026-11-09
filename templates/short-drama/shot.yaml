@@ -1,12 +1,12 @@
-# 与 materials.yaml 放在同一目录；替换成最终逐镜视频提示词。
+# 原创连续戏份模板，不是生成授权。先确认文案和素材。
 materials_manifest: materials.yaml
 shot_id: SHOT-01
-workflow_id: minimax_h3_lightx2v_v5_15s
+workflow_id: minimax_h3_zm_u24
 inputs:
-  prompt: 必要素材全部就绪后，将此占位说明替换为本镜头完整的中文 H3 视频提示词。
+  prompt: Replace this placeholder with the audited English prompt for the confirmed
+    continuous scene.
   ref_image_0: assets/角色01.png
   ref_image_1: assets/场景01.png
-  duration: 5
-  resolution: 480p横
+  duration: 15
+  resolution: 768p横
 output_dir: outputs/short-drama/SHOT-01
-max_cost_cny: 0.25

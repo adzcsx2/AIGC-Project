@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 
 from .config import load_yaml
@@ -42,8 +43,8 @@ def _file_issue(base: Path, item: dict, *, image: bool = False) -> str | None:
 
 def _read(path: Path) -> dict:
     data = load_yaml(path)
-    if type(data.get("schema_version")) is not int or data["schema_version"] != 1:
-        raise AutoDLError("materials schema_version must be 1")
+    if type(data.get("schema_version")) is not int or data["schema_version"] not in (1, 2):
+        raise AutoDLError("materials schema_version must be 1 or 2")
     for key in ("documents", "assets", "shots"):
         value = data.get(key)
         if not isinstance(value, dict) or not value:
@@ -60,9 +61,39 @@ def _read(path: Path) -> dict:
     return data
 
 
+def _confirmation_issue(base: Path, data: dict) -> str | None:
+    # Version 1 remains readable for historical configs and task recovery.
+    if data["schema_version"] == 1:
+        return None
+    receipt = data.get("creative_confirmation")
+    if not isinstance(receipt, dict) or receipt.get("state") != "confirmed":
+        return "文案确认：补全后的剧本需先取得用户确认，再进行后续制作"
+    record = receipt.get("confirmation_ref")
+    if not isinstance(record, str) or not record.strip():
+        return "文案确认：缺少用户确认记录的位置或说明"
+    expected = receipt.get("script_sha256")
+    if (
+        not isinstance(expected, str)
+        or len(expected) != 64
+        or any(char not in "0123456789abcdef" for char in expected)
+    ):
+        return "文案确认：缺少已确认剧本的有效 SHA-256"
+    try:
+        script = local_path(base, data["documents"].get("script", {}).get("path"))
+        actual = hashlib.sha256(script.read_bytes()).hexdigest()
+    except (AutoDLError, OSError, ValueError):
+        return "文案确认：无法读取已确认的剧本文件"
+    if actual != expected:
+        return "文案确认：剧本已变化，旧确认不适用；请确认本次修改后更新记录"
+    return None
+
+
 def _check(path: Path, data: dict, shot_id: str | None) -> dict:
     issues = []
     missing = []
+    confirmation_issue = _confirmation_issue(path.parent, data)
+    if confirmation_issue:
+        issues.append(confirmation_issue)
     assets = data["assets"]
     required = {key for key, item in assets.items() if item.get("required", True)}
     shots = data["shots"]

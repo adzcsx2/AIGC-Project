@@ -1,72 +1,74 @@
-# Midjourney 素材到 MiniMax 视频
+# 短剧制作与清单
 
-在本项目中说“用短剧工作流”，或显式使用 `$short-drama-workflow`。
-你可以先给角色图，也可以给参考提示词、自己的角色要求及故事想法。
-助手会提炼风格、写角色和场景图片提示词，再完成剧本与分镜。
-你去 Midjourney 生成缺少的图，放回项目后由助手查看、登记；必要素材齐备后才进入视频提示词和生成。
-单独只要人物提示词或剧本也可以，不要求先跑完整流程。
+入口为 `short-drama-workflow`，完整规则见 [导演规则](director-workflow.md)。
+文案或动作不足时，先补全中文文案并取得确认，再做正式分镜、逐段运镜审计、英文提示词和素材制作。
+没有白模可直接做原创视频；需要预演时用本地引擎。白模用titim，非白模用u24；u24不能读取视频。
 
-图片、视频、编辑、换角和负面提示词等所有模型提示词正文统一使用中文；
-用途说明、剧本和素材目录/文件名继续使用中文，API 枚举与作品台词保留所需原文。
-已提交任务的原始配置作为历史保留，复用时另写中文版本，详见根目录 `AGENTS.md`。
+## 文档与版本
 
-已有原视频、希望换成自己的角色时使用 [视频换角工作流](video-retargeting.md)，
-按需拆镜与去音轨；H3 替换专用工作流使用简单主体映射提示词，不套普通图生视频的六段式。
+五份Markdown拥有创作正文：`剧本.md`、`视觉设定.md`、`分镜.md`、`图片提示词.md`、`视频提示词.md`。
+另有 `需求.md` 保存用户要求。materials只登记状态和实际绑定。Acheng production.json如需编译，
+只能从当前文档派生并记录源哈希，正文变化后重新派生，不能双向独立维护。
 
-## 文件与状态
+新作品复制 `templates/short-drama/` 下两个YAML，白模用 `templates/whitebox-retargeting/`。
+所有示例素材未就绪，不能直接改ready绕过查看和确认。一个SHOT-ID可以代表一次连续15秒生成，
+内部小段在分镜中按 [运镜审计模板](../templates/short-drama/运镜审计.md)逐段审核，不机械拆成碎片请求。
 
-每集创作正文采用上游的五份 Markdown：`剧本.md`、`视觉设定.md`、`分镜.md`、
-`图片提示词.md`、`视频提示词.md`。另保留用户需求 `需求.md`。
-`materials.yaml` 是生产清单，不复制整份剧本和分镜。可从 `templates/short-drama/` 复制两个 YAML 到剧集目录。
+## schema 2确认记录
 
-- `documents` 必须登记 `brief/style/script/storyboard`，分别指向需求、视觉设定、剧本、分镜。
-  同一份视觉设定可以拥有画风与人物设定，不必再造一份重复画风文档。
-- `assets` 以稳定 ID 登记 `character/scene/prop/keyframe/audio/video`。
-  `required` 默认 true；`path` 是相对清单的本地路径；`prompt` 可存补图提示词或正文定位。
-- 状态：`missing` 待补，`provided` 有文件待检查或待用户确认，`ready` 已查看、用户确认且符合本镜需求。
-  提示词、计划槽位和假路径不能标成已就绪。新增人物/场景或改镜头后，重新检查受影响素材。
-- `shots` 的 `required_assets` 列镜头依赖；`reference_bindings` 列实际 API 媒体字段到素材 ID 的映射。
-  例如 `ref_image_0: CHAR-01`、`ref_image_1: SCENE-01`。
-  首尾帧模式可以依赖角色、场景，但实际只绑定起始/结束关键帧，不要求把每个资产都发给接口。
-
-```powershell
-.\.venv\Scripts\python.exe -m autodl_video materials check projects/我的短剧/剧集/EP001/materials.yaml
-.\.venv\Scripts\python.exe -m autodl_video validate projects/我的短剧/剧集/EP001/SHOT-01.yaml
+```yaml
+schema_version: 2
+creative_confirmation:
+  state: pending
+  script_sha256: ""
+  confirmation_ref: ""
 ```
 
-清单检查完全离线：退出码 0 为齐备，1 为缺文档/缺图/待检查并输出缺口清单，2 为格式错误。
-指定 `--shot SHOT-01` 核对镜头 ID；仍检查同一清单内所有必要素材，满足“补齐后才开始生成”的要求。
-不相关作品放在不同清单。未使用且明确 `required: false` 的可选素材不阻断，镜头依赖或输入绑定引用它后就必须就绪。
-
-镜头 YAML 的 `materials_manifest` 相对该 YAML；`shot_id` 必须存在于清单。
-两个字段必须一起提供。`run` 与 `validate` 会先做素材检查，再校验实际媒体字段、类型、路径，
-正式提交前还会根据最新模型规则复核。缺图时在读取密钥和网络访问前拒绝执行。
-已有独立演示 YAML 不强制绑定短剧清单；以后此工作流编写的短剧配置一律绑定清单。
-底层 `AutoDLClient.submit()` 是底层接口，不包含这层检查；短剧生产使用 `VideoProject.generate` 或 CLI `run`。
-
-Python 能验证声明、文件存在、非空和常见图片文件头，以及是否把登记的图绑到实际输入。
-人物相似、构图、风格和图像完整性仍需助手实际看图；不能只运行检查命令就宣布视觉验收完成。
-不要在图像被替换后沿用旧的 ready 状态。
-
-## 视频生成
-
-素材齐备后，读取 `short-drama-video-prompts/references/minimax-h3.md` 编写对应模式的完整提示词。
-参考模式的各段正文放进同一次请求，不拆成多次生成。
-图片编号按实际输入顺序对应：`<Picture 1>` 是 `ref_image_0`。
-模型 ID、时长、分辨率、参考图/音频数量以 AutoDL 实际规则为准；上游方言示例时长不是接口限制。
+补全文案交用户确认后，记录真实确认消息/时间/版本位置，将state设confirmed，并记录该版剧本SHA-256。
+用户本来就提供完整明确版本时可引用其指令，无须另问。文案确认不自动授权未要求的生成；
+“生成”也不代表用户接受尚未看到的补全剧情。
 
 ```powershell
-.\.venv\Scripts\python.exe -m autodl_video models list --search minimax
-.\.venv\Scripts\python.exe -m autodl_video models show minimax_h3_lightx2v_v5_15s
-# 在本次镜头与预算已获用户授权、离线校验通过后运行：
-.\.venv\Scripts\python.exe -m autodl_video run projects/我的短剧/剧集/EP001/SHOT-01.yaml --max-cost 0.25
+(Get-FileHash -LiteralPath 'projects/我的短剧/剧本.md' -Algorithm SHA256).Hash.ToLowerInvariant()
 ```
 
-模板里的 5 秒、480p、0.25 元是示例，并非用户已授权的生成参数或对价格的保证。
-用户要求决定实际镜头与预算；正式请求使用最新公开详情估算。保存任务记录、等待并下载由现有客户端处理。
-**严禁碎片化单视角生图与拆碎短视频生成**：禁止只用单张正面平视立绘、把连贯动作拆成多张独立静态关键帧并分别生成 3～5 秒短视频（会导致背景光影跳变、机位锁死平视、动作像 PPT 微动图）。标准流程必须先生成 **16:9 角色多视角设定板（正面全身 + 背面全身 + 俯视图 + 仰视图同图）**（或单张多宫格分镜母板），再将多视角设定板与场景母图输入 MiniMax H3（`duration: 15`），通过单次 15 秒连续多机位/时间轴内切（`[Shot 1] ~ [Shot N]`）生成一气呵成的连贯视频。**打斗中任何角色受伤都必须有明确的吃痛表现（身体踉跄、捂伤/抓箭、五官痛苦与 `<d>` 痛呼），且刺入身体的箭矢/兵器与血迹必须在后续每个切镜中显式重申保留，严禁转眼消失。**项目图片统一由 Midjourney 网页端手动生成，见 `midjourney-local.md`。
-用户最新要求：候选结果展示供选择，用户选定/确认后自动归档并执行已确认计划中的下一必要步骤，不再询问是否继续。
-Discord 方案已放弃；图片阶段自动准备下一张必要图片的中文提示词与挂图说明，由用户在 MJ 官网手动生成，不自动提交请求。
-需要用户手动生成、选图/验收、决定创作分歧或未定模型/预算时停下；不能跳过未确认结果，视频仍须满足素材与模型/预算条件。
+哈希放清单，不写进剧本本身。剧本改变即使旧确认失效，应说明变化并取得适用确认，不悄悄刷新哈希。
+程序在网络/凭据读取前检查状态、非空记录、版本哈希与素材，但不能证明聊天真实性或判断摄影美感。
+schema 1仅保留历史兼容；新任务不能降级、移除materials绑定或直接调用submit绕过。
 
-具体安装源与取舍见 [技能分析](short-drama-skills-analysis.md)。
+## 素材与绑定
+
+- documents登记brief/style/script/storyboard，指向真实需求、视觉设定、剧本和分镜。
+- assets使用稳定ID，kind为character/scene/prop/keyframe/audio/video；作品目录和文件名用中文。
+  required默认true，path相对清单；prompt可存英文补图正文或正文文档定位。
+- missing=待补，provided=有文件待查看/确认，ready=实际查看且通过当前节点。
+  一般候选由用户选定；明确授权助手验收的参考板等例外按AGENTS执行。图变更须重查。
+- shots包含required_assets和reference_bindings；后者覆盖实际输入的全部图像/音频/视频字段。
+  不要求所有资产都上传，但实际绑定图不能错，白模不能仅登记而没有输入。
+
+```powershell
+.venv/Scripts/python.exe -m autodl_video materials check projects/我的短剧/materials.yaml
+.venv/Scripts/python.exe -m autodl_video validate projects/我的短剧/镜头01.yaml
+.venv/Scripts/python.exe -m autodl_video run projects/我的短剧/镜头01.yaml --dry-run
+```
+
+退出码0=通过，1=待确认/缺素材/待检查，2=格式错误。--shot只核对镜头ID，仍检查同清单所有必要素材。
+不相关作品用不同清单；required=false且未用的资产不阻断，实际依赖或绑定后必须就绪。
+materials_manifest相对镜头YAML，与shot_id成对。独立历史演示和task_id恢复保留原用法。
+机械检查验证文件和绑定，不能替代实际看图、摄影审计与成片验收。
+
+## 提交与交付
+
+正文全英文，说明与命名中文，对白字幕按作品需求。图片按MJ手动或已授权参考板流程。
+通过真实工作流规则核对字段、长度和枚举；源skill字数/时长不是API契约。
+
+```powershell
+.venv/Scripts/python.exe -m autodl_video models show minimax_h3_zm_u24
+.venv/Scripts/python.exe -m autodl_video models show minimax_h3_zm_titim
+# 仅在用户已明确请求当前生成、文案确认与素材检查通过后执行：
+.venv/Scripts/python.exe -m autodl_video run projects/我的短剧/镜头01.yaml
+```
+
+未指定预算时不加max_cost_cny/--max-cost；有明确上限遵守。一次请求只提交一次，保留task_id并恢复查询，
+不自动重抽。返回后检查完整解码、声音、时长、身份、动作和连续性，SUCCESS不等于创作验收。
+已确认15秒原创连续戏份保持一次连续多机位生成；原片复刻按源片长度、动作和原声，不套15秒模板。
