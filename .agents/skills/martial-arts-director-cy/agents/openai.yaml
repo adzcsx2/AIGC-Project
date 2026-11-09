@@ -1,6 +1,6 @@
 interface:
   display_name: "武术指导 · 打斗戏分镜"
   short_description: "设计武打动作、人物锚定和多宫格分镜，生成配套图像及视频提示词并衔接本项目"
-  default_prompt: "使用 $martial-arts-director-cy 为我的角色图设计打斗戏分镜和图生视频提示词，并按本项目流程准备 YAML。"
+  default_prompt: "使用 $martial-arts-director-cy，并先按本项目 $fight-scene-design 与 docs/fight-scenes.md 的适配规则，把我的打斗想法补齐为动作、运镜、冲击特效、声音及提示词，再按当前授权准备 YAML。"
 policy:
   allow_implicit_invocation: true

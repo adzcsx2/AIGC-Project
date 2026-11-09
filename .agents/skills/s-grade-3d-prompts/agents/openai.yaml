@@ -1,0 +1,7 @@
+interface:
+  display_name: "S级漫剧 · 3D人物与打斗提示词"
+  short_description: "参考用户三份资料，编写3D国漫、仿真人物、多视角设定与连贯打斗中文提示词"
+  default_prompt: "使用 $s-grade-3d-prompts，参考已选角色与场景，为当前镜头编写中文提示词，并核对构图、动作、参考槽位和连续性。"
+
+policy:
+  allow_implicit_invocation: true

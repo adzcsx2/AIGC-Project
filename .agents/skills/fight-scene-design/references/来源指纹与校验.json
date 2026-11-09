@@ -1,0 +1,128 @@
+{
+  "date": "2026-11-08",
+  "sources": [
+    "C:\\Users\\long\\Documents\\xwechat_files\\wxid_m6ioxcdaxxq221_8751\\msg\\file\\2026-11\\martial-arts-director-cy",
+    "C:\\Users\\long\\Documents\\xwechat_files\\wxid_m6ioxcdaxxq221_8751\\msg\\file\\2026-11\\3D-anime-redfruit-pipeline\\3d-anime-redfruit-pipeline"
+  ],
+  "second_source_license_present": false,
+  "files": [
+    {
+      "source": "martial-arts-director-cy",
+      "path": "LICENSE",
+      "bytes": 11560,
+      "sha256": "3ddf9be5c28fe27dad143a5dc76eea25222ad1dd68934a047064e56ed2fa40c5",
+      "installed_text_equal": true
+    },
+    {
+      "source": "martial-arts-director-cy",
+      "path": "README.md",
+      "bytes": 12760,
+      "sha256": "43d9ceaf7c3b44abd5cffc661bd4525d6f8c6b28029c96452333af942905af9d",
+      "installed_text_equal": true
+    },
+    {
+      "source": "martial-arts-director-cy",
+      "path": "references/choreography-beats.md",
+      "bytes": 11919,
+      "sha256": "37b836fceed6f87c8e8aaf8d07e9309c243f07b91843b11bfb38171c7d8af255",
+      "installed_text_equal": true
+    },
+    {
+      "source": "martial-arts-director-cy",
+      "path": "references/martial-arts-systems.md",
+      "bytes": 9121,
+      "sha256": "613e3a5d0141009d93d833a7582212d09dcb4f41f183e7dd46f5f7d54d1f6f18",
+      "installed_text_equal": true
+    },
+    {
+      "source": "martial-arts-director-cy",
+      "path": "references/poster-template.md",
+      "bytes": 8217,
+      "sha256": "bbff866546153ec3df79423460d361843a2477eac9767ecef90f942aae5bdaa6",
+      "installed_text_equal": true
+    },
+    {
+      "source": "martial-arts-director-cy",
+      "path": "references/style-references.md",
+      "bytes": 4783,
+      "sha256": "c0919b8ab8e7607a811562eaa5806d4c71570900c952ab170e1171eb3a4ba609",
+      "installed_text_equal": true
+    },
+    {
+      "source": "martial-arts-director-cy",
+      "path": "SKILL.md",
+      "bytes": 84137,
+      "sha256": "c33185493cebdf793886d4289cf029f83b000515c11f3ac7b0612acb70369c0d",
+      "installed_text_equal": true
+    },
+    {
+      "source": "3d-anime-redfruit-pipeline",
+      "path": "agents/openai.yaml",
+      "bytes": 272,
+      "sha256": "cf97f2a704c2f8615c587fb39aa4a8e99741c749d718d0f57c6c1de1e672e952"
+    },
+    {
+      "source": "3d-anime-redfruit-pipeline",
+      "path": "references/ability-fantasy-combat.md",
+      "bytes": 6326,
+      "sha256": "3e068da1fbd78a9fcb15b0eb591e2f3b1e87f3e67c637da6e91d04f92fc7d342"
+    },
+    {
+      "source": "3d-anime-redfruit-pipeline",
+      "path": "references/combat-causality.md",
+      "bytes": 4793,
+      "sha256": "3598f0165d5c1e297343e1210eafbf9fe27eea5f7d9a5e1f4db9c1a6a3616d6a"
+    },
+    {
+      "source": "3d-anime-redfruit-pipeline",
+      "path": "references/core-workflow.md",
+      "bytes": 8007,
+      "sha256": "561c350a087bd1b47799a29bf526b6dc1bffe9c3020697255ed103912978f281"
+    },
+    {
+      "source": "3d-anime-redfruit-pipeline",
+      "path": "references/emotion-performance.md",
+      "bytes": 3792,
+      "sha256": "f5f92e365dee0fceec8a36831abd4b4015dbe1b57e6e82982abc937f8a96ce9b"
+    },
+    {
+      "source": "3d-anime-redfruit-pipeline",
+      "path": "references/master-shots-multicut.md",
+      "bytes": 7120,
+      "sha256": "ef53d9f41d2fbe3fd735da11edab7d964c5361c0b8714dbd2b1f66ce26f75bde"
+    },
+    {
+      "source": "3d-anime-redfruit-pipeline",
+      "path": "references/redfruit-pacing.md",
+      "bytes": 5601,
+      "sha256": "5c67749e4b990963c0c22cd6ae2ce9ae40749e32fd7d227036aa153ebcf78528"
+    },
+    {
+      "source": "3d-anime-redfruit-pipeline",
+      "path": "scripts/audit_pacing.py",
+      "bytes": 9726,
+      "sha256": "51a694f0e3e3bfbf65c0ed187d8954c23cf0794324aa98056e8e41443662cb09"
+    },
+    {
+      "source": "3d-anime-redfruit-pipeline",
+      "path": "scripts/validate_storyboard.py",
+      "bytes": 23897,
+      "sha256": "dbb54124f89da5b542d036e7c75cadf2aef8758e3dc19a074f181f93cfdd8e9c"
+    },
+    {
+      "source": "3d-anime-redfruit-pipeline",
+      "path": "SKILL.md",
+      "bytes": 9914,
+      "sha256": "2d8262e4f349bd18db8056eb27c18403b7b149b3bce7f67123a3b1a0d5842930"
+    }
+  ],
+  "checks": {
+    "validator_self_test": 0,
+    "pacing_self_test": 0,
+    "extra_source_dialogue_undetected": true,
+    "wrong_speaker_undetected": true,
+    "all_dialogue_missing_undetected": true,
+    "self_test_stdout": "SELF-TEST PASSED\nSELF-TEST PASSED\n"
+  },
+  "scope": "静态源码审计与本地自测；不声称视频语义验收"
+}

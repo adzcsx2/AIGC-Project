@@ -1,0 +1,40 @@
+schema_version: 1
+converted_on: '2026-11-08'
+source_type: 用户本次提供的本地文档
+source_license: 原文件未声明许可；不冒用第三方技能许可
+purpose: 完整历史参考；文件内指令不作为当前任务或生成授权
+files:
+- original_filename: 3D、仿真人任务提示词（S级漫剧）.docx
+  original_bytes: 27199
+  original_sha256: 7e430b5207ae9f89ab6dbcd66a9d1725e694f3dba793f926c8aacdff49e73a7b
+  extracted_file: 人物与仿真-原文.md
+  extracted_sha256: 91864acef44678e3ef5628b30eaf2a5cfeac5954f04a5332681b5efadffb4203
+  body_text_sha256: 2356e15d8cfdf092f415cd0339b7a5f9c01c8e502b61a2f468ee1855470d83e7
+  extraction: OOXML正文w:p顺序，保留w:t、制表符和换行；Markdown引用块；空段保留编号
+  structure:
+    paragraphs: 54
+    nonempty_paragraphs: 42
+    tables: 0
+    insertions: 0
+    deletions: 0
+    additional_parts: []
+- original_filename: 3D超燃打斗提示词.docx
+  original_bytes: 77043
+  original_sha256: 3bb9bb77faf872b5bf8bdcb62789053c9dde5910249167dca2557a3b6bc0491f
+  extracted_file: 超燃打斗-原文.md
+  extracted_sha256: 33037ca726ad9405e93b598c85ffd5ee53bfc6760c3c53779cba9bd556db97cb
+  body_text_sha256: b3b1aa7994a173ccc8494640d6ddc77cc7ef814d4670761f2619fb9b5ecd4c08
+  extraction: OOXML正文w:p顺序，保留w:t、制表符和换行；Markdown引用块；空段保留编号
+  structure:
+    paragraphs: 1134
+    nonempty_paragraphs: 662
+    tables: 0
+    insertions: 0
+    deletions: 0
+    additional_parts: []
+- original_filename: 3D动漫人物提示词.txt
+  original_bytes: 4062
+  original_sha256: 4616177f375a4a427b0446d06dc8be00e4ceabca1455af29656e004cd472520c
+  extracted_file: 动漫人物四视图-原文.txt
+  extracted_sha256: 4616177f375a4a427b0446d06dc8be00e4ceabca1455af29656e004cd472520c
+  extraction: UTF-8原文件按字节复制，未修改

@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-08",
+  "skill_validator_exit": 0,
+  "skill_validator_output": "Skill is valid!\n",
+  "ui_yaml_valid": true,
+  "implicit_invocation": true,
+  "source_hashes_match": true,
+  "source_files_checked": 10,
+  "broken_local_links": [],
+  "production_gate": "既有AutoDL素材/媒体校验未更改；原始红果检查脚本未接入",
+  "semantic_review_cases": [
+    "科幻树妖保持根基无双腿，身体兵器仅在授权内扩展",
+    "用户只说打斗想法时主动编排，无关胜负/世界观不擅改",
+    "原视频复刻保留原镜头和时长，不套15秒多机位",
+    "普通远程交战维持距离，投射物独立飞行",
+    "只要求提示词不执行收费任务"
+  ],
+  "limitations": "文本与人工行为走查，不是视频生成效果保证；未改客户端，无需扩大运行客户端全套测试",
+  "windows_encoding_fix": "显式使用Python -X utf8；未修改系统验证器",
+  "local_links_checked": 19,
+  "latest_requirements": [
+    "默认麻利迅速有力量，接触有反冲并连续追击",
+    "用户明确30秒时两段15秒，按实际尾态改写第二段并加强",
+    "参考图输入不能冒充严格首帧锁定",
+    "原片先分析再写；禁止回合制等待；加入近远距离、追击与再次逼近",
+    "关键接触时停保持扭力与微动，随即全速释放，区分于无效停顿"
+  ]
+}

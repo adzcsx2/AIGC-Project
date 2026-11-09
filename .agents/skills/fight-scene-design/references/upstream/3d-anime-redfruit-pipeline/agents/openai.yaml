@@ -1,0 +1,4 @@
+interface:
+  display_name: "3D Anime Red Fruit Pipeline"
+  short_description: "Native multi-shot 3D fantasy storyboards with Red Fruit pacing"
+  default_prompt: "Use $3d-anime-redfruit-pipeline to turn this script into a fast native multi-shot 3D fantasy storyboard."
