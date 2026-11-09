@@ -1,167 +1,108 @@
-# Midjourney 本机接入与 Python 调用
+# Midjourney：Discord 方案已弃用
 
-最新状态：首次法师定妆真实提交一次后曾因 Discord 鉴权中断；用户更新凭据后已从原任务历史找回
-四张候选并下载查看。用户均不满意，已按中文名称归档「未采用」，不作为生产素材。
-代理已应用新凭据并恢复连接；下一轮英文提示词正在等待确认，没有重复创建旧任务。
-生成与确认记录见 `projects/elf-duel/剧集/EP001/生成确认.md`。
+用户明确放弃 Discord 方案，后续不再启动、重建或调用代理，也不恢复四秒限速出口。
 
-记录日期：2026-11-07。用户已提供官方 Bot 的 `/info`，Discord 已能识别有效的 Midjourney 会员。
-账号信息及当时的额度快照已按用户要求保存到根目录 `.env`，使用中文注释，具体账号标识不写入本文件。
-快照不是实时额度查询，也不是 API 凭据。Discord 用户凭据、服务器和文字频道 ID 已登记到本机 `.env`，
-独立代理密钥已生成，Docker 代理已运行。只读联调确认：启动时有 1 个可用 Discord 账号，
-带代理密钥查询返回 HTTP 200，不带密钥返回 HTTP 401；官方 Discord API 读取文字频道成功，
-频道所属服务器与配置一致。具体账号与频道标识只保存在本机。
-Python `MidjourneyClient` / `MidjourneyProject` 和 CLI `autodl mj` 已接入，
-生成与恢复协议经过模拟测试，YAML 示例通过离线校验；首次真实任务已取回结果，
-但未通过用户验收；新版参数兼容性也尚未全面验证。
+## 已完成清理
 
-## 先完成账号准备
+- 已停止并删除本项目的 `midjourney-proxy` 与 `discord-gateway` 两个容器。
+- 已删除对应的两份服务镜像、项目专用网络及这两个容器使用的匿名卷。
+- 已移除 `deploy/midjourney/` 内的 Compose、Dockerfile、限速服务及部署示例文件。
+- 未卸载 Docker Desktop，未清理其他项目的容器、镜像或通用构建缓存。
+- 本地 `assets/`、`outputs/`、`.autodl/`、剧本、分镜与素材清单均保留。
+- 原有账号配置仍留在被忽略的根目录 `.env`，没有输出或变更凭据，不再使用它们访问 Discord。
 
-1. 注册并验证自己的 Discord 账号。
-2. 登录**已经付费的 Midjourney 官网账号**，进入 Account Settings → Connected Accounts，
-   连接这个 Discord 账号。现有会员可用于官网和 Discord，无需再次购买订阅。
-   若已有 Discord 账号曾生成过 MJ 图片，官网账号合并可能受限制；不要先创建第二份订阅。
-3. 在 Discord 创建一个自己的服务器，例如「双精灵工坊」，建文字频道「素材生成」。
-   这里的服务器是 Discord 内的工作空间，不需要租用云主机，也不需要部署 Discord 服务端。
-4. 从 Midjourney 官方服务器的成员列表或 Discord App Directory 找到官方 Midjourney Bot，
-   点 Add App，选择自己的服务器并授权。无需自己开发或注册一个替代 MJ 的 Bot。
-5. 在「素材生成」里输入 `/info`，确认官方 Bot 能识别自己的订阅。
-   这一步只检查账号信息，不需要用 `/imagine` 消耗生成额度。
-6. Discord 用户设置 → Advanced → Developer Mode 开启后，
-   右击服务器图标复制 Server ID，右击文字频道复制 Channel ID。
-   可以把这两个数字 ID 告诉助手；账号密码和 Token 留在本机。
+## 后续制作方式
 
-官方说明：[账号关联](https://docs.midjourney.com/hc/en-us/articles/33390994570509-Logging-In-Connecting-Accounts)、
-[添加官方 Bot](https://docs.midjourney.com/hc/en-us/articles/32637946450445-Add-Midjourney-to-Your-Discord-Server)、
-[Discord ID 获取](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID)、
-[/info 等命令](https://docs.midjourney.com/hc/en-us/articles/32894521590669-Discord-Command-List)。
+助手准备中文图片提示词、参考图及手动挂图说明，由用户在 Midjourney 官网操作。
+用户选定成图后，助手查看、按中文名称归档、更新素材与进度，再交付下一必要步骤。
+AutoDL 视频集成继续保留，按实际素材就绪、模型参数和用户授权处理。
 
-## 后端的最小范围
+## 默认版本与网页参考图
 
-目标调用链：用户提出生图需求 → 助手操作本项目 Python → 本机 MJ 代理 → Discord/Midjourney。
-自建 Discord 服务器本身不提供 MJ API 地址。代理接通后，本项目拟使用的地址是
-`http://127.0.0.1:6013`，仅允许本机访问。
+本项目新提示词默认使用 **V8.2**，普通Imagine生图在可复制正文末尾显式填写 `--v 8.2`。该入口的默认画幅与 Aesthetics 参数组合为 `--v 8.2 --ar <比例> --stylize 50 --chaos 0 --raw`，交付时把 `<比例>` 换成实际值；具体构图需要调整时直接写明最终参数及原因。Editor / Layers 使用下面的编辑入口例外。用户明确指定其他版本时按其要求，历史已提交任务记录保留原版。
 
-不需要部署 Dooy 的 Vue 网页、Node 中转或额外 FastAPI 服务。
-Dooy/chatgpt-web-midjourney-proxy 的 MJ 部分依赖另一个 MJ_SERVER；
-它的 `/mjapi` 路由只是转发，并不自行完成 Discord 接入。
-本项目可直接调用底层代理的 `/mj/submit/imagine` 与 `/mj/task/{id}/fetch`。
+### 先区分提交入口：Editor / Layers 例外
 
-部署使用 [novicezk/midjourney-proxy](https://github.com/novicezk/midjourney-proxy) 上游文档中的
-`2.6.3` 镜像版本。这是非官方代理，依赖 **Discord 用户凭据**，不是自建 Bot Token；
-官网订阅也不会提供这个代理的 API Key。
-官方对未经许可的自动化有使用限制，关联 Discord 并不等于获得官方 API 授权。
-当前已实测账号连接、频道访问、只读查询、一次真实出图及历史恢复；V8/多图参考兼容性尚未全面实测。
-本客户端通过 `base64Array` 上传普通图片提示，不等于 V8 编辑器的 Attach 身份绑定功能。
+- 普通Imagine栏（包括Attach to prompt多图组合）与Editor中的Submit Edit不是同一个提交入口，不能因模型同为V8.2就假定接受相同后缀。
+- 2026-11-07用户反馈：在添加Layer后的编辑提交中出现`The --ar parameter is not supported`。这是该次Editor / Layer入口的实际报错；不据此宣称所有V8.2或Imagine入口均不支持`--ar`。
+- 此类Editor提交去掉`--ar`；画布比例和尺寸通过Move / Resize、Aspect Ratio预设或画布边界调整。本项目单杆修复保留已选图1456×816画布（接近16:9），不为消除报错改为竖图或重新生整张图。
+- 对具体编辑入口尚未核实的其他后缀，不把`--v / --sd / --weird / --no / --stylize / --chaos / --raw`整串照搬进去。可交付纯中文局部编辑正文，版本、原画布和界面实际提供的选项在中文参数卡说明；只有该入口已确认支持的后缀才加入。纯正文是本次兼容处理方式，不是“所有Editor参数都不支持”的判断。
+- 局部修复先保留原画布与底图外观。本次无需增加重复图片层；添加Layer本身不等于应用蒙版。使用Erase真正擦出透明棋盘格；Smart Select绿色高亮还需Erase Selection才能应用；多层时只有合成后可见透明区域才会重绘，底层图片不能把待修区重新填满。
 
-来源：[Docker 部署](https://github.com/novicezk/midjourney-proxy/blob/main/docs/docker-start.md)、
-[配置字段](https://github.com/novicezk/midjourney-proxy/blob/main/docs/config.md)、
-[API 协议](https://github.com/novicezk/midjourney-proxy/blob/main/docs/api.md)、
-[MJ 使用规则](https://docs.midjourney.com/hc/en-us/articles/32013696484109-Community-Guidelines)。
+依据：[官方Editor的Move / Resize、Smart Select与Layers说明](https://docs.midjourney.com/hc/en-us/articles/32764383466893-Editor)，以及本次用户报告的实际参数校验错误。官方[Edit Model](https://docs.midjourney.com/hc/en-us/articles/48495453462797-Edit-Model)的通用`--ar`说明不能代替某个具体Submit Edit入口的兼容性检查。
 
-## 本机配置与联调入口
+### 三类参考槽位的选择
 
-配置统一保存在项目根目录 `.env`。用户已明确授权在原文件中增加 Midjourney 信息，
-已有 AutoDL 内容保持原样；追加后验证了 AutoDL Token 的读取结果不变。
-说明、套餐和状态使用中文注释，程序和 Docker 使用的变量名保留英文。
-`deploy/midjourney/env.example` 列出连接字段；根目录 `.env` 已完成本机配置。
-`MJ_SERVER` 为本机代理根地址，默认 `http://127.0.0.1:6013`。
-本地 Python 只向代理发送 `mj-api-secret` 鉴权头；Discord 用户凭据由代理用于连接 Discord。
-不得用空白模板覆盖原 `.env`，也不要把 `/info` 中的 UUID 当作服务器或频道的数字 ID。
-根目录 `.env` 已被 Git 忽略，不提交其中的账号信息或凭据。
-`MJ_API_SECRET` 是给本机代理设置的鉴权密钥，不是向 MJ 官网申请的密钥。
+先实际看图，区分需要保持的身份、服装、物体、场景元素、机位与风格，再决定每张参考放入哪个槽位。以下是用途区分，不承诺模型把每张图的影响完全隔离。
 
-### 填写 Discord 用户凭据（仅本机）
+| 槽位 | 适用需求 | 交付时明确 | 权重与注意事项 |
+|---|---|---|---|
+| Attach to prompt | 指定人物身份、服装、物体、场景元素；组合图片或按指令修改 | 最多4张的实际顺序、每张允许控制的内容、需要改变的姿态与构图 | 使用 V8.2 的 Edit Model；当前官方资料未提供此槽位的独立数值权重，不虚构控制参数，也不套用 `--iw` / `--ow` |
+| Style Reference | 参考媒介、色彩、纹理、光线与整体视觉风格 | 具体风格图或真实风格代码，保留哪些视觉特征 | 需要时指定 `--sw`；它不负责复制人物身份、道具或场景地理 |
+| Image Prompt | 借用画面内容、构图、色彩，或进行较宽泛的视觉融合 | 哪些内容与构图可以参考，哪些要由新提示词改变 | 需要时指定 `--iw`；不是专用锁脸槽位，可能同时影响服装、姿势与环境 |
 
-上游的[参数获取说明](https://github.com/novicezk/midjourney-proxy/blob/main/docs/discord-params.md)
-要求使用 Discord 网页请求中的用户鉴权值。
+没有相应用途的槽位留空，不要求三类一起使用。同一张图重复挂多个槽位须有分别明确的用途与理由；不能靠重复挂图假定控制更准。参考图与目标画幅尽量匹配；母图的半身裁切、俯瞰机位或静态姿势可能妨碍目标全身动作，须在提示词和参数决策中处理。
 
-1. 在 Chrome 打开 Discord 网页版，登录已关联 Midjourney 的账号，进入自己的文字频道。
-2. 按 `F12` 打开开发者工具，选择「网络 / Network」。
-3. 刷新 Discord 页面，在网络面板筛选框输入 `messages`，选择对应的消息请求。
-4. 打开「标头 / Headers」，在「请求标头 / Request Headers」找到 `authorization`。
-5. 只复制它的值，填写到本机根目录 `.env` 的 `MJ_DISCORD_USER_TOKEN=` 后面。
-   不复制字段名，也不添加 `Bearer` 前缀。凭据仅保存在本机，不粘贴到聊天里。
-6. 保存文件后告诉助手「已填好」，再检查配置、启动代理并验证连接。
+Attach to prompt 使用 Edit Model 时，中文正文可以指明第几张图负责什么以及如何调整；仅使用常规 Image Prompt / Style Reference 时，以描述最终画面为主。网页已经挂入真实图片时，不要求用户把本地路径或占位图片URL粘进正文。
 
-以上用户凭据不是 Midjourney `/info` 的用户 ID，也不是自己的 Discord Bot Token。
+### 逐图参数决策
 
-账号准备好并在本机完成配置后，助手可执行以下命令。用户不需要自己维护网站或操作后台。
+下面的项目起点用于减少无关变化，不是 Midjourney 官方的通用最优值。角色、场景、动作关键帧各自判断；数值、画幅和启用项可因当前需求不同而不同。
 
-```powershell
-cd E:\AutoDL
-# 只校验配置，不连接账号、不提交任务；--quiet 避免将展开后的凭据打印出来。
-docker compose --env-file .env -f deploy/midjourney/compose.yaml config --quiet
-# Docker 引擎运行后启动代理；建立 Discord 连接，不会自行发起生图。
-docker compose --env-file .env -f deploy/midjourney/compose.yaml up -d
-```
+| 参数或面板选项 | 本项目如何选择 | 交付要求 |
+|---|---|---|
+| `--v`、`--ar` | 默认 V8.2；动作迁移图按实测参考视频比例，其他资产按实际构图需求 | 显式写实际版本和比例；比例不等于像素尺寸 |
+| `--stylize` | 生产图起点50；官方默认100，范围0–1000。优先精确姿态或服装时保持较低；明确需要更强审美演绎时才提高 | 逐图写最终数值，偏离项目起点时简述原因，不能把“越高越好”当规则 |
+| `--chaos` / Variety | 生产图起点0；官方范围0–100。已确认角色、构图和动作时减少变化；用户需要探索时可提高 | 写最终值；提高它不代表获得额外生成次数授权 |
+| `--raw` | 默认启用，用于加强文字对画面的控制；它仍可生成文字描述的绘画或幻想风格 | 若选择关闭，明确原因，正文及面板保持一致 |
+| `--weird` / Weirdness | 生产图起点0；官方范围0–3000。只在明确需要非常规设计时采用非零值 | 显式写所选值或在面板卡说明保持0，避免意外继承旧设置 |
+| `--iw` | 只在使用 Image Prompt 时评估，常规起点1；Attach to prompt 与 Style Reference 不使用它 | 有对应槽位才写最终值；变更前核对 V8.2 当前数值范围，不把旧版范围直接当新版规则 |
+| `--sw` | 有 Style Reference 时以100为起点，按风格影响调整；官方范围0–1000 | 有对应风格参考才填写；没有风格参考时省略，不能用它加强锁脸或场景几何 |
+| SD / HD（`--sd` / `--hd`） | 先按图片用途选择：普通候选可用SD，需要更高分辨率交付时评估HD及用户时间/额度选择 | 明确模式，支持的所选参数写入正文；HD不是`--q`，不等同于锁定现有像素的放大，切换后仍须验收 |
+| `--seed` | 比较单一改动时可固定并记录；正常新候选不必预设 | 不能代替身份参考，也不保证跨提示词、跨版本一致；实际种子与设置有记录后才用于复现 |
+| `--no` | 仅针对本图明确不需要的内容，保持简短 | 审查每个排除词是否否定必需衣服、道具、特效或文字；不靠“无文字”假装输入参考的字形已经清除 |
+| Personalization、Moodboard（`--p`） | 保留用户已选定的风格方案；未指定时，生产参考图建议本次关闭以减少额外影响 | 写清本次开关；启用时记录真实profile或moodboard，不编造代码，也不修改用户账号默认设置。它们会改变风格，Stylize也会影响其强度 |
+| `--sv`、`--exp`等进阶选项 | 仅在有具体用途且当前官方资料支持该版本/模式时采用 | 说明用途与最终值；不为填满参数添加；未核实的参数和枚举不交给用户试错 |
 
-参数缺失时 Compose 会拒绝启动。不要直接执行不带 `--quiet` 的 `compose config` 并转贴输出，
-展开后的配置含凭据。容器信息和日志也可能包含私人账号信息。
+参数组合必须再查兼容性：
 
-首次启动遇到镜像内旧版 Java 的 cgroup 探测崩溃，已在 Compose 中覆盖 `JAVA_OPTS`：
-禁用自动容器探测，堆上限 512 MiB、容器内存上限 1 GiB、CPU 线程数按 2 配置，并移除默认远程 JMX。
-此调整已通过容器运行和 HTTP 查询验证。参数含义参考
-[Java 17 官方说明](https://docs.oracle.com/en/java/javase/17/docs/specs/man/java.html)。
+- V8.2不沿用 V7 的 Omni Reference、`--oref`、`--ow`，也不使用旧 Character Reference 的 `--cref`。
+- 当前版本对照表不支持 V8.2 的 `--q`、`--draft`、Turbo 或多提示词 `::` 权重；不要从旧模板带入。Fast / Relax 按用户已有时间与额度选择，不把速度选项当成画质参数。
+- Edit Model不支持 `--tile`；不能因为 V8.2 基础模型支持 Tile 就认为其编辑组合也支持。
+- Moodboard与 `--sw` / `--sv` 不兼容；使用前先核对，不能拿Style Reference的权重调Moodboard。
+- 画幅、HD、编辑及放大存在各自边界；需要非常规比例或高分辨率流程时读对应当前说明。
+- 官方专页有时仍只列V8.1范围或与兼容表措辞不同；涉及V8.2的具体取值时优先核对当前版本及模式，保留来源与核对日期，不能凭其他版本推断未声明边界。
 
-## Python 和命令行
+### 每次交付格式
 
-只读检查不会生图，离线校验也不读取任何密钥：
+每条图片提示词交付时给出以下内容；批量时每张分别完整提供，不让用户从上一张猜设置：
 
-```powershell
-.\.venv\Scripts\python.exe -m autodl_video mj doctor
-.\.venv\Scripts\python.exe -m autodl_video mj validate examples/双精灵-法师生图.yaml
-.\.venv\Scripts\python.exe -m autodl_video mj run examples/双精灵-法师生图.yaml --dry-run
-```
+1. 中文说明图片用途、需要锁定的内容与目标机位/动作。
+2. 挂图表：真实文件名、具体槽位、顺序、控制范围；没有用途的槽位注明留空。
+3. 普通Imagine入口给一段可直接复制的完整中文提示词，末尾包含所选版本、实际画幅、Aesthetics及已选的参考权重或分辨率等参数，不含占位路径、假URL或未填写的值；Editor / Layers按前述例外给兼容的编辑正文，不强塞`--ar`或未经核实的后缀，画布和界面选项写入参数卡。
+4. 中文参数卡：逐项说明所选值/开关及必要理由，至少核对 `--iw` / `--sw` 是否适用、Stylize、Chaos、Weirdness、Raw、SD/HD、Seed、Personalization与Moodboard。采用默认值可简述，未用项写清省略或留空；能用受支持参数表达的已选项写进正文，面板卡与正文保持一致。
+5. 中文建议保存名和关键验收点。参数、参考图与正文需一起通过交付前二次审计，尤其检查身份、朝向、左右手、道具、遮挡、画幅和兼容性。
 
-`doctor` 验证本机 API 鉴权，不单独证明 Discord 实时在线；账号连接需结合初始化日志判断。
-YAML 支持 `prompt`、`reference_images`、`output_dir`、`timeout`、`poll_interval`。
-参考图片路径相对 YAML，图片可为 PNG/JPEG/WebP 本地文件或 Base64 data URL。
-不接受普通图片 URL 填入 `reference_images`，因为该后端字段要求 Base64。
-输出目录相对项目根目录，默认 `outputs/midjourney`；目录和素材说明使用中文。
-这些字段名与协议键保持英文，供程序稳定读取。
+常规参数选择直接在已授权制作范围内完成并说明，不增加例行确认步骤；这些规则不授权自动提交、重抽、HD重生成或额外花费。
 
-下列创建命令会消耗会员额度，只在用户指定提示词、参考图片和次数后执行：
+### 场景一致性与动作留白前置（2026-11-08用户要求）
 
-```powershell
-# 每次 run 创建一条 imagine 任务；--no-wait 保存任务 ID 后返回。
-.\.venv\Scripts\python.exe -m autodl_video mj run examples/双精灵-法师生图.yaml --no-wait
-# 替换任务 ID；U1～U4 选图，V1～V4 变体，R 重新生成，均为额外任务。
-.\.venv\Scripts\python.exe -m autodl_video mj change TASK_ID U2 --no-wait
-```
+- 同一场次先指定当前环境母图；已有用户选定的完整镜头图时，它负责现有建筑、地面、光线和空间关系。原始远景场景参考仅提供设计来源，不自动覆盖已确认镜头图的实际环境。
+- 每张新中文提示词把可见且应保持的场景锚点直接写清：主建筑形制与数量、相对距离及遮挡、前景平地、栏杆方向、地面砖缝与透视、云层或地平线、主光方向、色温、阴影及景深。换机位保持同一空间逻辑；固定机位或扩图保持现有投影关系，不只写空泛的“一致场景”。
+- 动作图片写提示词前看源视频首帧及代表动作，记录主体高度占比、中心位置、头顶和鞋底余量、道具向上下左右活动的空间。本项目云宫挥杆当前以人物约72–75%画高、身体中心约40%画宽作为对照目标；其他镜头逐图判断。
+- 主体、握柄与道具、环境透视和留白在第一版正文一起约束；看图时再核对实际结果。提示词内的比例属于生成目标，不是已经测量的结果，也不保证模型执行。
+- 扩图用Editor的Move / Resize设置16:9并调整图层占比；Image Scale或角点控制的是原图在新画布中的尺寸关系。应产生可见透明边缘，保留核心不擦除，不用Retexture重绘整幅，也不增加填满透明区域的重复底层。
+- 1234.png为1456×816，主体约95%画高。用1920×1080作为比例示意时，保留原图尺寸、上/下各加132、左加280、右加184，主体约72%画高且中心接近40%画宽；原图约占新画布宽高76%。这些像素数用于说明布局，不承诺MJ导出恰为1920×1080；最终像素以文件检查为准。
+- 若界面没有像素输入，16:9画布内把原图缩到宽高约76%，上下居中，轻微向右移动整张图使人物身体中心约在40%画宽处。不要将浏览器显示缩放误认为Image Scale，也不要把76%误作“向外扩76%”。
+- 扩图只挂选定完整图为Editor底图，三类参考槽留空；按当前Layer入口例外交付不带后缀的中文正文，画布与可用面板选项另外说明。完成后仍实际看图和用户选定，不自动把新提示词或透明编辑层当成素材。
 
-查询和恢复只读已有任务，不重新提交：
+依据：[官方Editor的Move / Resize、Image Scale、画布与透明区域说明](https://docs.midjourney.com/hc/en-us/articles/32764383466893-Editor)，核对日期2026-11-08。主体比例与像素布局是本次对白模及1234.png的制作判断，不是官方推荐值。
 
-```powershell
-.\.venv\Scripts\python.exe -m autodl_video mj list
-.\.venv\Scripts\python.exe -m autodl_video mj status TASK_ID
-.\.venv\Scripts\python.exe -m autodl_video mj wait TASK_ID
-.\.venv\Scripts\python.exe -m autodl_video mj download TASK_ID
-```
+依据：[官方版本说明](https://docs.midjourney.com/hc/en-us/articles/32199405667853-Version)、[Edit Model 与 Attach to prompt](https://docs.midjourney.com/hc/en-us/articles/48495453462797-Edit-Model)、[Image Prompts](https://docs.midjourney.com/hc/en-us/articles/32040250122381-Image-Prompts)。核对日期：2026-11-07（Asia/Taipei）。实际交付前仍按当前官方文档检查所用参数兼容性；参考图不保证精确复刻身份与姿势。
 
-任务记录位于 `.autodl/midjourney/tasks/`，创建尝试位于 `.autodl/midjourney/attempts/`。
-提交 POST 只发送一次；网络错误、重定向、服务端错误或提交响应不明确时记录 `UNCERTAIN`，
-先核对 Discord 历史，不自动重发。`state` 是关联标记，不是服务端幂等键。
-结果下载使用独立、无鉴权的 HTTP 客户端，代理密钥不发送给图片 CDN。
-原始文件留在 `outputs/`，审核后按中文名称归档至 `assets/双精灵对决/`；
-不直接将任务 ID 文件名下载进 `assets/`。生成或放大不自动将素材标为 ready。
+参数依据：[Style Reference / Style Weight](https://docs.midjourney.com/hc/en-us/articles/32180011136653-Style-Reference)、[Stylize](https://docs.midjourney.com/hc/en-us/articles/32196176868109-Stylize)、[Chaos / Variety](https://docs.midjourney.com/hc/en-us/articles/32099348346765-Chaos-Variety)、[Raw](https://docs.midjourney.com/hc/en-us/articles/32634113811853-Raw)、[Weirdness](https://docs.midjourney.com/hc/en-us/articles/32390120435085-Weird)、[Seed](https://docs.midjourney.com/hc/en-us/articles/32604356340877-Seeds)、[No](https://docs.midjourney.com/hc/en-us/articles/32173351982093-No)、[Personalization](https://docs.midjourney.com/hc/en-us/articles/32433330574221-Personalization)、[Moodboards](https://docs.midjourney.com/hc/en-us/articles/39193335040013-Moodboards)、[Aspect Ratio](https://docs.midjourney.com/hc/en-us/articles/31894244298125-Aspect-Ratio)。
 
-```python
-from autodl_video import MidjourneyProject
+## 历史留存
 
-project = MidjourneyProject(r"E:\AutoDL")
-preview = project.generate("examples/双精灵-法师生图.yaml", dry_run=True)
-print(preview)
-# 用户授权后，移除 dry_run=True 才会提交生成。
-```
-
-会员分钟消耗没有在此代理的提交协议中提供可靠预估或硬性上限；本客户端不把它当作 AutoDL 人民币预算。
-一次 run 不自动批量出图或继续 U/V/R，避免将选图和重抽隐含在同一次调用里。
-
-当前模板使用上游默认内存任务存储，**重启代理会丢失其任务记录**。
-运行期间保留任务 ID；中断后先核对 Discord 历史，不能因为查不到任务就自动重新生成。
-本机客户端已保存任务 ID，但不能重建代理丢失的任务内容；
-若需要代理重启后继续通过代理查询，可再启用上游支持的 Redis 持久化方案。
-
-通过只读连接检查后，再按用户明确指定的提示词、参考图和生成数量做出图联调。
-成图仍归档至 `assets/双精灵对决/`，沿用项目中文命名与视频阶段素材检查规则。
+此前的接入、限速、启动、生成与恢复原始记录保存在
+[已弃用方案历史记录](archive/Midjourney-Discord-历史记录.md)，仅离线查阅，不作为部署或执行指南。
