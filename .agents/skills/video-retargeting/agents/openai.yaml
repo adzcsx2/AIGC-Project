@@ -1,4 +1,4 @@
 interface:
   display_name: "视频换角与动作迁移"
-  short_description: "准备无声引导片，用自己的角色替换原片人物，并区分白模预演与深度控制路线"
-  default_prompt: "使用 $video-retargeting，分析我的原视频和角色图，准备静音参考片与换角配置，缺素材时先列清单。"
+  short_description: "保留原声审计视频与角色图，按需适配白模运动，生成并验收角色替换结果"
+  default_prompt: "使用 $video-retargeting，根据我的视频和角色图准备换角生成，保留原声，检查身体结构与动作冲突，必要时修正白模副本后提交并验收。"
