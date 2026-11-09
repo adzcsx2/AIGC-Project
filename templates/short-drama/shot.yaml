@@ -3,7 +3,7 @@ materials_manifest: materials.yaml
 shot_id: SHOT-01
 workflow_id: minimax_h3_lightx2v_v5_15s
 inputs:
-  prompt: Replace this placeholder with the complete English H3 video prompt for this shot once all required assets are ready.
+  prompt: 必要素材全部就绪后，将此占位说明替换为本镜头完整的中文 H3 视频提示词。
   ref_image_0: assets/角色01.png
   ref_image_1: assets/场景01.png
   duration: 5
