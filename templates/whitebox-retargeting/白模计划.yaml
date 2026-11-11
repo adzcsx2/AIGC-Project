@@ -1,0 +1,41 @@
+# 保存到作品03-制作/制作计划/白模计划.yaml，project.yaml用whitebox_plan引用。
+# 这是待填写模板；文件存在、哈希正确、实际检查通过前都不是ready。
+# 所有文件路径相对作品根目录。镜头帧零起算、入含出不含。
+# 只做圆柱等简单几何；自然步态/肢体/表情交模型提示词。详细执行见docs/工作流/白模制作与验收.md。
+# 分镜中登记主体ID→基本体尺寸/比例→稳定纯色或灰度→真实角色/参考图，source_documents绑定其哈希。
+# 当前render送模分支只支持model_gray；彩色审片版不等于彩色送模，不添加未实现的颜色参数。
+schema_version: 1
+fps: {num: 24, den: 1}
+frame_start: 1
+frame_count: 96
+preview_scale: 25
+plan_hide: [] # 仅首帧俯视辅助图隐藏的真实屋顶/天花对象名，不影响审片/送模视频
+source:
+  blend: 03-制作/三维工程/场景工程-版本01.blend
+  sha256: ''
+source_documents: [] # [{path: 01-文档/分镜与运镜/分镜.md, sha256: 实际哈希}]
+subjects:
+  SUBJECT-01:
+    objects: [角色圆柱占位] # 实际对象名；包含其下属网格，不按名称猜身份
+    # character_id: CHAR-01 # 需要人物绑定时引用project.yaml.characters，不复制声音
+    role: subject
+    model_gray: 0.25
+shots:
+  - id: CAMERA-SHOT-01
+    # generation_shot_id: SHOT-01 # 可选；多个摄影镜头可引用同一生成片段
+    start_frame: 0
+    end_frame: 96
+    camera: 摄影机
+    camera_motion: fixed # fixed / moving / any；仅检查声明，必须与工程实际摄影机动画一致
+    # 分镜记录机位/高度/角度、焦距/视场、目标、路径/速度、切点；本YAML不虚构相机控制字段。
+    subjects: [SUBJECT-01]
+    framing:
+      SUBJECT-01:
+        inside: true
+        margin: 0.03
+        min_height: 0.1
+        max_height: 0.94
+        max_occlusion: 0.2 # 有限表面射线被其他可渲染对象挡住的比例；不是逐像素可见性
+    contacts: [] # 在真实接触区间填写对象局部锚点a/b、max_distance和起止帧
+locks: [] # AI核对比例、路径/升降、接触锚点、颜色映射、相机与模型细节分工；工具不理解自然语言锁
+notes: 参数按当前作品填写；简单造型不能省略爬升/接近/接触过程，最终肢体展开需预留构图空间；不以模板默认值替代创作决定。

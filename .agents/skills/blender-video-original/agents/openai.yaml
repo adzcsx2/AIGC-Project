@@ -1,0 +1,6 @@
+interface:
+  display_name: "Blender原创白模"
+  short_description: "用本机Blender制作圆柱等简单占位、空间路径与实际摄影机，交模型补全表演"
+  default_prompt: "使用 $blender-video-original 按已确认方案制作简单几何白模、运动路径和实际摄影机，交付可编辑工程与预演。"
+policy:
+  allow_implicit_invocation: true

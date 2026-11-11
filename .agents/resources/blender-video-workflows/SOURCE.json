@@ -1,0 +1,52 @@
+{
+  "repository": "https://github.com/modengsir/blender-video-workflows",
+  "commit": "8dbcdc4b7d1f1d8b701e8de6e9258b63d63a5afb",
+  "installed_on": "2026-11-09",
+  "license": "MIT",
+  "files": [
+    {
+      "path": "LICENSE",
+      "git_blob_sha1": "a0312edc39d6bd1d10b572e3f124446011466825"
+    },
+    {
+      "path": "README.md",
+      "git_blob_sha1": "81c54d0b78ccd93182816d845a1fc527abad4009"
+    },
+    {
+      "path": "VALIDATION.md",
+      "git_blob_sha1": "e1154de44c56042bd6e1e21610516c152b7949ae"
+    },
+    {
+      "path": "skills/blender-video-original/SKILL.md",
+      "git_blob_sha1": "6d333f43f272bfde2723ad0ed6ff34a6f5afe830"
+    },
+    {
+      "path": "skills/blender-video-original/agents/openai.yaml",
+      "git_blob_sha1": "f25a42740a781c972088004a947e829479028e4a"
+    },
+    {
+      "path": "skills/blender-video-original/references/blender-production.md",
+      "git_blob_sha1": "c80a58a0c07de020f8a3c0043988582ab734dce9"
+    },
+    {
+      "path": "skills/blender-video-original/references/video-generation.md",
+      "git_blob_sha1": "537ae192deb81e89ff1f677357e8cc0772115cd8"
+    },
+    {
+      "path": "skills/blender-video-recreate/SKILL.md",
+      "git_blob_sha1": "43b93773002f14d0395225a12fcc130c39e1735e"
+    },
+    {
+      "path": "skills/blender-video-recreate/agents/openai.yaml",
+      "git_blob_sha1": "a9ac18019b2deb7429c29a3a59867bf5f5dd3e86"
+    },
+    {
+      "path": "skills/blender-video-recreate/references/blender-production.md",
+      "git_blob_sha1": "c80a58a0c07de020f8a3c0043988582ab734dce9"
+    },
+    {
+      "path": "skills/blender-video-recreate/references/video-generation.md",
+      "git_blob_sha1": "537ae192deb81e89ff1f677357e8cc0772115cd8"
+    }
+  ]
+}

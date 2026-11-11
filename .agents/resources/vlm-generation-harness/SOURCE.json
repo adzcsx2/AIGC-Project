@@ -1,0 +1,131 @@
+{
+  "repository": "https://github.com/7ohnson/VLM-Generation-Harness",
+  "commit": "2c64ed4ddcbc6f002e3afd15c7c7492ddd0ae0ca",
+  "archived_on": "2026-11-10",
+  "license": "MIT",
+  "status": "reference_only",
+  "runtime_import": false,
+  "scope": "Selected text sources; no demo media. Active adaptations live in docs, tools and existing skills.",
+  "files": [
+    {
+      "path": "blockout/human.py",
+      "sha256": "bd5fda24a7ca3e4a8bf141a1a3c8e5d73efc2ac216741ad657a2005c6b35e409",
+      "git_blob_sha1": "726cea631be5b5fbd2addf30e4184f73ae6d7ccc"
+    },
+    {
+      "path": "blockout/project.py",
+      "sha256": "5cfce84f96c2bb97f0a8b9ebe9d952aebde9889ba82d3d24968bbd1bde6e70b4",
+      "git_blob_sha1": "602211b5f6e7bc3dfadf227f6adfd522b0152503"
+    },
+    {
+      "path": "blockout/rig.py",
+      "sha256": "377fbfc286864c7fd2bdb53fc44df97bdf406cb29d0a2c5ccd9a81edc6e4923a",
+      "git_blob_sha1": "2b1368b80c1b137a4e72f09d7fc996cfb455cc76"
+    },
+    {
+      "path": "blockout/scene_template.py",
+      "sha256": "ec610705ec09a1a735b66f36323ebd3c39198792a2ec7cf444d2ae202148a9f0",
+      "git_blob_sha1": "2fbacc21560febea13f8d34a69719a00f3b91d85"
+    },
+    {
+      "path": "docs/01-pipeline.md",
+      "sha256": "3af679453d6c95007a51d351dd27c18a29f8d98c2bf84afe1b6aa749cf1a5bba",
+      "git_blob_sha1": "80912fd027c450587c72d9e8fab694f985d50dc5"
+    },
+    {
+      "path": "docs/02-ironclad-rules.md",
+      "sha256": "f670172c55c85e81a4d561197cbd50102a2c1ee5dc66b3d9c69fbcaa76d4426d",
+      "git_blob_sha1": "1d69871fab0fd840792e61f6ec9ad996e6c35896"
+    },
+    {
+      "path": "docs/03-prompt-spec.md",
+      "sha256": "ba70093d270b933b9b4851af4a16795caf37ae203cca98ccda355900e429ce6b",
+      "git_blob_sha1": "63e826076a4c33a3afa3eb0d2f9fd5999d9c154f"
+    },
+    {
+      "path": "docs/04-model-notes.md",
+      "sha256": "5847fc5b3787257a2922877dcfe7cbcb627b4519198fd087540d718bf187bdf6",
+      "git_blob_sha1": "202e13b0a52112c9d9e1f3daec937ca262230274"
+    },
+    {
+      "path": "docs/05-troubleshooting.md",
+      "sha256": "20026093f9ff4c5ba2f246796a2b826f83068fef9a8bf3f2b3af7cb53b5f1af7",
+      "git_blob_sha1": "bc0ed33ffa51456a0d7e57f4c67f31acfd66e5b7"
+    },
+    {
+      "path": "docs/06-agent-integration.md",
+      "sha256": "b6d8eb8830d74d8b11d920bf0ded60848e6337310b29ef043612fbce09d39743",
+      "git_blob_sha1": "9baee25c3b0283c54c2b58b775bfab9724c3cd85"
+    },
+    {
+      "path": "examples/boutique/out/facts.json",
+      "sha256": "a9b21672be5edced10c10a91b059a018b4fb044eea2febb87f46509c3e0a1c45",
+      "git_blob_sha1": "f6b059973a01584b0ccbb6eb5031f524a5bf13a4"
+    },
+    {
+      "path": "examples/boutique/out/verify_report.txt",
+      "sha256": "2a45dc520676096878c0e285790dfffeabcca56077a2e9b4dc9a7b98410accd7",
+      "git_blob_sha1": "fb8512a4ff50198932be2ef4290fb9846a06a1b4"
+    },
+    {
+      "path": "examples/boutique/prompt.txt",
+      "sha256": "3427bf8cf8a42c9af8aaaee5813b680f3c89cfa88387e694c3e30d300ad38338",
+      "git_blob_sha1": "9894f3ada97cbd4e286bbba9c1efe45ded2acc0b"
+    },
+    {
+      "path": "examples/boutique/README.md",
+      "sha256": "fc0a31a40aa083375fe52f8036d4492eb0f02354192e4eb2997af2015ec54325",
+      "git_blob_sha1": "cef2c28a88c57393cee296d12d34d96383f49c26"
+    },
+    {
+      "path": "examples/boutique/scene.py",
+      "sha256": "57c860cb921fab27deb8f9afcd2ce55645b73a6594b9152a92901deb12ed6cc9",
+      "git_blob_sha1": "a3e65c493d0f4a4550677b652b672de5b75dd2d2"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "675a58e405e448990b4a4e8b7272e42b2e41c73e3c8bc39cdc09f2a07983e51f",
+      "git_blob_sha1": "4c808ce618a1f147a3a67204099b48a152d73eea"
+    },
+    {
+      "path": "README.md",
+      "sha256": "0f7ac053c966f5d6635ff01599261d923da301758cdeff69467a3daa0b8f0b92",
+      "git_blob_sha1": "0e8866a95fd69cd2bfc1dd80c251568aa9dd464a"
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "1ee35613557abbddf7d0626d736b4bb8761f719801cbdce2cb8ac8c8d40e2104",
+      "git_blob_sha1": "09402edf066c8029a023282b69c0ea9de1d0f3f2"
+    },
+    {
+      "path": "templates/PROMPT_TEMPLATE.md",
+      "sha256": "0ec3a35988d512a091eabbedf66c5448e8320297716bfc813a3d63a372499d50",
+      "git_blob_sha1": "93203a826692d2821ea8d357ea67cf055a69e158"
+    },
+    {
+      "path": "templates/SPACE_LOCK_TEMPLATE.md",
+      "sha256": "20f3f7dc9b82e6c2b2926b7be869e031d5b35c32d88656a2b25723f0ea855a4c",
+      "git_blob_sha1": "a83898e4add18e55652697781e6d9aad456d8aee"
+    },
+    {
+      "path": "tools/check_prompt.py",
+      "sha256": "a90079e4708e839acf3c7e6ff254769d5e5010300b5e740eebfcb9e18fa9f4d3",
+      "git_blob_sha1": "d301c5a69187258922bd0da6776eb6db730c3d95"
+    },
+    {
+      "path": "tools/contact_sheet.py",
+      "sha256": "e9dac6b7fc1b9c5fe74e242d8231fd7f4222accec2be7a47a9621115511383a1",
+      "git_blob_sha1": "49801f5ab53746c1b046a9fdb95baf5b605ae76a"
+    },
+    {
+      "path": "tools/slice_shots.py",
+      "sha256": "28ac4cfe26c84d2305e80b37683a799afcb53b56ce590cc1f0bd07b8171fc632",
+      "git_blob_sha1": "6351a01f7a211c2f5603e42180518c9c36f74410"
+    },
+    {
+      "path": "tools/verify_cuts.py",
+      "sha256": "7620888072273b7c0dbf405bb00cbb5463aea7eba470c1e6d728bcdffc5fe8c8",
+      "git_blob_sha1": "d69072b24bd79db89c181b01ca53cd21acd4928a"
+    }
+  ]
+}

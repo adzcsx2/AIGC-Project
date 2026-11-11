@@ -1,0 +1,6 @@
+interface:
+  display_name: "Blender视频复刻白模"
+  short_description: "按参考视频用简单几何复刻比例、路径与摄影机，身体表演交视频模型完成"
+  default_prompt: "使用 $blender-video-recreate 读取参考视频，以圆柱等简单几何复刻空间运动和摄影机，保留节奏、关键事件与原声。"
+policy:
+  allow_implicit_invocation: true
