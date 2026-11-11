@@ -1,12 +1,12 @@
-# 原创连续戏份模板，不是生成授权。先确认文案和素材。
-materials_manifest: materials.yaml
+# 保存到 projects/<作品>/03-制作/生成配置/；输入占位符须替换，非生成授权。
+# 新角色包括动物；ref_image_0实际传入其合格三视图，场景图不能替代身份板。多角色按真实槽位逐个绑定。
+materials_manifest: ../../materials.yaml
 shot_id: SHOT-01
 workflow_id: minimax_h3_zm_u24
 inputs:
   prompt: Replace this placeholder with the audited English prompt for the confirmed
     continuous scene.
-  ref_image_0: assets/角色01.png
-  ref_image_1: assets/场景01.png
+  ref_image_0: ../../02-素材/人物/角色01-三视图参考板.png
+  ref_image_1: ../../02-素材/场景/场景01.png
   duration: 15
   resolution: 768p横
-output_dir: outputs/short-drama/SHOT-01

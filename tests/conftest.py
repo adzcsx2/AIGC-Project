@@ -36,6 +36,9 @@ def project(tmp_path, detail, monkeypatch):
     monkeypatch.delenv("AUTODL_API_KEY", raising=False)
     monkeypatch.delenv("AUTODL_TOKEN", raising=False)
     (tmp_path / "catalog").mkdir()
+    validation_work = tmp_path / "projects/工具验证"
+    validation_work.mkdir(parents=True)
+    (validation_work / "project.yaml").write_text("name: 工具验证\n", encoding="utf-8")
     (tmp_path / "catalog/workflows.yaml").write_text(
         yaml.safe_dump(
             {

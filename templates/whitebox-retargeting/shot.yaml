@@ -1,11 +1,11 @@
-# 7秒仅示例；先测源片长度。通常省略prompt，必要时写简短英文映射，不套长H3格式。
-materials_manifest: materials.yaml
+# 保存到 projects/<作品>/03-制作/生成配置/；输入占位符须替换，非生成授权。
+materials_manifest: ../../materials.yaml
 shot_id: SHOT-01
 workflow_id: minimax_h3_zm_titim
 inputs:
-  ref_image_0: assets/角色-多视角与运动板.png
-  ref_video: assets/白模-动作引导.mp4
-  video_subject_to_replace: person
+  ref_image_0: ../../02-素材/人物/角色-三视图参考板.png
+  ref_video: ../../02-素材/参考原片/白模-动作引导.mp4
+  video_subject_to_replace: cylinder # 简单圆柱引导的起点；按实际可见几何及当次接口核实，不把标签颜色当检测类别
+  # 简单占位必须补写本片英文prompt：主体/参考图映射、相对尺度、保留路径/高度/摄影和由模型完成的身体表演。
   duration: 7
   resolution: 768p横
-output_dir: outputs/白模复刻/镜头01

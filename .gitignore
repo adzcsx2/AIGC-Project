@@ -73,3 +73,7 @@ Thumbs.db
 *.onnx
 *.pem
 *.key
+
+# 迁移后的本机验证与历史执行脚本
+/docs/验证记录/
+/tools/视频工具/历史脚本/

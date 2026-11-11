@@ -1,0 +1,21 @@
+# 保存到 projects/<作品>/01-文档/角色/<中文描述>.yaml，登记到project.yaml.characters。
+# 本文件中所有媒体/文档路径相对作品根目录，不相对角色YAML位置。
+# 人物包含动物、怪物等；每个新角色先制作独立三视图，visual_references引用已验收板，materials绑定实际API身份输入。
+schema_version: 1
+character_id: CHAR-01
+label: 人物01
+display_name: null  # 只供用户识别；不会自动成为台词中的称呼
+attributes:
+  summary: null
+  appearance: null
+  personality: null
+  source_documents: []  # 长设定正文保留在原文，此处只指向来源
+visual_references: []  # 项目内路径；或{manifest: materials.yaml, asset_id: CHAR-01}
+# 新人物参考板只含正面特写、正面全身无头、背面全身；版式见character-reference-board，不追加其他视图。
+speech_usage: unknown  # 仅dialogue触发配声；none/vocalization/unknown不触发。随当前剧本更新。
+voice:  # 剧本不要求人物说话时可为空或省略；建档不等于要配声
+  status: unconfigured  # unconfigured / audition_pending / approved
+  design_brief: null  # 看已选人物图后提出英文创意音色说明；不是从外观推断真实嗓音
+  candidates: []  # {path: 02-素材/音频/角色声音/人物01/试听-版本01.wav, source: ...}
+  reference_audio: null  # 选定后指向同一候选文件，不复制文件
+  approval: null  # {character_id: CHAR-01, sample_sha256: ..., confirmation_ref: 真实用户消息}

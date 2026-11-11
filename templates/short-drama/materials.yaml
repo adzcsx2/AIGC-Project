@@ -1,39 +1,46 @@
-# 新作品模板；全部待确认/待补，不直接改ready绕过检查。
+# 保存到 projects/<作品>/materials.yaml；占位素材不得标ready。
+# 新人物/动物先有合格三视图，再制作含角色场景图；逐个登记为character资产并实际绑定API，不仅登记场景图。
 schema_version: 2
+voice_policy:
+  version: 1
+  project: project.yaml
 creative_confirmation:
   state: pending
   script_sha256: ''
   confirmation_ref: ''
 documents:
   brief:
-    path: 需求.md
+    path: 01-文档/需求与剧本/需求.md
     state: missing
   style:
-    path: 视觉设定.md
+    # 与project.yaml.documents.style指向同一当前视觉设定；ready不等于提示词已继承风格或成片通过。
+    path: 01-文档/视觉设定/视觉设定.md
     state: missing
   script:
-    path: 剧本.md
+    path: 01-文档/需求与剧本/剧本.md
     state: missing
   storyboard:
-    path: 分镜.md
+    path: 01-文档/分镜与运镜/分镜.md
     state: missing
 assets:
   CHAR-01:
     kind: character
     required: true
-    path: assets/角色01.png
+    path: 02-素材/人物/角色01-三视图参考板.png
     state: missing
-    prompt: See the approved English character prompt in 图片提示词.md; this is not a ready
+    prompt: See the approved English three-view character board prompt in 图片提示词.md; this is not a ready
       asset.
   SCENE-01:
     kind: scene
     required: true
-    path: assets/场景01.png
+    path: 02-素材/场景/场景01.png
     state: missing
     prompt: See the approved English scene prompt in 图片提示词.md; this is not a ready
       asset.
 shots:
   SHOT-01:
+    speakers: null  # 仅列本镜剧本要求说话的人物；无人说话填[]，呼吸/吼声不算说话
+    voice_bindings: {}  # 如ref_audio_0: CHAR-01；同时在reference_bindings登记音频资产
     required_assets:
     - CHAR-01
     - SCENE-01

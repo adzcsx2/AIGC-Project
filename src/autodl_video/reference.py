@@ -11,6 +11,7 @@ import tempfile
 from pathlib import Path
 
 from .errors import AutoDLError
+from .paths import ensure_project_output, resolve_media_path
 
 
 def _tool(name: str) -> str:
@@ -20,8 +21,8 @@ def _tool(name: str) -> str:
     return executable
 
 
-def probe_video(path: str | Path) -> dict:
-    source = Path(path).resolve()
+def probe_video(path: str | Path, *, root: Path | None = None) -> dict:
+    source = resolve_media_path(Path(path), root)
     if not source.is_file():
         raise AutoDLError(f"Reference video not found: {source}")
     try:
@@ -71,6 +72,7 @@ def prepare_reference(
     *,
     start: float = 0,
     duration: float | None = None,
+    root: Path | None = None,
 ) -> dict:
     for name, value in (("start", start), ("duration", duration)):
         if name == "duration" and value is None:
@@ -83,13 +85,13 @@ def prepare_reference(
         ):
             sign = "positive" if name == "duration" else "nonnegative"
             raise AutoDLError(f"{name} must be a finite {sign} number")
-    source = Path(source).resolve()
-    destination = Path(destination).resolve()
+    source = resolve_media_path(Path(source), root)
+    destination = ensure_project_output(Path(destination), source, root=root)
     if destination.suffix.lower() != ".mp4":
         raise AutoDLError("Prepared reference output must have an .mp4 extension")
     if destination.exists() or source == destination:
         raise AutoDLError("Output already exists; choose a new file to preserve the original")
-    info = probe_video(source)
+    info = probe_video(source, root=root)
     if start >= info["duration"] or (
         duration is not None and start + duration > info["duration"] + 0.001
     ):
@@ -129,7 +131,7 @@ def prepare_reference(
                 "ffmpeg reference preparation failed: "
                 + result.stderr.decode("utf-8", errors="replace")[-500:]
             )
-        prepared = probe_video(output)
+        prepared = probe_video(output, root=root)
         if prepared["has_audio"]:
             raise AutoDLError("Prepared reference unexpectedly contains audio")
         # Same-filesystem hard link publishes atomically and refuses an existing target.

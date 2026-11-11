@@ -1,3 +1,7 @@
+import hashlib
+import json
+import os
+
 import httpx
 import pytest
 
@@ -24,7 +28,7 @@ def test_sync_check_and_atomic_failure(project, detail):
     assert before == path.read_bytes()
     assert sync_catalog(project, source)["total"] == 1
     assert get_workflow(project, "demo")["description"] == "updated upstream"
-    assert (project / "docs/models.md").exists()
+    assert (project / "docs/工具与接口/models.md").exists()
     before = path.read_bytes()
 
     def fail(_):
@@ -115,3 +119,147 @@ def test_download_failure_never_leaves_partial_file(tmp_path, status, content, h
 def test_invalid_download_result(tmp_path, results):
     with pytest.raises(AutoDLError):
         download_results({"task_id": "task-1", "results": results}, tmp_path)
+
+
+def test_download_matches_archives_by_content_despite_new_order_and_count(tmp_path):
+    (tmp_path / "project.yaml").write_text("name: work\n", encoding="utf-8")
+    archive = tmp_path / "archive"
+    archive.mkdir()
+    first, second = archive / "镜头甲.mp4", archive / "镜头乙.mp4"
+    first.write_bytes(b"remote-first")
+    second.write_bytes(b"remote-second")
+    remote = [b"remote-second", b"remote-first", b"remote-new", b"remote-first"]
+    requests = []
+
+    def handler(request):
+        requests.append(request)
+        assert "authorization" not in request.headers
+        return httpx.Response(200, content=remote[int(request.url.path[1:])])
+
+    destination = tmp_path / "output"
+    files = download_results(
+        {"task_id": "task-1", "results": [f"https://cdn.example/{i}" for i in range(4)]},
+        destination, transport=httpx.MockTransport(handler), existing_files=[first, second],
+    )
+    assert len(requests) == len(files) == 4
+    assert files[:2] == [second, first]
+    assert files[3] == first
+    assert [p.read_bytes() for p in files] == remote
+    assert list(destination.iterdir()) == [files[2]]
+
+
+def test_download_recovers_missing_and_changed_files_without_overwriting(tmp_path):
+    corrupt = tmp_path / "已归档.mp4"
+    corrupt.write_bytes(b"damaged!")
+    missing = tmp_path / "丢失.mp4"
+    occupied = tmp_path / "task-1_01.mp4"
+    occupied.write_bytes(b"user-edit")
+    # The historical predictable temporary name may even be a hard link to a master.
+    old_partial = tmp_path / "task-1_01.mp4.part"
+    os.link(occupied, old_partial)
+    remote = [b"original", b"second"]  # same length as corrupt, different SHA-256
+    data = {
+        "task_id": "task-1",
+        "results": [f"https://cdn.example/{i}.mp4" for i in range(2)],
+    }
+    transport = httpx.MockTransport(lambda request: httpx.Response(
+        200, content=remote[int(request.url.path[1])],
+    ))
+    files = download_results(
+        data, tmp_path, transport=transport, existing_files=[corrupt, missing],
+    )
+    assert len(files) == 2 and [p.read_bytes() for p in files] == remote
+    assert files[0].name == "task-1_01-下载恢复-版本02.mp4"
+    assert files[1].name == "task-1_02.mp4"
+    assert corrupt.read_bytes() == b"damaged!"
+    assert occupied.read_bytes() == old_partial.read_bytes() == b"user-edit"
+    assert not missing.exists()
+    before = set(tmp_path.iterdir())
+    assert download_results(data, tmp_path, transport=transport, existing_files=files) == files
+    assert set(tmp_path.iterdir()) == before
+
+
+def test_download_does_not_reuse_another_work_archive(tmp_path):
+    work, nested = tmp_path / "work", tmp_path / "work/another-work"
+    nested.mkdir(parents=True)
+    for folder in (work, nested):
+        (folder / "project.yaml").write_text("name: independent\n", encoding="utf-8")
+    foreign = nested / "镜头.mp4"
+    foreign.write_bytes(b"same-bytes")
+    destination = work / "output"
+    files = download_results(
+        {"task_id": "task-1", "results": ["https://cdn.example/file.mp4"]},
+        destination, existing_files=[foreign], transport=httpx.MockTransport(
+            lambda request: httpx.Response(200, content=b"same-bytes")
+        ),
+    )
+    assert files == [destination / "task-1_01.mp4"]
+    assert foreign.read_bytes() == files[0].read_bytes()
+
+
+@pytest.mark.parametrize("patch", [{"task_id": "another-task"}, {"files": [None]}])
+def test_task_archive_metadata_rejects_wrong_identity_or_invalid_paths(tmp_path, patch):
+    store = TaskStore(tmp_path)
+    store.save("task-1")
+    record = store.directory / "task-1.json"
+    record.write_text(json.dumps({"task_id": "task-1", **patch}), encoding="utf-8")
+    with pytest.raises(AutoDLError, match="Invalid"):
+        store.read("task-1")
+
+
+def test_direct_download_resolves_destination_before_writing(project):
+    work = project / "projects/工具验证"
+    registry = project / ".autodl/path-map.json"
+    registry.parent.mkdir()
+    registry.write_text(json.dumps({
+        "files": {}, "directories": {"outputs/legacy": "projects/工具验证/04-输出"},
+    }), encoding="utf-8")
+    saved = download_results(
+        {"task_id": "direct", "results": ["https://cdn.example/result.mp4"]},
+        project / "outputs/legacy", root=project,
+        transport=httpx.MockTransport(lambda _: httpx.Response(200, content=b"original")),
+    )
+    assert saved == [work / "04-输出/direct_01.mp4"]
+    assert saved[0].read_bytes() == b"original"
+    assert not (project / "outputs").exists()
+
+
+def test_direct_download_publication_collision_reuses_equal_winner(tmp_path, monkeypatch):
+    real_link = os.link
+    calls = 0
+
+    def collide(source, target):
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            target.write_bytes(source.read_bytes())
+            raise FileExistsError("another downloader published first")
+        real_link(source, target)
+
+    monkeypatch.setattr("autodl_video.storage.os.link", collide)
+    result = download_results(
+        {"task_id": "race", "results": ["https://cdn.example/result.mp4"]}, tmp_path,
+        transport=httpx.MockTransport(lambda _: httpx.Response(200, content=b"original")),
+    )
+    assert result == [tmp_path / "race_01.mp4"]
+    assert list(tmp_path.iterdir()) == result
+    assert calls == 1
+
+
+def test_journal_only_recovers_complete_hash_matching_files(tmp_path):
+    valid = tmp_path / "完整.mp4"
+    valid.write_bytes(b"complete")
+    changed = tmp_path / "不完整.mp4"
+    changed.write_bytes(b"comp")
+    digest = hashlib.sha256(b"complete").hexdigest()
+    journal = [{"path": str(path), "size": 8, "sha256": digest, "state": "pending"}
+               for path in (valid, changed, tmp_path / "missing.mp4")]
+    store = TaskStore(tmp_path)
+    store.save("interrupted", download_journal=journal)
+    record = store.read("interrupted")
+    assert not record.get("files")
+    assert store.recovery_files(record) == [valid]
+    journal[0]["state"] = []
+    store.save("interrupted", download_journal=journal)
+    with pytest.raises(AutoDLError, match="Invalid download journal"):
+        store.read("interrupted")

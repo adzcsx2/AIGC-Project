@@ -1,7 +1,7 @@
 workflow_id: indextts2-v1
 inputs:
   prompt_text: 欢迎来到这个由人工智能创作的视频世界。
-  prompt_simple: ../assets/参考音频.wav
+  prompt_simple: ../projects/工具验证/02-素材/音频/参考音频.wav
   emo_control_method: 与音色参考音频相同
-output_dir: outputs/speech
+output_dir: projects/工具验证/04-输出/原始片段/语音生成
 # 按输出音频时长收费；未设置 max_cost_cny。

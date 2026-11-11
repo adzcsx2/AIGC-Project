@@ -1,9 +1,8 @@
 workflow_id: minimax_h3_lightx2v_no_pic
 inputs:
-  prompt: An orange cat walks along a street after the rain. Soft lights reflect on the wet pavement as the camera slowly follows, with a cinematic look.
+  prompt: An orange cat walks along a street after the rain. Soft lights reflect on the wet pavement as the camera slowly follows, with a cinematic look. Silent scene, with no dialogue, background music, songs, humming, musical accents, ambient sound, or sound effects.
   duration: 1
   resolution: 480p横
-output_dir: outputs/demo
-max_cost_cny: 0.10
+output_dir: projects/工具验证/04-输出/原始片段/文生视频样片
 timeout: 1800
 poll_interval: 3

@@ -91,7 +91,7 @@ def sync_catalog(root: Path, client: AutoDLClient, *, check: bool = False) -> di
             "workflows": entries,
         }
         atomic_text(path, yaml.safe_dump(document, allow_unicode=True, sort_keys=False, width=100))
-        atomic_text(root / "docs" / "models.md", catalog_markdown(document))
+        atomic_text(root / "docs" / "工具与接口" / "models.md", catalog_markdown(document))
     return {"total": len(entries), "check_only": check, **changes}
 
 

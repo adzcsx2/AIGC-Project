@@ -11,12 +11,15 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 from .errors import AutoDLError
+from .paths import resolve_media_path
 
 MEDIA_TYPES = {"image", "audio", "video"}
 MAX_MEDIA_BYTES = 100 * 1024 * 1024
 
 
-def _media(value: str, rule: dict, base_dir: Path, *, encode: bool) -> str:
+def _media(
+    value: str, rule: dict, base_dir: Path, *, encode: bool, root: Path | None = None
+) -> str:
     accept = rule.get("accept_types", [])
     if value.startswith(("http://", "https://")):
         parsed = urlsplit(value)
@@ -40,6 +43,7 @@ def _media(value: str, rule: dict, base_dir: Path, *, encode: bool) -> str:
     path = Path(value).expanduser()
     if not path.is_absolute():
         path = base_dir / path
+    path = resolve_media_path(path, root)
     if not path.is_file():
         raise AutoDLError(f"Media file does not exist: {path}")
     mime = mimetypes.guess_type(path.name)[0]
@@ -55,7 +59,8 @@ def _media(value: str, rule: dict, base_dir: Path, *, encode: bool) -> str:
 
 
 def validate_inputs(
-    inputs: dict, rules: dict, *, base_dir: Path, encode_media: bool = True
+    inputs: dict, rules: dict, *, base_dir: Path, encode_media: bool = True,
+    root: Path | None = None,
 ) -> dict:
     if not isinstance(inputs, dict) or any(not isinstance(k, str) for k in inputs):
         raise AutoDLError("inputs must be a mapping with string keys")
@@ -98,7 +103,7 @@ def validate_inputs(
             if "max_length" in rule and len(value) > rule["max_length"]:
                 raise AutoDLError(f"{name}: text exceeds {rule['max_length']} characters")
             if kind in MEDIA_TYPES:
-                value = _media(value, rule, base_dir, encode=encode_media)
+                value = _media(value, rule, base_dir, encode=encode_media, root=root)
         else:
             raise AutoDLError(f"{name}: unsupported server parameter type {kind!r}")
         prepared[name] = value

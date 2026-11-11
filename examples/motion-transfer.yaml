@@ -1,7 +1,7 @@
 workflow_id: wan2.2animate-v4-motion_retargeting
 inputs:
-  ref_image: ../assets/参考图片.png
-  ref_video: ../assets/参考视频.mp4
+  ref_image: ../projects/工具验证/02-素材/人物/参考图片.png
+  ref_video: ../projects/工具验证/02-素材/参考原片/参考视频.mp4
   resolution: 832*464px(横版)
-output_dir: outputs/motion-transfer
+output_dir: projects/工具验证/04-输出/原始片段/动作迁移
 # 按输入视频长度收费；当前不能仅凭此配置可靠估价，未设置 max_cost_cny。

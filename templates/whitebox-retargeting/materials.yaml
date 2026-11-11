@@ -1,12 +1,16 @@
-# 先实看白模和角色图，记录用户对源片复刻的明确要求。
+# 保存到 projects/<作品>/materials.yaml；占位素材不得标ready。
+# 人物另外按templates/short-drama/角色.yaml建档并登记project.yaml.characters。
+# 新角色包括动物；每个角色先有合格三视图，required_assets/reference_bindings须对应实际传入API的板，不能仅传场景图。
+# titim沿用引导原声，没有独立音频参考槽；声音来源/人物对应按character-voice.md留存。
+# 不为套用原创声音参考模板虚构ref_audio字段，也不据源片有声伪造试听通过。
 assets:
   CHAR-01:
     kind: character
-    path: assets/角色-多视角与运动板.png
+    path: 02-素材/人物/角色-三视图参考板.png # 仅正面特写、正面全身无头、背面全身
     state: missing
   VIDEO-01:
     kind: video
-    path: assets/白模-动作引导.mp4
+    path: 02-素材/参考原片/白模-动作引导.mp4
     state: missing
 creative_confirmation:
   confirmation_ref: ''
@@ -14,16 +18,16 @@ creative_confirmation:
   state: pending
 documents:
   brief:
-    path: 需求.md
+    path: 01-文档/需求与剧本/需求.md
     state: missing
   script:
-    path: 剧本.md
+    path: 01-文档/需求与剧本/剧本.md
     state: missing
   storyboard:
-    path: 分镜.md
+    path: 01-文档/分镜与运镜/分镜.md
     state: missing
   style:
-    path: 视觉设定.md
+    path: 01-文档/视觉设定/视觉设定.md
     state: missing
 schema_version: 2
 shots:

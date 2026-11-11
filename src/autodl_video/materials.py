@@ -5,26 +5,30 @@ from __future__ import annotations
 import hashlib
 from pathlib import Path
 
+from .characters import VoiceApproval, check_shot_voices, shot_voice_issues
 from .config import load_yaml
 from .errors import AutoDLError
+from .paths import project_owner, resolve_media_path
 
 DOCUMENTS = ("brief", "style", "script", "storyboard")
 KINDS = {"character", "scene", "prop", "keyframe", "audio", "video"}
 MEDIA_TYPES = {"image", "audio", "video"}
 
 
-def local_path(base: Path, value: object) -> Path:
+def local_path(base: Path, value: object, *, root: Path | None = None) -> Path:
     if not isinstance(value, str) or not value.strip() or "://" in value:
         raise AutoDLError("Expected a local file path")
     path = Path(value)
-    return (base / path).resolve()
+    return resolve_media_path(base / path, root)
 
 
-def _file_issue(base: Path, item: dict, *, image: bool = False) -> str | None:
+def _file_issue(
+    base: Path, item: dict, *, image: bool = False, root: Path | None = None
+) -> str | None:
     if item.get("state") != "ready":
         return "待补充或待检查：state 尚未标记为 ready"
     try:
-        path = local_path(base, item.get("path"))
+        path = local_path(base, item.get("path"), root=root)
         if not path.is_file() or path.stat().st_size == 0:
             return "文件不存在或为空"
         if image:
@@ -61,7 +65,7 @@ def _read(path: Path) -> dict:
     return data
 
 
-def _confirmation_issue(base: Path, data: dict) -> str | None:
+def _confirmation_issue(base: Path, data: dict, *, root: Path | None = None) -> str | None:
     # Version 1 remains readable for historical configs and task recovery.
     if data["schema_version"] == 1:
         return None
@@ -79,7 +83,10 @@ def _confirmation_issue(base: Path, data: dict) -> str | None:
     ):
         return "文案确认：缺少已确认剧本的有效 SHA-256"
     try:
-        script = local_path(base, data["documents"].get("script", {}).get("path"))
+        script = local_path(base, data["documents"].get("script", {}).get("path"), root=root)
+        owner = project_owner(base, root=root)
+        if owner is not None and project_owner(script, root=root) != owner:
+            return "文案确认：已确认剧本必须归档到本作品内；跨作品借鉴需取得本作品确认"
         actual = hashlib.sha256(script.read_bytes()).hexdigest()
     except (AutoDLError, OSError, ValueError):
         return "文案确认：无法读取已确认的剧本文件"
@@ -88,14 +95,26 @@ def _confirmation_issue(base: Path, data: dict) -> str | None:
     return None
 
 
-def _check(path: Path, data: dict, shot_id: str | None) -> dict:
+def _check(path: Path, data: dict, shot_id: str | None, *, root: Path | None = None) -> dict:
     issues = []
     missing = []
-    confirmation_issue = _confirmation_issue(path.parent, data)
+    confirmation_issue = _confirmation_issue(path.parent, data, root=root)
     if confirmation_issue:
         issues.append(confirmation_issue)
     assets = data["assets"]
-    required = {key for key, item in assets.items() if item.get("required", True)}
+    # Voice choices wait only on dependent shots; visual prerequisites retain their policy.
+    scoped_voices = {
+        key
+        for key, item in assets.items()
+        if data.get("voice_policy")
+        and item.get("kind") == "audio"
+        and item.get("purpose") == "character_voice"
+    }
+    required = {
+        key
+        for key, item in assets.items()
+        if item.get("required", True) and key not in scoped_voices
+    }
     shots = data["shots"]
     if shot_id is not None and shot_id not in shots:
         raise AutoDLError(f"Unknown shot_id: {shot_id}")
@@ -116,18 +135,24 @@ def _check(path: Path, data: dict, shot_id: str | None) -> dict:
         ):
             raise AutoDLError(f"Shot {key}: reference_bindings must map input fields to asset IDs")
         for asset_id in set(dependencies) | set(bindings.values()):
+            if shot_id is not None and key != shot_id and asset_id in scoped_voices:
+                continue
             if asset_id not in assets:
                 issues.append(f"{key}: 未登记素材 {asset_id}")
             else:
                 required.add(asset_id)
+    for key in [shot_id] if shot_id is not None else shots:
+        issues.extend(shot_voice_issues(path, data, key, root=root))
     for key in DOCUMENTS:
         item = data["documents"].get(key, {})
-        reason = _file_issue(path.parent, item)
+        reason = _file_issue(path.parent, item, root=root)
         if reason:
             issues.append(f"document:{key}: {reason}")
     for asset_id in sorted(required):
         asset = assets[asset_id]
-        reason = _file_issue(path.parent, asset, image=asset["kind"] not in {"audio", "video"})
+        reason = _file_issue(
+            path.parent, asset, image=asset["kind"] not in {"audio", "video"}, root=root
+        )
         if reason:
             issues.append(f"{asset_id}: {reason}")
             missing.append(
@@ -143,16 +168,25 @@ def _check(path: Path, data: dict, shot_id: str | None) -> dict:
     }
 
 
-def check_materials(manifest_path: str | Path, shot_id: str | None = None) -> dict:
-    path = Path(manifest_path).resolve()
-    return _check(path, _read(path), shot_id)
+def check_materials(
+    manifest_path: str | Path, shot_id: str | None = None, *, root: Path | None = None
+) -> dict:
+    path = resolve_media_path(Path(manifest_path), root)
+    return _check(path, _read(path), shot_id, root=root)
 
 
 def assert_shot_ready(
-    manifest_path: Path, shot_id: str, inputs: dict, rules: dict, base_dir: Path
-) -> None:
+    manifest_path: Path, shot_id: str, inputs: dict, rules: dict, base_dir: Path,
+    *, root: Path | None = None,
+) -> dict[str, VoiceApproval]:
+    manifest_path = resolve_media_path(manifest_path, root)
     data = _read(manifest_path)
-    report = _check(manifest_path, data, shot_id)
+    if shot_id not in data["shots"]:
+        raise AutoDLError(f"Unknown shot_id: {shot_id}")
+    voices = check_shot_voices(manifest_path, data, shot_id, rules, root=root)
+    if voices.issues:
+        raise AutoDLError("人物声音尚未就绪：\n" + "\n".join(voices.issues))
+    report = _check(manifest_path, data, shot_id, root=root)
     if not report["ready"]:
         raise AutoDLError("素材未齐备，不能生成视频：\n" + "\n".join(report["issues"]))
     bindings = data["shots"][shot_id]["reference_bindings"]
@@ -165,23 +199,26 @@ def assert_shot_ready(
         expected = kind if kind in {"audio", "video"} else "image"
         if rules.get(field, {}).get("type") != expected:
             raise AutoDLError(f"{field}: 素材类型与模型输入不匹配")
-        actual = local_path(base_dir, inputs[field])
-        registered = local_path(manifest_path.parent, data["assets"][asset_id]["path"])
+        actual = local_path(base_dir, inputs[field], root=root)
+        registered = local_path(manifest_path.parent, data["assets"][asset_id]["path"], root=root)
         if actual != registered:
             raise AutoDLError(f"{field}: 实际文件与素材 {asset_id} 的登记路径不一致")
         image_count += expected == "image"
     if not image_count:
         raise AutoDLError("当前短剧图生视频流程需要至少一张已就绪参考图")
+    return voices.approvals
 
 
-def check_config_materials(config: dict, rules: dict, base_dir: Path) -> None:
+def check_config_materials(
+    config: dict, rules: dict, base_dir: Path, *, root: Path | None = None
+) -> dict[str, VoiceApproval]:
     linked = {"materials_manifest", "shot_id"} & config.keys()
     if not linked:
-        return
+        return {}
     if len(linked) != 2 or not isinstance(config["shot_id"], str) or not config["shot_id"]:
         raise AutoDLError("materials_manifest and a nonempty shot_id must be provided together")
-    manifest = local_path(base_dir, config["materials_manifest"])
+    manifest = local_path(base_dir, config["materials_manifest"], root=root)
     inputs = config.get("inputs", {})
     if not isinstance(inputs, dict):
         raise AutoDLError("inputs must be a mapping")
-    assert_shot_ready(manifest, config["shot_id"], inputs, rules, base_dir)
+    return assert_shot_ready(manifest, config["shot_id"], inputs, rules, base_dir, root=root)

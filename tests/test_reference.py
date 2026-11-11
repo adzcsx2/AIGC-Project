@@ -1,3 +1,4 @@
+import json
 import shutil
 import subprocess
 
@@ -143,3 +144,57 @@ def test_probe_rejects_non_video(tmp_path):
     path.write_text("This is not a depth video or a video", encoding="utf-8")
     with pytest.raises(AutoDLError, match="ffprobe"):
         probe_video(path)
+
+
+def test_migrated_media_paths_work_through_api_and_cli(source_video, project, capsys):
+    work = project / "projects/作品甲"
+    work.mkdir()
+    (work / "project.yaml").write_text("name: 作品甲\n", encoding="utf-8")
+    source = work / "原片.mp4"
+    shutil.copy2(source_video, source)
+    original = source.read_bytes()
+    registry = project / ".autodl/path-map.json"
+    registry.parent.mkdir()
+    registry.write_text(json.dumps({
+        "files": {"assets/old.mp4": "projects/作品甲/原片.mp4"},
+        "directories": {"outputs/old": "projects/作品甲/04-输出"},
+    }), encoding="utf-8")
+    legacy = project / "assets/old.mp4"
+    assert probe_video(legacy, root=project)["path"] == str(source)
+    prepared = prepare_reference(legacy, project / "outputs/old/api.mp4", root=project)
+    assert prepared["path"] == str(work / "04-输出/api.mp4")
+    prefix = ["--project", str(project), "media"]
+    assert main([*prefix, "inspect", str(legacy)]) == 0
+    assert json.loads(capsys.readouterr().out)["path"] == str(source)
+    assert main([
+        *prefix, "prepare", str(legacy), "--output", str(project / "outputs/old/cli.mp4"),
+    ]) == 0
+    assert json.loads(capsys.readouterr().out)["path"] == str(work / "04-输出/cli.mp4")
+    assert source.read_bytes() == original
+    assert not (project / "assets").exists()
+    assert not (project / "outputs").exists()
+
+
+@pytest.mark.parametrize("output", ["outputs/out.mp4", "projects/作品乙/out.mp4"])
+def test_media_rejects_other_output_owner_before_tools(project, monkeypatch, capsys, output):
+    for name in ("作品甲", "作品乙"):
+        work = project / "projects" / name
+        work.mkdir()
+        (work / "project.yaml").write_text(f"name: {name}\n", encoding="utf-8")
+    source = project / "projects/作品甲/原片.mp4"
+    source.write_bytes(b"source must not be touched")
+    destination = project / output
+
+    def forbidden(*args, **kwargs):
+        pytest.fail("Output ownership must be checked before ffprobe or ffmpeg")
+
+    monkeypatch.setattr("autodl_video.reference.probe_video", forbidden)
+    with pytest.raises(AutoDLError, match="输出必须"):
+        prepare_reference(source, destination, root=project)
+    assert main([
+        "--project", str(project), "media", "prepare", str(source),
+        "--output", str(destination),
+    ]) == 2
+    assert "输出必须" in capsys.readouterr().err
+    assert not destination.exists()
+    assert source.read_bytes() == b"source must not be touched"

@@ -1,4 +1,5 @@
 import hashlib
+import json
 
 import pytest
 import yaml
@@ -47,6 +48,59 @@ def test_ready_and_cli(materials, project, capsys):
     assert check_materials(path)["ready"]
     assert main(["--project", str(project), "materials", "check", str(path)]) == 0
     assert '"ready": true' in capsys.readouterr().out
+
+
+def test_materials_check_resolves_migrated_manifest_entry(materials, project, capsys):
+    path = save(materials)
+    registry = project / ".autodl/path-map.json"
+    registry.parent.mkdir()
+    registry.write_text(
+        json.dumps({"files": {"assets/materials.yaml": path.relative_to(project).as_posix()}}),
+        encoding="utf-8",
+    )
+    legacy = project / "assets/materials.yaml"
+    report = check_materials(legacy, root=project)
+    assert report["ready"]
+    assert report["manifest"] == str(path.resolve())
+    assert main(["--project", str(project), "materials", "check", str(legacy)]) == 0
+    assert json.loads(capsys.readouterr().out)["ready"]
+    assert not legacy.exists()
+    # The Python default discovers the same map in an ordinary checkout.
+    (project / "pyproject.toml").write_text('name = "autodl-aigc"', encoding="utf-8")
+    assert check_materials(legacy)["ready"]
+
+
+def test_config_cannot_borrow_other_work_manifest_with_same_work_images(
+    materials, project, monkeypatch
+):
+    path, data = materials
+    (path.parent / "project.yaml").write_text("name: Manifest owner\n", encoding="utf-8")
+    work = project / "current-work"
+    work.mkdir()
+    (work / "project.yaml").write_text("name: Current work\n", encoding="utf-8")
+    for asset in data["assets"].values():
+        image = work / asset["path"]
+        image.write_bytes((path.parent / asset["path"]).read_bytes())
+        asset["path"] = str(image)
+    save(materials)
+    rules = {field: {"type": "image"} for field in data["shots"]["SHOT-01"]["reference_bindings"]}
+    catalog_path = project / "catalog/workflows.yaml"
+    catalog_path.write_text(yaml.safe_dump({
+        "schema_version": 1, "workflows": {"demo": {"input_rules": rules}},
+    }), encoding="utf-8")
+    config = work / "shot.yaml"
+    config.write_text(yaml.safe_dump({
+        "workflow_id": "demo", "materials_manifest": str(path), "shot_id": "SHOT-01",
+        "inputs": {field: data["assets"][asset]["path"]
+                   for field, asset in data["shots"]["SHOT-01"]["reference_bindings"].items()},
+    }), encoding="utf-8")
+
+    def forbidden(*args, **kwargs):
+        pytest.fail("Manifest ownership must fail before network")
+
+    monkeypatch.setattr("autodl_video.runner.AutoDLClient", forbidden)
+    with pytest.raises(AutoDLError, match="不同作品"):
+        VideoProject(project).generate(config)
 
 
 @pytest.mark.parametrize("state", ["missing", "provided", None])
@@ -246,4 +300,61 @@ def test_unconfirmed_draft_blocks_before_network(materials, config, project, mon
 def test_v2_confirmation_does_not_replace_visual_readiness(materials):
     confirm_script(materials)
     materials[1]["assets"]["CHAR-01"]["state"] = "provided"
+    assert not check_materials(save(materials))["ready"]
+
+
+@pytest.mark.parametrize("dry_run", [True, False])
+def test_confirmed_script_cannot_belong_to_another_work(
+    materials, project, monkeypatch, capsys, dry_run
+):
+    path, data = materials
+    (path.parent / "project.yaml").write_text("name: 当前作品\n", encoding="utf-8")
+    other = project / "另一作品"
+    other.mkdir()
+    (other / "project.yaml").write_text("name: 另一作品\n", encoding="utf-8")
+    foreign_script = other / "剧本.md"
+    foreign_script.write_bytes((path.parent / "script.md").read_bytes())
+    confirm_script(materials)
+    data["documents"]["script"]["path"] = str(foreign_script)
+    data["creative_confirmation"]["confirmation_ref"] = "另一作品的剧本确认"
+    save(materials)
+    config = path.parent / "镜头.yaml"
+    config.write_text(yaml.safe_dump({
+        "workflow_id": "demo", "materials_manifest": "materials.yaml", "shot_id": "SHOT-01",
+        "inputs": {"prompt": "A quiet scene."},
+    }), encoding="utf-8")
+
+    def forbidden(*args, **kwargs):
+        pytest.fail("Foreign script confirmation must fail before network or credentials")
+
+    monkeypatch.setattr("autodl_video.runner.AutoDLClient", forbidden)
+    monkeypatch.setattr("autodl_video.runner.load_token", forbidden)
+    with pytest.raises(AutoDLError, match="已确认剧本必须归档到本作品"):
+        VideoProject(project).generate(config, dry_run=dry_run)
+    assert main(["--project", str(project), "materials", "check", str(path)]) == 1
+    assert "已确认剧本必须归档到本作品" in capsys.readouterr().out
+    assert not (project / ".autodl").exists()
+
+
+def test_owned_script_allows_explicit_shared_style_and_new_local_confirmation(materials, project):
+    path, data = materials
+    (path.parent / "project.yaml").write_text("name: 当前作品\n", encoding="utf-8")
+    common_style = project / "公共风格规范.md"
+    common_style.write_text("公共材质与摄影规范", encoding="utf-8")
+    data["documents"]["style"]["path"] = str(common_style)
+    confirm_script(materials)
+    data["creative_confirmation"]["confirmation_ref"] = "当前作品的本版剧本确认"
+    assert check_materials(save(materials))["ready"]
+
+
+def test_nested_other_work_script_is_not_part_of_parent_work(materials):
+    path, data = materials
+    (path.parent / "project.yaml").write_text("name: 当前作品\n", encoding="utf-8")
+    nested = path.parent / "另一作品"
+    nested.mkdir()
+    (nested / "project.yaml").write_text("name: 另一作品\n", encoding="utf-8")
+    script = nested / "剧本.md"
+    script.write_bytes((path.parent / "script.md").read_bytes())
+    confirm_script(materials)
+    data["documents"]["script"]["path"] = "另一作品/剧本.md"
     assert not check_materials(save(materials))["ready"]

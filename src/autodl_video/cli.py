@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -15,6 +16,7 @@ from .config import atomic_text, project_root
 from .errors import AutoDLError
 from .materials import check_materials
 from .midjourney import MidjourneyClient, MidjourneyProject
+from .paths import project_owner
 from .reference import prepare_reference, probe_video
 from .runner import VideoProject
 
@@ -23,18 +25,27 @@ def print_json(value: object) -> None:
     print(json.dumps(value, ensure_ascii=False, indent=2))
 
 
-def template(workflow_id: str, workflow: dict) -> dict:
+def template(
+    workflow_id: str, workflow: dict, *, output_path: Path | None = None, root: Path | None = None
+) -> dict:
+    root = project_root(root)
+    base = output_path.resolve().parent if output_path else Path.cwd()
+    work = project_owner(base, root=root) or root / "projects" / "工具验证"
     inputs = {}
     for name, rule in workflow["input_rules"].items():
         if not rule.get("required") and name not in {"duration", "resolution"}:
             continue
         kind = rule["type"]
         if kind in {"image", "audio", "video"}:
-            inputs[name] = {
-                "image": "../assets/参考图片.png",
-                "audio": "../assets/参考音频.wav",
-                "video": "../assets/参考视频.mp4",
+            relative = {
+                "image": "02-素材/人物/参考图片.png",
+                "audio": "02-素材/音频/参考音频.wav",
+                "video": "02-素材/参考原片/参考视频.mp4",
             }[kind]
+            try:
+                inputs[name] = Path(os.path.relpath(work / relative, base)).as_posix()
+            except ValueError:  # Windows paths on different drives have no relative spelling.
+                inputs[name] = str(work / relative)
         elif "default" in rule:
             inputs[name] = rule["default"]
         elif kind in {"prompt", "string"}:
@@ -48,7 +59,7 @@ def template(workflow_id: str, workflow: dict) -> dict:
             inputs[name] = rule.get("min", 0)
         else:
             raise AutoDLError(f"Cannot template unsupported type: {kind}")
-    return {"workflow_id": workflow_id, "inputs": inputs, "output_dir": "outputs"}
+    return {"workflow_id": workflow_id, "inputs": inputs}
 
 
 def parser() -> argparse.ArgumentParser:
@@ -184,15 +195,16 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         if args.command == "media":
             print_json(
-                probe_video(args.source)
+                probe_video(args.source, root=root)
                 if args.action == "inspect"
                 else prepare_reference(
-                    args.source, args.output, start=args.start, duration=args.duration
+                    args.source, args.output, start=args.start, duration=args.duration,
+                    root=root,
                 )
             )
             return 0
         if args.command == "materials":
-            report = check_materials(args.manifest, args.shot)
+            report = check_materials(args.manifest, args.shot, root=root)
             print_json(report)
             return 0 if report["ready"] else 1
         if args.command == "models":
@@ -221,7 +233,9 @@ def main(argv: list[str] | None = None) -> int:
                 print(yaml.safe_dump(item, allow_unicode=True, sort_keys=False))
             else:
                 text = yaml.safe_dump(
-                    template(args.workflow_id, item), allow_unicode=True, sort_keys=False
+                    template(args.workflow_id, item, output_path=args.output, root=root),
+                    allow_unicode=True,
+                    sort_keys=False,
                 )
                 if args.output:
                     if args.output.exists():

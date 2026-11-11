@@ -1,11 +1,10 @@
-# 独立换角示例：原片至少 5 秒，先准备静音副本；填写自己的图与视频。
-# 短剧镜头还须同时添加 materials_manifest 和 shot_id，见 docs/video-retargeting.md。
-workflow_id: minimax_h3_zm_titi
+# 独立换角示例：原片至少 5 秒，保留原音轨；填写自己的图与视频。
+# 短剧镜头还须添加 materials_manifest 和 shot_id，见 docs/工作流/video-retargeting.md。
+workflow_id: minimax_h3_zm_titim
 inputs:
-  ref_image: ../assets/人物/主角.png
-  ref_video: ../assets/引导视频-静音.mp4
+  ref_image_0: ../projects/工具验证/02-素材/人物/主角.png
+  ref_video: ../projects/工具验证/02-素材/参考原片/引导视频-原音轨.mp4
   duration: 5
   resolution: 768p横
 # 通常省略 prompt；特殊要求只用简短自然语言，勿填普通 H3 六段式。
-output_dir: outputs/character-replacement
-max_cost_cny: 0.55
+output_dir: projects/工具验证/04-输出/原始片段/单人物替换
