@@ -1,4 +1,6 @@
-"interface":
-  "display_name": "短剧总导演"
-  "short_description": "补全故事并确认文案，调度分镜运镜审计、素材和英文提示词制作"
-  "default_prompt": "使用 $short-drama-workflow 按本项目最新导演规则处理当前任务；模型提示词使用英文，解释和素材命名使用中文。"
+interface:
+  display_name: "短剧总导演"
+  short_description: "新视频默认先做简单白模，生成前总审计，制作后修接缝并自动补到60帧"
+  default_prompt: "使用 $short-drama-workflow 承接当前作品，按需求组合技能并推进已授权的下一步。"
+policy:
+  allow_implicit_invocation: true
