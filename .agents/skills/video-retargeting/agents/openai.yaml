@@ -1,4 +1,6 @@
-"interface":
-  "display_name": "原片与白模复刻"
-  "short_description": "分析源片动作时序与身体结构，绑定真实引导素材并检查换角结果"
-  "default_prompt": "使用 $video-retargeting 按本项目最新导演规则处理当前任务；模型提示词使用英文，解释和素材命名使用中文。"
+interface:
+  display_name: "原片与白模复刻"
+  short_description: "保留源片动作与运镜进行换角，或准备静音截片，区分普通参考与真实视频输入"
+  default_prompt: "使用 $video-retargeting 按本次明确目标处理源片，保留已确认动作与镜头并核实输入能力。"
+policy:
+  allow_implicit_invocation: true
