@@ -1,0 +1,12 @@
+schema_version: 1
+watermark:
+  text: '@CallMeQueenAI'
+  opacity: 0.45
+  period_seconds: 40
+  margin_pixels: 24
+  font: C:/Windows/Fonts/arial.ttf
+edit_fps: 24
+delivery_fps: 60
+generation_audio: dialogue_only
+music_provider: null
+review_host: 127.0.0.1

@@ -1,0 +1,67 @@
+# 配乐记录与 tools/视频工具/音乐.py validate/mix 的输入契约；不是 autodl run 输入。
+# 时间一律相对剪辑后完整成片起点；null与空清单表示尚未填写，不代表通过。
+schema_version: 1
+status: draft
+generation_audio:
+  mode: dialogue_only
+  music: false
+  singing_or_humming: false
+  no_dialogue: silent
+  explicitly_requested_ambience_or_sfx: []
+  source_audio_preservation_exception: null
+timeline:
+  video_path: null
+  video_sha256: null
+  edit_record_path: null
+  time_origin: edited_timeline_start
+  time_unit: seconds
+  # 完整剪辑按源媒体PTS的0秒计时；混音保留视频PTS，不把首个视频帧独立归零。
+  duration_seconds: null
+  fps_numerator: null
+  fps_denominator: null
+  verified: false
+materials_manifest: null
+dialogue:
+  stem_asset_id: null
+  audio_track: null  # 使用源视频声音时：零起算音轨，单轨可省略，多轨必须明确选择。
+  stem_audio_track: null  # 使用独立对白底轨时：单轨可省略，多轨必须明确选择。
+  timed_regions_path: null
+  source_has_embedded_music: unknown
+  # 即使删除全部cue、全片留白，也须确认源音轨无BGM或提供干净对白底轨。
+  separation_record_path: null
+music:
+  default_vocals: false
+  narrative_arc: null
+  cues: []
+  # 每项须有cue_id、start_seconds、end_seconds、purpose、entry_trigger、exit_trigger、
+  # intensity_curve、instrumentation、rhythm、source_asset_id、source_in_seconds、
+  # generation_record_path（复用素材可空）、gain_db、fade_in_seconds、fade_out_seconds、
+  # dialogue_ducking（方式/区间/实际参数）、cross_cue_transition、status。
+  # cue.audio_track：零起算音乐音轨，单轨可省略，多轨必须明确选择，不自动取default或a:0。
+  # source_in_seconds按源媒体PTS定位；工具解码所选音轨检查实际样本覆盖，不能用容器时长代替。
+  no_music_regions: []
+  # 每项须有start_seconds、end_seconds、reason；无音乐不表示静音对白。
+  production_capability:
+    provider_or_local_model: null
+    contract_evidence_path: null
+    status: unverified
+mix:
+  configuration_path: null
+  output_audio_path: null
+  output_video_path: null
+  record_path: null
+  loudness_and_peak_targets: null
+  preserve_dialogue_stem: true
+  preserve_music_stems: true
+  preserve_unscored_video: true
+  copy_video_stream_when_audio_only_change: true
+review:
+  page_url: null
+  technical_record_path: null
+  actual_listening: pending
+  cue_entries_exits: pending
+  cross_segment_music_continuity: pending
+  dialogue_intelligibility: pending
+  no_music_regions_verified: pending
+  issues_record_path: null
+  user_acceptance: null

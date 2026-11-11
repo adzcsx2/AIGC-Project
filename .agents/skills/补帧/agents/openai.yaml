@@ -1,0 +1,6 @@
+interface:
+  display_name: "补帧"
+  short_description: "最终成片自动用RIFE补到60帧，也支持指定视频，保留原声与源片"
+  default_prompt: "使用 $补帧 将当前最终成片或我指定的视频处理为60fps，保留原声与源片，检查后交付。"
+policy:
+  allow_implicit_invocation: true

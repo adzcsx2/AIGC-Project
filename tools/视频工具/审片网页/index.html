@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>作品审片</title>
+<style>
+body{margin:0;background:#141719;color:#eee;font:16px system-ui}main{max-width:1200px;margin:auto;padding:24px}h1{font-size:24px}video{width:100%;max-height:62vh;background:#000}button,input,select,textarea{font:inherit;background:#272c30;color:#eee;border:1px solid #5c676d;border-radius:5px;padding:8px}button{cursor:pointer}button:hover{background:#3c4c54}.row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0;align-items:center}label{display:flex;gap:8px;align-items:center}input[type=number]{width:96px}textarea{width:96%;min-height:70px}.muted{color:#b4bfc4;font-size:14px}#status{color:#f6d18a}#exact{max-width:100%;max-height:50vh}li{margin:10px 0;white-space:pre-wrap}section{background:#202528;padding:18px;border-radius:8px;margin-top:16px}a{color:#9dd4ea}
+</style>
+<main><h1>作品审片</h1><p class="muted">选择版本 → 看完整上下文 → 循环问题区间 → 保存带时间码的结论。技术检查、静帧、动态、听音与用户认可分别记录。</p>
+<div class="row"><label>版本 <select id="media"></select></label><span id="technical"></span></div>
+<video id="player" controls preload="metadata"></video>
+<div class="row"><button id="back">后退 1 秒</button><button id="play">播放 / 暂停</button><button id="next">前进 1 秒</button><label>速度 <select id="speed"><option>.5</option><option selected>1</option><option>1.5</option><option>2</option></select></label><span id="time"></span></div>
+<div class="row"><label>入点（秒）<input id="start" type="number" value="0" min="0" step=".001"></label><button id="setStart">当前时间作入点</button><label>出点（秒）<input id="end" type="number" value="1" min="0" step=".001"></label><button id="setEnd">当前时间作出点</button><label><input id="loop" type="checkbox">循环区间</label><button id="range">播放区间</button></div>
+<div class="row"><label>接缝 <select id="seams"><option value="">选择接缝（前后各至少 1 秒）</option></select></label></div>
+<section><b>精确静帧</b><p class="muted">播放器按秒定位；需要准确帧时由后端解码。帧号从 0 开始，静帧检查不代表动态通过。</p><div class="row"><label>解码帧号 <input id="frame" type="number" min="0" value="0"></label><button id="getFrame">查看精确帧</button></div><img id="exact" alt="所选解码帧" hidden></section>
+<section><b>保存审片记录</b><div class="row"><label>实际审片者 <input id="reviewer" placeholder="填写姓名或角色"></label><label>维度 <select id="dimension"><option value="dynamic">动态观看</option><option value="listening">实际听音</option><option value="stills">静帧检查</option><option value="user_acceptance">用户认可</option></select></label><label>结论 <select id="verdict"><option value="pending">待复核</option><option value="failed">未通过</option><option value="passed">通过</option></select></label></div><textarea id="note" placeholder="填写实际观察、问题与修复方向。使用上方区间；不要仅凭技术数据填写动态或听音通过。"></textarea><div class="row"><button id="save">保存当前版本记录</button><span id="status" role="status"></span></div><ul id="entries"></ul></section></main>
+<script>
+const $=id=>document.getElementById(id), token=new URLSearchParams(location.search).get('token');let session,current;
+let frameRequest=0, frameAbort, activeRange=null;
+const mediaUrl=(path,params={})=>path+'?'+new URLSearchParams({...params,token});
+async function api(path,options={}){const r=await fetch(path,{...options,headers:{'X-Review-Token':token,'Content-Type':'application/json'}});const d=await r.json();if(!r.ok)throw Error(d.error||r.status);return d}
+function entryTime(value){
+  // Older servers persisted numeric strings. Render them without rewriting history.
+  if(typeof value!=='number'&&(typeof value!=='string'||!value.trim()))return NaN;
+  return Number(value);
+}
+function entries(){
+  $('entries').replaceChildren();
+  for(const x of session.entries.filter(x=>x&&x.sha256===current.sha256).slice().reverse()){
+    const start=entryTime(x.start_seconds), end=entryTime(x.end_seconds);
+    const valid=Number.isFinite(start)&&Number.isFinite(end)&&0<=start&&start<=end&&end<=current.duration;
+    const range=valid?`${start.toFixed(3)}–${end.toFixed(3)}s`:'时间码无效（历史记录）';
+    const li=document.createElement('li');
+    li.textContent=`${range} · ${x.dimension} · ${x.verdict} · ${x.reviewer}\n${x.note}`;
+    $('entries').append(li);
+  }
+}
+function syncSpeed(){
+  const player=$('player'), speed=+$('speed').value;
+  player.defaultPlaybackRate=speed;
+  player.playbackRate=speed;
+}
+function select(){
+  frameRequest++;
+  frameAbort?.abort();
+  activeRange=null;
+  $('loop').checked=false;
+  $('player').pause();
+  syncSpeed();
+  current=session.media.find(m=>m.id===$('media').value);
+  $('player').src=mediaUrl('/media',{id:current.id});
+  $('end').value=current.duration;
+  $('start').value=0;
+  $('technical').textContent='技术检查：已完整解码；创作与声音仍需审片';
+  $('exact').hidden=true;
+  if($('exact').src.startsWith('blob:'))URL.revokeObjectURL($('exact').src);
+  $('exact').removeAttribute('src');
+  entries();
+  $('seams').replaceChildren(new Option('选择接缝（前后各至少 1 秒）',''));
+  for(const [i,s] of session.seams.entries()){
+    if(s.media_id===current.id)$('seams').add(new Option(`接缝 ${i+1} · ${s.at_seconds.toFixed(3)}s`,s.at_seconds));
+  }
+}
+$('media').onchange=select;
+$('play').onclick=()=>{
+  activeRange=null;
+  $('loop').checked=false;
+  return $('player').paused?play():$('player').pause();
+};
+$('back').onclick=()=>$('player').currentTime=Math.max(0,$('player').currentTime-1);$('next').onclick=()=>$('player').currentTime=Math.min(current.duration,$('player').currentTime+1);
+$('speed').onchange=syncSpeed;
+$('player').onloadedmetadata=syncSpeed;
+$('setStart').onclick=()=>$('start').value=$('player').currentTime.toFixed(3);$('setEnd').onclick=()=>$('end').value=$('player').currentTime.toFixed(3);
+function selectedRange(){
+  const start=+$('start').value, end=+$('end').value;
+  return Number.isFinite(start)&&Number.isFinite(end)&&0<=start&&start<end&&end<=current.duration
+    ? {start,end} : null;
+}
+function play(){return $('player').play().catch(e=>$('status').textContent=e.message)}
+$('range').onclick=()=>{
+  const range=selectedRange();
+  if(!range){$('status').textContent='区间需在视频内，且出点晚于入点';return}
+  activeRange=range;
+  $('player').currentTime=range.start;
+  return play();
+};
+$('player').ontimeupdate=()=>{
+  const player=$('player'), range=activeRange;
+  $('time').textContent=player.currentTime.toFixed(3)+' s';
+  // At EOF the browser pauses first; leave that case to the ended handler.
+  if(range&&!player.ended&&player.currentTime>=range.end){
+    if($('loop').checked){player.currentTime=range.start}
+    else{
+      activeRange=null;
+      player.pause();
+      player.currentTime=range.end;
+    }
+  }
+};
+$('player').onended=()=>{
+  const range=activeRange;
+  if($('loop').checked&&range){$('player').currentTime=range.start;return play()}
+  activeRange=null;
+};
+$('seams').onchange=()=>{if($('seams').value==='')return;const t=+$('seams').value;$('start').value=Math.max(0,t-1);$('end').value=Math.min(current.duration,t+1);$('loop').checked=true;$('range').click()};
+$('getFrame').onclick=async()=>{
+  frameAbort?.abort();
+  const controller=new AbortController(), request=++frameRequest;
+  const media=current, frame=$('frame').value;
+  frameAbort=controller;
+  const active=()=>request===frameRequest&&current.id===media.id&&current.sha256===media.sha256;
+  try{
+    const r=await fetch(mediaUrl('/api/frame',{id:media.id,frame}),{signal:controller.signal});
+    if(!r.ok)throw Error((await r.json()).error);
+    const blob=await r.blob();
+    if(!active())return;
+    const old=$('exact').src;
+    $('exact').src=URL.createObjectURL(blob);
+    if(old.startsWith('blob:'))URL.revokeObjectURL(old);
+    $('exact').hidden=false;
+  }catch(e){if(active()&&e.name!=='AbortError')$('status').textContent=e.message}
+};
+$('save').onclick=async()=>{try{const item=await api('/api/review',{method:'POST',body:JSON.stringify({media_id:current.id,sha256:current.sha256,start_seconds:+$('start').value,end_seconds:+$('end').value,dimension:$('dimension').value,verdict:$('verdict').value,reviewer:$('reviewer').value,note:$('note').value})});session.entries.push(item);entries();$('status').textContent='已保存，绑定当前视频哈希'}catch(e){$('status').textContent=e.message}};
+api('/api/session').then(data=>{session=data;for(const m of data.media)$('media').add(new Option(m.name,m.id));select()}).catch(e=>$('status').textContent=e.message);
+</script></html>
