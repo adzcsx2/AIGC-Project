@@ -1,4 +1,6 @@
-"interface":
-  "display_name": "原片拆镜与测量"
-  "short_description": "测量视频时长、切点和代表帧，分析动作与摄影事实并区分观察与推断"
-  "default_prompt": "使用 $short-drama-breakdown 按本项目最新导演规则处理当前任务；模型提示词使用英文，解释和素材命名使用中文。"
+interface:
+  display_name: "原片拆镜与测量"
+  short_description: "按问题测量和拆解已有视频，可定位具体时段或还原多集，不自动改稿或生成"
+  default_prompt: "使用 $short-drama-breakdown 仅分析当前问题需要的视频内容，区分观察、推断和未知。"
+policy:
+  allow_implicit_invocation: true
