@@ -1,6 +1,6 @@
-"interface":
-  "display_name": "AutoDL模型与生成"
-  "short_description": "核对实际工作流参数和素材确认，以YAML提交任务并恢复和检查结果"
-  "default_prompt": "使用 $autodl-aigc 按本项目最新导演规则处理当前任务；模型提示词使用英文，解释和素材命名使用中文。"
-"policy":
-  "allow_implicit_invocation": !!bool "true"
+interface:
+  display_name: "AutoDL模型与生成"
+  short_description: "核实真实参数，新视频核对提醒前总审计再执行，已有任务直接恢复查询下载"
+  default_prompt: "使用 $autodl-aigc 完成本次接口查询、配置验证或已授权执行；已有task_id时恢复原任务。"
+policy:
+  allow_implicit_invocation: true
