@@ -1,12 +1,11 @@
 # 独立换角示例；图1和图2必须对应所查看原片的真实位置/特征。
 workflow_id: minimax_h3_zm_titim
 inputs:
-  ref_image_0: ../assets/人物/主角.png
-  ref_image_1: ../assets/人物/对手.png
-  ref_video: ../assets/引导视频-静音.mp4
+  ref_image_0: ../projects/工具验证/02-素材/人物/主角.png
+  ref_image_1: ../projects/工具验证/02-素材/人物/对手.png
+  ref_video: ../projects/工具验证/02-素材/参考原片/引导视频-原音轨.mp4
   video_subject_to_replace: person
   prompt: Replace the person on the left with the character in image 1 and the person on the right with the character in image 2. Preserve the original scene.
   duration: 5
   resolution: 768p横
-output_dir: outputs/multi-character-replacement
-max_cost_cny: 0.60
+output_dir: projects/工具验证/04-输出/原始片段/多人物替换

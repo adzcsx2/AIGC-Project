@@ -1,8 +1,7 @@
-workflow_id: minimax_h3_lightx2v_v5_15s
+workflow_id: minimax_h3_zm_u24
 inputs:
-  prompt: The character in the reference image slowly turns to look at the camera. Preserve the character's identity and clothing as the camera gently pushes in.
-  ref_image_0: ../assets/参考图片.png
+  prompt: The character in the reference image slowly turns to look at the camera. Preserve the character's identity and clothing as the camera gently pushes in. Silent scene, with no dialogue, background music, songs, humming, musical accents, ambient sound, or sound effects.
+  ref_image_0: ../projects/工具验证/02-素材/人物/参考图片.png
   duration: 5
   resolution: 480p横
-output_dir: outputs/image-to-video
-max_cost_cny: 0.25
+output_dir: projects/工具验证/04-输出/原始片段/参考图生视频

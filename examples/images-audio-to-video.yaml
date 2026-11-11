@@ -1,9 +1,8 @@
 workflow_id: minimax_h3_zm_u24
 inputs:
-  prompt: The character in the reference image speaks naturally in a warmly lit room, following the reference audio. Preserve the character's identity and keep the camera steady.
-  ref_image_0: ../assets/参考图片.png
-  ref_audio_0: ../assets/参考音频.wav
+  prompt: The character in reference image 0 says "欢迎来到这个由人工智能创作的视频世界。" using the approved voice in reference audio 0. Preserve the character's identity and keep the camera steady. Generate only this dialogue. No background music, songs, humming, musical accents, ambient sound, or sound effects.
+  ref_image_0: ../projects/工具验证/02-素材/人物/参考图片.png
+  ref_audio_0: ../projects/工具验证/02-素材/音频/参考音频.wav
   duration: 5
   resolution: 480p横
-output_dir: outputs/images-audio-to-video
-max_cost_cny: 0.25
+output_dir: projects/工具验证/04-输出/原始片段/图片音频协同生成
