@@ -1,14 +1,16 @@
 ---
 name: huashu-seedance
-description: 使用已安装scene.json引擎制作本地白模空间与运镜预演，进行几何体检、照片空间拟合、抽帧和构图检查。用于需要白模参考或验证摄影路径的任务；不负责调用Seedance，不把简单几何预演当精细打斗动画或动捕。
+description: 继续明确指定的huashu旧scene.json几何预演或照片拟合流程。保留现有引擎与模板；新Blender/白模制作优先本机Blender技能，不调用Seedance云API，不把几何移动当动捕或精细骨骼打斗。
 license: MIT
 ---
 
 # 白模空间与摄影预演
 
-先读 `AGENTS.md` 与 `docs/director-workflow.md`。无白模也可用原创分镜/u24，不强制先做白模。
+用户2026-11-09指定本机Blender优先：新的三维白模/运镜预演交`blender-video-original`，参考视频重建交`blender-video-recreate`；本入口承接明确指定的旧scene.json或照片拟合任务，不自动迁移已有工程。
+
+先读 `AGENTS.md` 与 `docs/工作流/director-workflow.md`。新视频按[共享规范](../../../docs/工作流/白模制作与验收.md#默认先做白模)默认先做简单白模；本技能仍只承接明确指定的旧流程，不因新增默认改成新白模制作器。
 先复用已确认时长、画幅、动作草案和分镜；确缺关键信息才问，不重复套三问问卷。
-文案不足先补全文案取得确认，复杂攻防由 `fight-scene-design` 设计。
+需写/补/改文案时先参考 `cinematic-script-audit`；文案不足先补全取得确认，再由 `fight-scene-design` 细化复杂攻防。仅改既有工程不重启创作流程。
 
 ## 本地引擎
 
@@ -35,7 +37,7 @@ probe零红之后仍须查看可疑时段和完整动作，检查双人遮挡、
 - Acheng132示范可帮助选镜，不是用户角色的完整动作片；源Blender生成脚本没有随该库提供。
 - `engine/make_prompt.mjs`产物只作测量与源方言资料，不能把其中文/Seedance标记直接交给MiniMax。
   由 `storyboard-camera` 按真实引导改成英文；titim只作简短主体映射与必要例外。
-- 输出实际检查合格后按中文素材名归档，由 `video-retargeting`绑定，`autodl-aigc`用titim执行。
+- 输出实际检查合格后按中文素材名归档；仅预演任务到此交付。用户已有明确白模复刻生成请求时才交 `video-retargeting`绑定、`autodl-aigc`核实titim执行，不把本地预演自动扩成收费视频。
   保留原轨；没有音轨时是否需补全静音AAC由实际工作流决定。
 - 原 `references/prompt-spec.md` 和作者经验仅属Seedance源资料，不是AutoDL接口契约。
   不调用未配置服务或把图片默认切到Seedream；图片仍走本项目授权工具。

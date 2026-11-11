@@ -105,4 +105,4 @@ Attach to prompt 使用 Edit Model 时，英文正文可以指明第几张图负
 ## 历史留存
 
 此前的接入、限速、启动、生成与恢复原始记录保存在
-[已弃用方案历史记录](archive/Midjourney-Discord-历史记录.md)，仅离线查阅，不作为部署或执行指南。
+[已弃用方案历史记录](../archive/Midjourney-Discord-历史记录.md)，仅离线查阅，不作为部署或执行指南。

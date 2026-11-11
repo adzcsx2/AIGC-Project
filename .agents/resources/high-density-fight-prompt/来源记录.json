@@ -1,0 +1,41 @@
+{
+  "repository": "https://github.com/lj350201364/high-density-fight-prompt",
+  "commit": "d0316da6edfc37034c35479613669e07251e4571",
+  "retrieved_on": "2026-11-09",
+  "source_role": "internal_reference_only",
+  "license": "not specified in pinned repository tree",
+  "primary_reference": "references/15s-fight-directing-contract.md",
+  "adapted_reference": ".agents/skills/fight-scene-design/references/高密度打斗导演合同.md",
+  "files": [
+    {
+      "path": "README.md",
+      "git_blob_sha1": "b3b2113bf86f78f8bdebbd675e62438eda82e09a",
+      "size": 1641,
+      "sha256": "595e021f3c3b340355b3684a095363aff3bbbdb207cd85f074154e990b54d0cb"
+    },
+    {
+      "path": "SKILL.md",
+      "git_blob_sha1": "8f149e3d7444aab6788ce7d0c610b9ebb2b698d2",
+      "size": 5774,
+      "sha256": "fef1b72646732cbedf966fd1fd119e2ab0404f1908a24a6ca36c941b20f5f55e"
+    },
+    {
+      "path": "agents/openai.yaml",
+      "git_blob_sha1": "d5c57e25cf4142fbd8b2fc4b6dea464ca448bcec",
+      "size": 382,
+      "sha256": "a0b15990e511db54bb1233a8197e3478bd568baee4582a5c7ec0db251231c057"
+    },
+    {
+      "path": "references/15s-fight-directing-contract.md",
+      "git_blob_sha1": "15d9b72941335a30bfd8e5626bc6fb392a5fbad7",
+      "size": 15619,
+      "sha256": "19ecec470e566e336e49521630096584e081923e4d8bd13239c90555fa934837"
+    },
+    {
+      "path": "references/h3-ref2va-dual-output.md",
+      "git_blob_sha1": "ecf73ce7964e9062dc414a691ec840def7b98bed",
+      "size": 5745,
+      "sha256": "1cf3f32d2c54d6a7b6b8fad98f886ecd7d4f0367f7d6accb3162299f60816b14"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Acheng接入与迁移记录
 
-2026-11-09，用户确认重组方案后接入。新规则见 [导演规则](director-workflow.md)。
+2026-11-09，用户确认重组方案后接入。新规则见 [导演规则](../工作流/director-workflow.md)。
 
 ## 固定来源
 
@@ -12,15 +12,15 @@
   解包去掉最外层目录，保留原目录、媒体、LICENSE、NOTICE与第三方许可。
 
 脚本适用Apache-2.0，作者创作文本/指南/示例采用CC BY-NC-ND 4.0，第三方资料各有许可。
-参见原 [许可范围](../.agents/resources/acheng-director/LICENSE-SCOPE.md) 与
-[第三方摄影库许可](../.agents/resources/acheng-director/references/sources/licenses/camera-moves-whitebox-LICENSE.txt)。
+参见原 [许可范围](../../.agents/resources/acheng-director/LICENSE-SCOPE.md) 与
+[第三方摄影库许可](../../.agents/resources/acheng-director/references/sources/licenses/camera-moves-whitebox-LICENSE.txt)。
 本次保留源码原文，项目适配规则独立编写；没有发布或推送，不将整个包标为Apache，也不作商业改编授权保证。
 
 ## 接入方式
 
 总导演读故事和连续性；摄影入口读shots、镜头容量、摄影库与H3格式；视觉入口沿用本项目素材流程。
 逐段审计摄影并检查全片变化。上游入口没有装入自动发现目录，避免产生第二个总导演。
-132个视频是选镜示例，不是定制打斗白模。需要白模时使用huashu本地引擎；
+132个视频是选镜示例，不是定制打斗白模。新白模优先本机Blender及blender-video-original/blender-video-recreate；huashu仅承接明确指定的旧scene.json流程，详见 [Blender接入](blender-integration.md)。
 没有通用3D动捕或精细双人打斗骨骼求解，不把简单几何移动称作完整动作制作。
 
 ## 编译器用法与边界
@@ -31,7 +31,7 @@ production.json为可选派生文件。按上游schema从已确认的五份Markd
 
 ```powershell
 .venv/Scripts/python.exe .agents/resources/acheng-director/scripts/compile_h3.py --help
-.venv/Scripts/python.exe .agents/resources/acheng-director/scripts/compile_h3.py projects/作品名/派生/production.json --out projects/作品名/派生/H3草稿 --draft
+.venv/Scripts/python.exe .agents/resources/acheng-director/scripts/compile_h3.py projects/作品名/03-制作/中间数据/导演编译/production.json --out projects/作品名/03-制作/中间数据/导演编译/H3草稿 --draft
 ```
 
 生产卡字段按固定源码的schema/examples读取，不是任意故事都能直接编译。
@@ -42,10 +42,10 @@ u24按实际字符上限适配；titim用简短映射或省略prompt，不调用
 
 ## 去重结果
 
-19个原入口重组为9个。12个旧入口完整迁到 `.agents/resources/skills/`，新增storyboard-camera与visual-assets。
+接入时19个原入口重组为9个，这是历史记录；当前数量以 [安装清单](../installed-skills.yaml) 为准。12个旧入口完整迁到 `.agents/resources/skills/`，当时新增storyboard-camera与visual-assets。
 用户3D资料、武指、H3表演、故事/编剧、资产/提示词、审计和维护索引仍保留，由对应单一入口调度。
 原脚本及许可没有删除；原入口与重要规则备份在 `docs/archive/技能重组-20261109-实施前/`。
-active/internal状态、对应入口、源版本和SKILL指纹见 [installed-skills.yaml](installed-skills.yaml)。
+active/internal状态、对应入口、源版本和SKILL指纹见 [installed-skills.yaml](../installed-skills.yaml)。
 
 ## 验证范围
 

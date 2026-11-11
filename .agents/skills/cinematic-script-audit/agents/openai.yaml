@@ -1,0 +1,6 @@
+interface:
+  display_name: "电影级剧本与生成前审计"
+  short_description: "写剧本先参考电影级基准，生成提醒前总审计；默认横屏，制作24帧、成片60帧"
+  default_prompt: "使用 $cinematic-script-audit 先建立剧本创作基准，并在提醒我是否生成视频之前完成总审计和修正。"
+policy:
+  allow_implicit_invocation: true

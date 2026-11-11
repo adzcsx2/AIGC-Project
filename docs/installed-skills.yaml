@@ -1,27 +1,91 @@
 schema_version: 2
-updated_on: '2026-11-09'
-active_count: 9
+updated_on: '2026-11-11'
+active_count: 15
 internal_skill_count: 12
 skills:
+- name: rewview
+  installed_path: .agents/skills/rewview
+  status: active
+  owner: rewview
+  skill_sha256: 3e1cabb15809dc3ab40d3f421d0f0729768086e15ebdd61868d4af90d146f611
+  origin: 用户2026-11-11确认的文案与设计审计技能；引用当前项目规则和专业技能，查漏、优化并复核修订
+  reference_sha256:
+    agents/openai.yaml: 5d1813a4c276e4a0f6c78ba70d2e9a4fa3c287f148a62c045a35057085b9851b
+    references/审计方法与输出.md: cf0a94b03692c70812747bc21d93722dd820384b407807280d9ca540e01e56bb
+- name: cinematic-script-audit
+  installed_path: .agents/skills/cinematic-script-audit
+  status: active
+  owner: cinematic-script-audit
+  skill_sha256: 4466efae38a103b4066c6c21325f66296d3bc197c54b5429d9b57c30a6030b0f
+  origin: 用户2026-11-09电影级剧本基准与生成提醒前总审计要求；默认横屏16:9，制作默认24fps、最终60fps，不考虑平台UI安全区域
+  reference_sha256:
+    references/电影级检查清单.md: 6e93dfa553fb8fc0052d58218843df2fba6731a47e47c79a2a86829ac37aa406
+- name: blender-video-original
+  repository: https://github.com/modengsir/blender-video-workflows
+  ref: 8dbcdc4b7d1f1d8b701e8de6e9258b63d63a5afb
+  source_path: skills/blender-video-original
+  license: MIT
+  installed_path: .agents/skills/blender-video-original
+  status: active
+  owner: blender-video-original
+  skill_sha256: 434ce38eaab7163febe2c645b0bd506bf938ca8ba80e1ce36ee561392ba5bf1b
+  provenance_file: .agents/skills/blender-video-original/UPSTREAM.md
+  origin: 本机Blender白模工作流；上游原文与本地适配分开保存
+  shared_workflow: docs/工作流/白模制作与验收.md
+  reference_sha256:
+    references/video-generation.md: 649b140a7d03f3818129193c56852d65de0e45d9e2d6918b99749ca698b813fc
+    agents/openai.yaml: 499baa5a4a2f9d6c0c7fe9bf182ccf37250425f3b0715958506555cd81b2fa85
+    references/blender-production.md: 94adc2a8cbee3754b31928913296600d005c63abcaaa36db2d4e29700e9b026a
+    UPSTREAM.md: d567a59dc7651043b85d012b9070db378feec7af0bb8290ffb1b58a2b81da743
+- name: blender-video-recreate
+  repository: https://github.com/modengsir/blender-video-workflows
+  ref: 8dbcdc4b7d1f1d8b701e8de6e9258b63d63a5afb
+  source_path: skills/blender-video-recreate
+  license: MIT
+  installed_path: .agents/skills/blender-video-recreate
+  status: active
+  owner: blender-video-recreate
+  skill_sha256: fdac746531e84324eb6830595056be596dd281dcb53d21b228eeab524c42959b
+  provenance_file: .agents/skills/blender-video-recreate/UPSTREAM.md
+  origin: 本机Blender白模工作流；上游原文与本地适配分开保存
+  shared_workflow: docs/工作流/白模制作与验收.md
+  reference_sha256:
+    references/video-generation.md: 649b140a7d03f3818129193c56852d65de0e45d9e2d6918b99749ca698b813fc
+    agents/openai.yaml: a4ef59ca8bb7103699ae1929a0eef626b7206cb52a05aab0cc4ed6282c00deb2
+    references/blender-production.md: 94adc2a8cbee3754b31928913296600d005c63abcaaa36db2d4e29700e9b026a
+    UPSTREAM.md: 8514679912ab8c215b60f784af79582b1057ce558157c1a181ef4553b1dc7e35
+- name: acting-prompt-writer
+  installed_path: .agents/skills/acting-prompt-writer
+  status: active
+  owner: acting-prompt-writer
+  skill_sha256: 6dc7826958c145ffdf85e45bd41ee578d7472359a3dc01ce4f529d8955e82217
+  origin: 用户提供的人物演技提示词方法，适配项目镜头保留与可见表演约束
+  reference_sha256:
+    references/融合说明.md: 036656bc47b4892f2bfb3f671a7db29a49422f1440bc7157fc0f514053e48ef0
+    agents/openai.yaml: cb69e76c73e667bda801f9cc171607341129d16b04c4c59390e1ca6ee4099e0f
 - name: autodl-aigc
   installed_path: .agents/skills/autodl-aigc
   status: active
   owner: autodl-aigc
-  skill_sha256: 2397d99f0794e06e050a8cee705d227146042108408e98ab892d57e6e5999fd4
+  skill_sha256: 7c779856acc1bb07b5722e827695e9321ca6c321d94ac8e06a2eff96755f16a3
   origin: project adapter or user-provided source; see provenance_file and backup
   pre_reorganization_skill_sha256: a8fd0944f510e401d75ef902559cd1eb139db294abbd7b02fe69a6c87b1b389e
 - name: character-reference-board
   installed_path: .agents/skills/character-reference-board
   status: active
   owner: character-reference-board
-  skill_sha256: 4daff32dd602e24b8a7220061257aa9828bde7837f71fe71d78eb8f052407c46
+  skill_sha256: 8e6821d591efdb95a26cadbc6a970a026ee150c4145e6cf20e22da80bc38dc26
   origin: project adapter or user-provided source; see provenance_file and backup
   pre_reorganization_skill_sha256: 8991e3b710c1e72aceb360044a60b3dae4f979e65a9a2b98c027fdea13a426a3
+  reference_sha256:
+    agents/openai.yaml: aa327a56e3faf6597ff0ceca89afa946cea1a11ed81bdaf92e851362d0659fce
+    references/版式与三视图.md: 1121033a665fece70c692b34171bc0ba1d5c4e211b05c9ccc68b488ea0651b65
+    references/英文提示词写法.md: 11288e5ed86446f128972fda79359d86b09f2871b6436a28766539451b62522d
 - name: fight-scene-design
   installed_path: .agents/skills/fight-scene-design
   status: active
   owner: fight-scene-design
-  skill_sha256: adeb5fbbd2f8e4f09912576dbd442061dc2e8f08de28b0cbe6de16dfc0f029fd
+  skill_sha256: 97f686320534e6291ec6c9275f4bfc3a4558d5ccde0919ebee8471f5877b3752
   provenance_file: .agents/skills/fight-scene-design/UPSTREAM.md
   origin: project adapter or user-provided source; see provenance_file and backup
   pre_reorganization_skill_sha256: 544e5c307b0ab06dc4ec51b9ef10bf672a8a6effcf032061d09a2f93a3d4f85d
@@ -33,7 +97,7 @@ skills:
   installed_path: .agents/skills/huashu-seedance
   status: active
   owner: huashu-seedance
-  skill_sha256: 77008b77f2dcf05357f4e664ab1655ca4d68b5db0593dd50c8ee6e20d7fdccdb
+  skill_sha256: b8d74f05982323fb524848f1564d9265399e2c3e95978b2750c6dd89e067c76d
   provenance_file: .agents/skills/huashu-seedance/UPSTREAM.md
   previous_registry_skill_sha256: 8a0e68d4f8c123f777bcac1dd2511fdcd6f043a183b2d0d790156c8a34953b00
   pre_reorganization_skill_sha256: 8a0e68d4f8c123f777bcac1dd2511fdcd6f043a183b2d0d790156c8a34953b00
@@ -45,7 +109,7 @@ skills:
   installed_path: .agents/skills/short-drama-breakdown
   status: active
   owner: short-drama-breakdown
-  skill_sha256: 35808edd401f0caf040a832cc451b5be89f46891d8accaf7b1c01a7bb8d7c8c9
+  skill_sha256: 59c0d21a8579e56a641d52a526b50259c6762980965f092aeb9cc486693dd559
   provenance_file: .agents/skills/short-drama-breakdown/UPSTREAM.md
   previous_registry_skill_sha256: 862c305e6e85cd7049df78bddb8d372db9847abb8df6ced7acbc3887bda26784
   pre_reorganization_skill_sha256: 862c305e6e85cd7049df78bddb8d372db9847abb8df6ced7acbc3887bda26784
@@ -53,28 +117,38 @@ skills:
   installed_path: .agents/skills/short-drama-workflow
   status: active
   owner: short-drama-workflow
-  skill_sha256: 1819f2c0324f3abdf6dca43e940b0298a538b4b5adcd9e6782c827a9740335c9
+  skill_sha256: 922c218be976073be153379297bf8d8054266d2059e675abec6d34d2c875ca40
   origin: project adapter or user-provided source; see provenance_file and backup
   pre_reorganization_skill_sha256: 34a61f12f074169719db3d581bf7c41fd4035408cfe3b73a6a1a2e5beb3a6065
 - name: storyboard-camera
   installed_path: .agents/skills/storyboard-camera
   status: active
   owner: storyboard-camera
-  skill_sha256: ce6cae0f1364c781d7193266f16ac6b33fe8981c4a9345a784471447b82bc577
+  skill_sha256: 13203aa85c70992f1089eb1ec4eafca85903497788ecf52370a72dfbe373354e
   origin: project adapter or user-provided source; see provenance_file and backup
+  reference_sha256:
+    agents/openai.yaml: 04bf021bade21d24f36053dbdc0cb25b15199bc7e119c98179230c78ebdfea5a
 - name: video-retargeting
   installed_path: .agents/skills/video-retargeting
   status: active
   owner: video-retargeting
-  skill_sha256: 3c813b2c73f317f5ee9cd6ba82ee70339cf27b19f8c29a0b21d9ec2a569725a7
+  skill_sha256: 03203fd87fc6474f402a99fd238c46bbb13734abb852e637dc9f5664e1e4ea25
   origin: project adapter or user-provided source; see provenance_file and backup
   pre_reorganization_skill_sha256: 0494112167f90a871455f9266e9e07b47103d3bf1d9bc35544de77c4330cbb12
+  reference_sha256:
+    agents/openai.yaml: 0ccd1828995bb71e0434b8bc1301c0ac1ba034a3e95e6327df4fb0a3fb9d0ed0
 - name: visual-assets
   installed_path: .agents/skills/visual-assets
   status: active
   owner: visual-assets
-  skill_sha256: 8d2680c64ddfc811559b96934918cfa8efd065ff8e8b7c5e23cba30e0a1ac609
+  skill_sha256: f1cabdc6582632e091f858b15b3788c659a411ec465c1d56866da769bfc88383
   origin: project adapter or user-provided source; see provenance_file and backup
+- name: 补帧
+  installed_path: .agents/skills/补帧
+  status: active
+  owner: 补帧
+  skill_sha256: 263cb15fcfd6557396d881d87fba294e4f4570a0b679762bcc4b431451109f60
+  origin: 用户2026-11-09要求新增的本地RIFE补帧技能；复用本机mpv-lazy运行环境
 - name: h3-storyboard
   repository: https://github.com/phileiny/h3-storyboard-skill
   ref: ce732bae6e05d2e4c4943e3e1fda2d515f9a2ff3
@@ -83,7 +157,7 @@ skills:
   license: MIT
   status: internal
   owner: storyboard-camera
-  skill_sha256: bc0182884fee126253d4cc7e5b1c4b56169617a5b0791244d6b68420f2f451e3
+  skill_sha256: 9a9f431815676484c649684614aed637c46e081fcec02f16b582c8a2449100dc
   provenance_file: .agents/resources/skills/h3-storyboard/UPSTREAM.md
   previous_registry_skill_sha256: 9a9f431815676484c649684614aed637c46e081fcec02f16b582c8a2449100dc
   pre_reorganization_skill_sha256: 9a9f431815676484c649684614aed637c46e081fcec02f16b582c8a2449100dc
@@ -91,7 +165,7 @@ skills:
   installed_path: .agents/resources/skills/martial-arts-director-cy
   status: internal
   owner: fight-scene-design
-  skill_sha256: c33185493cebdf793886d4289cf029f83b000515c11f3ac7b0612acb70369c0d
+  skill_sha256: 924a6de64e8bcfb246f2a535f5c87e53f84e9b6d50ee4d4e66c7607bfba2ddc4
   provenance_file: .agents/resources/skills/martial-arts-director-cy/UPSTREAM.md
   origin: project adapter or user-provided source; see provenance_file and backup
   pre_reorganization_skill_sha256: 924a6de64e8bcfb246f2a535f5c87e53f84e9b6d50ee4d4e66c7607bfba2ddc4
@@ -99,7 +173,7 @@ skills:
   installed_path: .agents/resources/skills/s-grade-3d-prompts
   status: internal
   owner: shared-visual-and-fight
-  skill_sha256: 952c2b6e40f7199b24da00627458cd887f42361b448d036410967c77980ed0bf
+  skill_sha256: e4b624b6b2ac380c7d3ef83af4379c593d5d34e805dc32890f406f8a5fcbd093
   origin: project adapter or user-provided source; see provenance_file and backup
   pre_reorganization_skill_sha256: 4302a6f2650a8f5f89624daa9d9bd653fc665c8fa098d33b0f16beb34d0daa97
 - name: short-drama
@@ -110,7 +184,7 @@ skills:
   license: MIT
   status: internal
   owner: short-drama-workflow
-  skill_sha256: 2078b3ebc2edad79a20c1ed5ff192416ffc26c792bf4a2087bfa4cecb20edaf5
+  skill_sha256: 6dd614752c45a5703a1c26084778fdfacf65236ed89b3a19c6d89e83669e47fa
   provenance_file: .agents/resources/skills/short-drama/UPSTREAM.md
   previous_registry_skill_sha256: 6dd614752c45a5703a1c26084778fdfacf65236ed89b3a19c6d89e83669e47fa
   pre_reorganization_skill_sha256: 6dd614752c45a5703a1c26084778fdfacf65236ed89b3a19c6d89e83669e47fa
@@ -122,7 +196,7 @@ skills:
   license: MIT
   status: internal
   owner: visual-assets
-  skill_sha256: 6e1cf0338d28042bd3223bf964d250218a6ba774ae4fca66ef050f9687b41daa
+  skill_sha256: 48309e0a83f7945ee998fccdc2ef6582b42baefac20ab9d5b3b4474fcb7889fa
   provenance_file: .agents/resources/skills/short-drama-assets/UPSTREAM.md
   previous_registry_skill_sha256: 48309e0a83f7945ee998fccdc2ef6582b42baefac20ab9d5b3b4474fcb7889fa
   pre_reorganization_skill_sha256: 48309e0a83f7945ee998fccdc2ef6582b42baefac20ab9d5b3b4474fcb7889fa
@@ -134,7 +208,7 @@ skills:
   license: MIT
   status: internal
   owner: short-drama-workflow
-  skill_sha256: 4981cd67f44fd6abfb022802fa9c11081624130519234a64fe9a1e5bd1317343
+  skill_sha256: 595b5c23b0a18d7fa721c7df49dda8e2f07fb7fff3dd0f1b7bbac0945b201c79
   provenance_file: .agents/resources/skills/short-drama-develop/UPSTREAM.md
   previous_registry_skill_sha256: 595b5c23b0a18d7fa721c7df49dda8e2f07fb7fff3dd0f1b7bbac0945b201c79
   pre_reorganization_skill_sha256: 595b5c23b0a18d7fa721c7df49dda8e2f07fb7fff3dd0f1b7bbac0945b201c79
@@ -146,7 +220,7 @@ skills:
   license: MIT
   status: internal
   owner: visual-assets
-  skill_sha256: bfcd0ae97f094fa8633eba2d58c6968aee01bb4a86a375c6d529dbea0f2086df
+  skill_sha256: 8b50a7c8a317bad56a58d1a96b1603da707f6e28eb3a7d95cb2fb61acf1f9175
   provenance_file: .agents/resources/skills/short-drama-image-prompts/UPSTREAM.md
   previous_registry_skill_sha256: b6e4acf14911c40298cd56bbf03e0a25faf633da49187e5813c1eea8e9fc610e
   pre_reorganization_skill_sha256: f8c9f893f628da7a04e5a25d6dfd3d45f09e663c72e38f4af8e9812e37986462
@@ -158,7 +232,7 @@ skills:
   license: MIT
   status: internal
   owner: stage-review
-  skill_sha256: 20291a6a38b8daefab2e1d3404688cd903fd92cf17b4f5bfcc7126971fde4215
+  skill_sha256: 412f84b9886c4098d1c734493fa26a3f39fead06a1d3e614976b686faa6f3ec2
   provenance_file: .agents/resources/skills/short-drama-review/UPSTREAM.md
   previous_registry_skill_sha256: 412f84b9886c4098d1c734493fa26a3f39fead06a1d3e614976b686faa6f3ec2
   pre_reorganization_skill_sha256: 412f84b9886c4098d1c734493fa26a3f39fead06a1d3e614976b686faa6f3ec2
@@ -170,7 +244,7 @@ skills:
   license: CC0-1.0
   status: internal
   owner: maintenance-only
-  skill_sha256: 8478c4fc5981b86ff962c3586dddc92e14dfd1e5832a4f89cd94b8f40a90cf75
+  skill_sha256: 6775b6772ff4005ac292d168ea6ff17857e6d1580f4ffbb0d3b2e750ea10ecec
   provenance_file: .agents/resources/skills/short-drama-skill-finder/UPSTREAM.md
   previous_registry_skill_sha256: 6775b6772ff4005ac292d168ea6ff17857e6d1580f4ffbb0d3b2e750ea10ecec
   pre_reorganization_skill_sha256: 6775b6772ff4005ac292d168ea6ff17857e6d1580f4ffbb0d3b2e750ea10ecec
@@ -182,7 +256,7 @@ skills:
   license: MIT
   status: internal
   owner: storyboard-camera
-  skill_sha256: 3918b2b5b4f35e3cccd185a06133d6fa1a4f76439f7c733be69e8ae4bfc9f328
+  skill_sha256: 4d905ab4b1ba8f4e49b044b7d30036e75f6e5a8a3da3afbc11cb76232572a85e
   provenance_file: .agents/resources/skills/short-drama-storyboard/UPSTREAM.md
   previous_registry_skill_sha256: 4d905ab4b1ba8f4e49b044b7d30036e75f6e5a8a3da3afbc11cb76232572a85e
   pre_reorganization_skill_sha256: 4d905ab4b1ba8f4e49b044b7d30036e75f6e5a8a3da3afbc11cb76232572a85e
@@ -194,7 +268,7 @@ skills:
   license: MIT
   status: internal
   owner: storyboard-camera
-  skill_sha256: 8e36e7a72ac02ac3f1b3b4de85457443724788f7ce57bbfb8ab92d4d749c3022
+  skill_sha256: 6b69211f024ee4ae9ca920718277c6f59f8ec62c9ec7f6e41efbffde97d5a8d8
   provenance_file: .agents/resources/skills/short-drama-video-prompts/UPSTREAM.md
   previous_registry_skill_sha256: a99a6fce690ceac09124751070f395bbccd3192c2b2dccc8e94fda71f7c72b48
   pre_reorganization_skill_sha256: 6b69211f024ee4ae9ca920718277c6f59f8ec62c9ec7f6e41efbffde97d5a8d8
@@ -206,7 +280,7 @@ skills:
   license: MIT
   status: internal
   owner: short-drama-workflow
-  skill_sha256: 0590ce70116c64fd65d78cea50da3b9d798d0b4d7ef70d0dad173b1174274759
+  skill_sha256: 12b4aa84f4b36ee8d303734dff11b712a5916bcd04631c6b7851793d711f0da4
   provenance_file: .agents/resources/skills/short-drama-write/UPSTREAM.md
   previous_registry_skill_sha256: 12b4aa84f4b36ee8d303734dff11b712a5916bcd04631c6b7851793d711f0da4
   pre_reorganization_skill_sha256: 12b4aa84f4b36ee8d303734dff11b712a5916bcd04631c6b7851793d711f0da4
@@ -221,3 +295,19 @@ reference_packages:
   license: 'Mixed: Apache-2.0 code; CC BY-NC-ND 4.0 authored docs; third-party original
     licenses'
   license_scope: .agents/resources/acheng-director/LICENSE-SCOPE.md
+- repository: https://github.com/lj350201364/high-density-fight-prompt
+  commit: d0316da6edfc37034c35479613669e07251e4571
+  files: 5
+  installed_path: .agents/resources/high-density-fight-prompt
+  status: internal
+  license: unspecified
+  provenance_file: .agents/resources/high-density-fight-prompt/来源记录.json
+  adapted_reference: .agents/skills/fight-scene-design/references/高密度打斗导演合同.md
+- repository: https://github.com/7ohnson/VLM-Generation-Harness
+  commit: 2c64ed4ddcbc6f002e3afd15c7c7492ddd0ae0ca
+  files: 24
+  installed_path: .agents/resources/vlm-generation-harness
+  status: reference_only
+  license: MIT
+  provenance_file: .agents/resources/vlm-generation-harness/SOURCE.json
+  adapted_reference: docs/工作流/白模制作与验收.md

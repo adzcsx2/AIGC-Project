@@ -12,4 +12,11 @@
 
 逐文件SHA256及本地测试结果见 `references/来源指纹与校验.json`。原始脚本只归档供审计追溯，
 不自动执行、不作为AutoDL生成门禁；正文方法经本技能两份适配参考后使用。
-详细缺陷、覆盖规则和验证范围见根目录 `docs/技能审计-武指与三维制作流程.md`。
+详细缺陷、覆盖规则和验证范围见根目录 `docs/维护记录/技能审计-武指与三维制作流程.md`。
+
+## 高密度打斗导演方法（2026-11-09）
+
+用户指定 https://github.com/lj350201364/high-density-fight-prompt ，重点为 `references/15s-fight-directing-contract.md`。
+固定提交 `d0316da6edfc37034c35479613669e07251e4571`，五份上游文本原样存于 `.agents/resources/high-density-fight-prompt/`，只作内部来源，不注册重复技能。
+该版本没有LICENSE，未推断授权类型；本次仅本地整合。文件指纹见该目录的 `来源记录.json`。
+采用方法和冲突裁决见 `docs/维护记录/技能审计-高密度打斗融合.md`，执行正文为本技能 `references/高密度打斗导演合同.md`。
