@@ -1,4 +1,6 @@
-"interface":
-  "display_name": "白模空间与运镜预演"
-  "short_description": "使用本地几何引擎检查空间与摄影路径，制作并实际检查白模参考视频"
-  "default_prompt": "使用 $huashu-seedance 按本项目最新导演规则处理当前任务；模型提示词使用英文，解释和素材命名使用中文。"
+interface:
+  display_name: "Huashu旧几何预演"
+  short_description: "继续指定的scene.json几何预演或照片拟合，新白模制作优先本机Blender"
+  default_prompt: "使用 $huashu-seedance 继续当前指定的scene.json几何预演或照片拟合任务，沿用已有工程。"
+policy:
+  allow_implicit_invocation: true
