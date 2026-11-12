@@ -26,6 +26,7 @@ assets/
 /deploy/
 /examples/双精灵-法师生图.yaml
 node_modules/
+/comfyui-minimax/
 .mypy_cache/
 .DS_Store
 Thumbs.db
