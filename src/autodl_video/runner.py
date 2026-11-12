@@ -7,6 +7,7 @@ from collections.abc import Callable
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
+from .asset_bindings import validate_asset_payload
 from .catalog import entry_from_detail, get_workflow, utc_now
 from .characters import validate_voice_payload
 from .client import SUCCESS, AutoDLClient, safe_id, task_status
@@ -66,7 +67,10 @@ class VideoProject:
         inputs = config.get("inputs", {})
         check_config_materials(config, local["input_rules"], config_path.parent, root=self.root)
         preview = validate_inputs(
-            inputs, local["input_rules"], base_dir=config_path.parent, encode_media=False,
+            inputs,
+            local["input_rules"],
+            base_dir=config_path.parent,
+            encode_media=False,
             root=self.root,
         )
         budget = budget_decimal(
@@ -109,14 +113,20 @@ class VideoProject:
 
         with AutoDLClient() as public:
             live = entry_from_detail(public.workflow(workflow_id))
+        asset_pins = {}
         voice_approvals = check_config_materials(
-            config, live["input_rules"], config_path.parent, root=self.root
+            config,
+            live["input_rules"],
+            config_path.parent,
+            root=self.root,
+            captured_pins=asset_pins,
         )
         destination = self._generation_destination(destination, config_path, config, live)
         payload = validate_inputs(
             inputs, live["input_rules"], base_dir=config_path.parent, root=self.root
         )
         validate_voice_payload(payload, voice_approvals)
+        validate_asset_payload(payload, asset_pins)
         estimate = estimate_cost(live, inputs)
         self._check_budget(budget, estimate)
         token = load_token(self.root)
@@ -129,6 +139,7 @@ class VideoProject:
             "created_at": utc_now(),
             "state": "SUBMITTING",
             "estimated_max_cost_cny": str(estimate) if estimate is not None else None,
+            "asset_pins": asset_pins,
         }
         atomic_json(attempt_path, attempt)
         with AutoDLClient(token) as client:
@@ -151,6 +162,7 @@ class VideoProject:
                     submitted_at=utc_now(),
                     response=data,
                     estimated_max_cost_cny=attempt["estimated_max_cost_cny"],
+                    asset_pins=asset_pins,
                 )
                 attempt.update(state="SUBMITTED", task_id=task_id)
                 atomic_json(attempt_path, attempt)
@@ -171,9 +183,9 @@ class VideoProject:
     ) -> Path:
         sources = [config_path]
         if "materials_manifest" in config:
-            sources.append(local_path(
-                config_path.parent, config["materials_manifest"], root=self.root
-            ))
+            sources.append(
+                local_path(config_path.parent, config["materials_manifest"], root=self.root)
+            )
         for field, value in config.get("inputs", {}).items():
             if workflow["input_rules"].get(field, {}).get("type") not in MEDIA_TYPES:
                 continue
@@ -246,7 +258,9 @@ class VideoProject:
             def intend(path: Path, size: int, digest: str) -> None:
                 journal_entry(path, size, digest, "pending")
                 self.store.save(
-                    task_id, output_dir=str(destination), download_journal=journal,
+                    task_id,
+                    output_dir=str(destination),
+                    download_journal=journal,
                     download_scope=str(destination) if restricted else None,
                 )
 
@@ -255,17 +269,24 @@ class VideoProject:
                 if path not in known:
                     known.append(path)
                 self.store.save(
-                    task_id, output_dir=str(destination), files=[str(p) for p in known],
+                    task_id,
+                    output_dir=str(destination),
+                    files=[str(p) for p in known],
                     download_journal=journal,
                     download_scope=str(destination) if restricted else None,
                 )
 
             files = download_results(
-                data, destination, root=self.root, existing_files=known,
-                on_publish=intend, on_result=remember,
+                data,
+                destination,
+                root=self.root,
+                existing_files=known,
+                on_publish=intend,
+                on_result=remember,
             )
             self.store.save(
-                task_id, output_dir=str(destination),
+                task_id,
+                output_dir=str(destination),
                 files=[str(path.resolve()) for path in files],
             )
         return {

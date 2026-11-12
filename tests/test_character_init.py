@@ -108,6 +108,30 @@ def test_character_init_never_replaces_an_existing_profile(character_tool):
     assert dest.read_bytes() == profile
 
 
+def test_character_language_default_and_explicit_override(character_tool):
+    init, entry, root = character_tool
+    assert characters(entry, root=root)["EXISTING"]["language"] == "en"
+    init(entry, "ZH", "中文人物", root=root, language="zh-Hans")
+    assert characters(entry, root=root)["ZH"]["language"] == "zh-Hans"
+    before = entry.read_bytes()
+    with pytest.raises(AutoDLError, match="language"):
+        init(entry, "BAD", "错误语言", root=root, language="English")
+    assert entry.read_bytes() == before
+
+
+def test_legacy_character_defaults_to_english_and_rejects_invalid_tag(character_tool):
+    _, entry, root = character_tool
+    path = entry.parent / "01-文档/角色/既有人物.yaml"
+    profile = yaml.safe_load(path.read_text("utf-8"))
+    profile.pop("language", None)
+    path.write_text(yaml.safe_dump(profile, allow_unicode=True), encoding="utf-8")
+    assert characters(entry, root=root)["EXISTING"]["language"] == "en"
+    profile["language"] = None
+    path.write_text(yaml.safe_dump(profile, allow_unicode=True), encoding="utf-8")
+    with pytest.raises(AutoDLError, match="language"):
+        characters(entry, root=root)
+
+
 def test_character_init_rollback_preserves_a_replacement_file(character_tool, monkeypatch):
     init, entry, root = character_tool
     before = entry.read_bytes()

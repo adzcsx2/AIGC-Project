@@ -1,6 +1,6 @@
 interface:
   display_name: "人物演技提示词"
-  short_description: "保留台词、事件与镜头，丰富可见表情、情感层次与肢体反应，按剧情控制强弱"
-  default_prompt: "使用 $acting-prompt-writer 为已确认剧本丰富表情、情感和肢体表现，保留原台词、动作和镜头，落实可见的变化与反应。"
+  short_description: "保留台词原意、事件与镜头，按角色语言配置转换对白，丰富表情、情感层次与肢体反应"
+  default_prompt: "使用 $acting-prompt-writer 为已确认剧本丰富表情、情感和肢体表现，保留台词原意、动作和镜头，实际对白按人物language转换，落实可见的变化与反应。"
 policy:
   allow_implicit_invocation: true

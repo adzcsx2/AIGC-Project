@@ -1,0 +1,45 @@
+# 全局主档：一个身份的多个造型和声线归同一entity_id；版本另存，不能覆盖已引用版。
+schema_version: 1
+entity_id: CHARACTER-EXAMPLE
+revision: '01'
+category: character
+label: 示例角色
+aliases: []  # 检索名，不自动变成对白称呼，也不据同名合并身份
+language: en  # 默认说话语言；作品可明确覆盖，实际对白按此语言转换，非语言叫声不翻译
+attributes:
+  summary: null
+  appearance: null
+  personality: null
+  anatomy: null
+  scale: null  # 说明依据/单位/尾翼是否计入；布局高度不等于年龄设定
+performance_traits:
+  speech_style: null
+  typical_reactions: []
+  habits: []
+  boundaries: []
+style_reference: null
+identity_references: []  # 面部/结构基准的{asset_id, revision, purpose}
+looks:
+  default:
+    label: 默认造型
+    clothing: null
+    hair: null
+    accessories: []
+    board:
+      asset_id: CHARACTER-BOARD
+      revision: '01'
+    layout: front_closeup_headless_front_body_full_back
+    # Active looks require the exact three-view layout and reviewed image-hash evidence; legacy sheets are historical sources only.
+voice_profiles: {}
+# 示例（先登记真实声样；这里只选择音色资产，不产生试听确认）：
+# voice_profiles:
+#   sweet:
+#     sample: {asset_id: CHARACTER-VOICE, revision: '01'}
+#     language: en
+#     description: 已有候选声线说明
+#     approval_evidence: [{path: ..., sha256: ..., scope: ...}]
+provenance:
+  path_base: repository
+  sources: []
+  unresolved: []
+# 湿衣、受伤、手持物、剧情关系和本作能力限制保存在作品连续性/剧本，不写成永久身份。

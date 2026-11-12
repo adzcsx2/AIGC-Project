@@ -1,0 +1,31 @@
+# 给 tools/资产.py register <实际源文件> --spec <本文件>；版本不可覆盖。
+# 这是本地资产元数据，不是模型API请求；说明中文，模型prompt另存英文文档。
+asset_id: ASSET-EXAMPLE
+revision: '01'
+label: 示例素材
+category: character  # character/wardrobe/scene/prop/voice/dialogue/ambience/sfx/music/motion/camera/compositing/graphics/footage
+media_type: image  # image/audio/video/document/project；按真实文件选择
+purpose: identity_board  # 明确用途；身份、风格、环境、端点、动作等不能互相替代
+board_contract: null  # identity_board requires version=1, current layout, image_sha256 and hash-bound evidence_path/evidence_sha256
+entity_id: null  # 角色板及角色声样须绑定全局角色ID
+variant_id: null  # 造型/状态ID，不能只写“最新”
+sha256: null  # 可填预期哈希；实际登记必须核对，工具计算完整SHA-256
+tags: []
+style_reference: null  # 原始风格文档/版本/基准；当前作品风格仍归project.documents.style
+technical:
+  status: unverified
+  # 图片：width/height/alpha；音频：sample_rate/channels/duration；视频：fps/duration/tracks。
+review:
+  status: unreviewed
+  evidence: []  # {path: ..., sha256: ..., scope: ...}；路径基准明确写入来源
+provenance:
+  path_base: repository
+  source_project: null
+  source_path: null
+  generation_record: null
+  prompt_document: null
+rights:
+  status: unknown
+  source: null
+  restrictions: []
+derived_from: []  # [{asset_id: ..., revision: ..., operation: ...}]

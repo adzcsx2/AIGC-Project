@@ -1,6 +1,0 @@
-interface:
-  display_name: "文案与设计审计（rewview）"
-  short_description: "依据项目规则和现有技能审计文案、剧本、分镜与动作，查漏优化并复核修订结果"
-  default_prompt: "使用 $rewview 按当前项目规则和相关技能审计这份文案或设计，找出遗漏、不足与优化空间，给出范围内的修订稿并复核。"
-policy:
-  allow_implicit_invocation: true

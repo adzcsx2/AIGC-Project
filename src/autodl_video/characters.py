@@ -4,10 +4,13 @@ from __future__ import annotations
 
 import base64
 import hashlib
+import json
 from dataclasses import dataclass
 from dataclasses import field as dataclass_field
 from pathlib import Path
 
+from .asset_bindings import resolve_character
+from .character_language import language_code
 from .config import load_yaml
 from .errors import AutoDLError
 from .paths import project_owner, resolve_media_path
@@ -83,13 +86,13 @@ def characters(project_file: Path, *, root: Path | None = None) -> dict[str, dic
             raise AutoDLError(f"{character_id}: display_name应为文本或null")
         if data.get("voice") is not None and not isinstance(data["voice"], dict):
             raise AutoDLError(f"{character_id}: voice应为配置映射或null")
-        result[character_id] = data
+        resolved = resolve_character(data, work, root=root)
+        resolved["language"] = language_code(resolved.get("language", "en"))
+        result[character_id] = resolved
     return result
 
 
-def voice_issue(
-    root: Path, character: dict, *, repository_root: Path | None = None
-) -> str | None:
+def voice_issue(root: Path, character: dict, *, repository_root: Path | None = None) -> str | None:
     voice = character.get("voice") or {}
     if voice.get("status") != "approved":
         return "尚未配置/试听确认声音；继续独立工作，最后集中试听"
@@ -131,15 +134,87 @@ def voice_queue(project_file: Path, *, root: Path | None = None) -> list[dict]:
 
 
 def shot_voice_issues(
-    manifest: Path, data: dict, shot_id: str, rules: dict | None = None,
-    *, root: Path | None = None,
+    manifest: Path,
+    data: dict,
+    shot_id: str,
+    rules: dict | None = None,
+    *,
+    root: Path | None = None,
 ) -> list[str]:
     return check_shot_voices(manifest, data, shot_id, rules, root=root).issues
 
 
+def _embedded_voice(manifest, data, shot, registry, work, rules, root):
+    """Validate an explicitly audited source track, without inventing an audio slot.
+
+    This is provenance/byte validation. Acoustic correctness and lip synchronization
+    remain media review tasks. Only the supported single-speaker route is accepted.
+    """
+    source = shot["source_audio"]
+    try:
+        cid, field = source["character_id"], source["input_field"]
+        if shot.get("speakers") != [cid] or shot.get("voice_bindings") != {field: cid}:
+            raise ValueError("源音轨目前需要一位说话人物及对应视频绑定")
+        if cid not in registry or (
+            reason := voice_issue(work, registry[cid], repository_root=root)
+        ):
+            raise ValueError(reason if cid in registry else "源音轨人物未登记")
+        if rules is not None and rules.get(field, {}).get("type") != "video":
+            raise ValueError("源音轨字段不是当前接口的video输入")
+        references = shot["reference_bindings"]
+        asset = data["assets"][references[field]]
+        if asset.get("kind") != "video":
+            raise ValueError("源音轨必须绑定真实视频素材")
+        if any(
+            data["assets"][aid].get("purpose") == "character_voice" for aid in references.values()
+        ):
+            raise ValueError("源音轨模式不能混入独立声音参考槽")
+        video = resolve_media_path(manifest.parent / asset["path"], root)
+        dialogue_asset = data["assets"][source["dialogue_asset"]]
+        if dialogue_asset.get("kind") != "audio":
+            raise ValueError("源对白必须登记为音频素材")
+        dialogue = resolve_media_path(manifest.parent / dialogue_asset["path"], root)
+        if not video.is_relative_to(work) or not dialogue.is_relative_to(work):
+            raise ValueError("源视频与对白必须归档到当前作品")
+        evidence = source["evidence"]
+        evidence_path = project_path(work, evidence["path"], repository_root=root)
+        raw = evidence_path.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != evidence["sha256"]:
+            raise ValueError("源音轨人工审计记录已变化")
+        receipt = json.loads(raw)
+        if not isinstance(receipt, dict):
+            raise ValueError("源音轨审计记录必须是JSON对象")
+        video_hash = hashlib.sha256(video.read_bytes()).hexdigest()
+        dialogue_hash = hashlib.sha256(dialogue.read_bytes()).hexdigest()
+        expected = {
+            "schema_version": 1,
+            "kind": "embedded_source_audio",
+            "character_id": cid,
+            "video_sha256": video_hash,
+            "dialogue_sha256": dialogue_hash,
+            "voice_sample_sha256": registry[cid]["voice"]["approval"]["sample_sha256"],
+            "audio_stream_copy_verified": True,
+        }
+        if any(receipt.get(k) != v for k, v in expected.items()):
+            raise ValueError("源音轨审计的声样/对白/视频字节或复制证据不一致")
+        provenance = receipt["provenance"]
+        provenance_path = project_path(work, provenance["path"], repository_root=root)
+        if hashlib.sha256(provenance_path.read_bytes()).hexdigest() != provenance["sha256"]:
+            raise ValueError("源对白制作记录已变化")
+        return VoiceCheck(
+            approvals={field: VoiceApproval(cid, video, video_hash, str(evidence_path))}
+        )
+    except (KeyError, TypeError, ValueError, OSError, AutoDLError) as exc:
+        return VoiceCheck([f"源音轨未就绪：{exc}"])
+
+
 def check_shot_voices(
-    manifest: Path, data: dict, shot_id: str, rules: dict | None = None,
-    *, root: Path | None = None,
+    manifest: Path,
+    data: dict,
+    shot_id: str,
+    rules: dict | None = None,
+    *,
+    root: Path | None = None,
 ) -> VoiceCheck:
     """Opt-in voice contract for new reference-conditioned shots; legacy stays readable."""
     policy = data.get("voice_policy")
@@ -164,6 +239,8 @@ def check_shot_voices(
     except (AutoDLError, OSError) as exc:
         return VoiceCheck([str(exc)])
     shot = data["shots"][shot_id]
+    if "source_audio" in shot:
+        return _embedded_voice(manifest, data, shot, registry, work, rules, root)
     references = shot.get("reference_bindings")
     if (
         not isinstance(references, dict)
@@ -180,20 +257,22 @@ def check_shot_voices(
     ):
         return VoiceCheck([f"{shot_id}: voice_bindings必须是音频字段到人物ID的映射"])
     voice_fields = {
-        field for field, asset_id in references.items()
+        field
+        for field, asset_id in references.items()
         if data["assets"].get(asset_id, {}).get("purpose") == "character_voice"
     }
     if not speakers and voice_fields:
-        return VoiceCheck([
-            f"{shot_id}: 本镜无人说话，请移除无用的人物声音输入及对应绑定："
-            + ", ".join(sorted(voice_fields))
-        ])
+        return VoiceCheck(
+            [
+                f"{shot_id}: 本镜无人说话，请移除无用的人物声音输入及对应绑定："
+                + ", ".join(sorted(voice_fields))
+            ]
+        )
     issues = []
     approvals = {}
     for field in sorted(voice_fields - bindings.keys()):
         issues.append(
-            f"{shot_id}/{field}: 人物声音输入缺少voice_bindings；"
-            "请绑定本镜说话人物，或移除无用输入"
+            f"{shot_id}/{field}: 人物声音输入缺少voice_bindings；请绑定本镜说话人物，或移除无用输入"
         )
     if len(speakers) != len(set(speakers)):
         issues.append(f"{shot_id}: speakers有重复人物")

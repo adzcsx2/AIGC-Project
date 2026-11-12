@@ -1,0 +1,18 @@
+schema_version: 1
+entity_id: SCENE-EXAMPLE
+revision: '01'
+category: scene
+label: 示例地点
+aliases: []
+spatial_anchors:
+  buildings: null
+  foreground_midground_background: null
+  ground_scale: null
+  railings_and_routes: null
+  horizon_and_clouds: null
+  dimensions_and_basis: null
+variants: {}  # 昼夜/天气/布景变化；同一地点的机位另列views
+views: {}  # 每项：asset_id、revision、camera、purpose；图片是地点的具体视图
+lighting: {direction: null, color_temperature: null, shadows: null}
+style_reference: null
+provenance: {path_base: repository, sources: [], unresolved: []}

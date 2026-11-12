@@ -1,25 +1,25 @@
 schema_version: 2
-updated_on: '2026-11-11'
+updated_on: '2026-11-12'
 active_count: 15
 internal_skill_count: 12
 skills:
-- name: rewview
-  installed_path: .agents/skills/rewview
+- name: review
+  installed_path: .agents/skills/review
   status: active
-  owner: rewview
-  skill_sha256: 3e1cabb15809dc3ab40d3f421d0f0729768086e15ebdd61868d4af90d146f611
-  origin: 用户2026-11-11确认的文案与设计审计技能；引用当前项目规则和专业技能，查漏、优化并复核修订
+  owner: review
+  skill_sha256: a7083a91b349033c4899fb6878d1bf1d04ba4ceec2a4178aaf4fa2c2d95941a6
+  origin: 用户2026-11-12要求参考code-review-loop改为5轮完整审计与修订；最终无遗留问题且必需证据全通过才放行，保留动作速度专项与设计/媒体实测边界
   reference_sha256:
-    agents/openai.yaml: 5d1813a4c276e4a0f6c78ba70d2e9a4fa3c287f148a62c045a35057085b9851b
-    references/审计方法与输出.md: cf0a94b03692c70812747bc21d93722dd820384b407807280d9ca540e01e56bb
+    agents/openai.yaml: 50101204513067d204ae7bc88f7d7e9a013a15942b5563ae24db8c7d2d83e57b
+    references/审计方法与输出.md: 72c8178ce1c9d0318d7a6ffc9810d4acad71a37320934427b4ced9c17428b88b
 - name: cinematic-script-audit
   installed_path: .agents/skills/cinematic-script-audit
   status: active
   owner: cinematic-script-audit
-  skill_sha256: 4466efae38a103b4066c6c21325f66296d3bc197c54b5429d9b57c30a6030b0f
+  skill_sha256: ab18482db696136b48d2ea7a5766920a223db4ad966cd578d9734ea888badb2b
   origin: 用户2026-11-09电影级剧本基准与生成提醒前总审计要求；默认横屏16:9，制作默认24fps、最终60fps，不考虑平台UI安全区域
   reference_sha256:
-    references/电影级检查清单.md: 6e93dfa553fb8fc0052d58218843df2fba6731a47e47c79a2a86829ac37aa406
+    references/电影级检查清单.md: 3e413199778949099578f5a01295ded20f9398a893f62f4381181c199607dd1c
 - name: blender-video-original
   repository: https://github.com/modengsir/blender-video-workflows
   ref: 8dbcdc4b7d1f1d8b701e8de6e9258b63d63a5afb
@@ -28,15 +28,15 @@ skills:
   installed_path: .agents/skills/blender-video-original
   status: active
   owner: blender-video-original
-  skill_sha256: 434ce38eaab7163febe2c645b0bd506bf938ca8ba80e1ce36ee561392ba5bf1b
+  skill_sha256: bc7233dd076e19ef07b6a56d7b92f2e3b71ef448bb391d21385150da461d16bf
   provenance_file: .agents/skills/blender-video-original/UPSTREAM.md
   origin: 本机Blender白模工作流；上游原文与本地适配分开保存
   shared_workflow: docs/工作流/白模制作与验收.md
   reference_sha256:
-    references/video-generation.md: 649b140a7d03f3818129193c56852d65de0e45d9e2d6918b99749ca698b813fc
+    references/video-generation.md: 3f6bcad4ba83550bece7f8d8c4550ddef0552f4cfb598729d4ddc916cc13bf08
     agents/openai.yaml: 499baa5a4a2f9d6c0c7fe9bf182ccf37250425f3b0715958506555cd81b2fa85
-    references/blender-production.md: 94adc2a8cbee3754b31928913296600d005c63abcaaa36db2d4e29700e9b026a
-    UPSTREAM.md: d567a59dc7651043b85d012b9070db378feec7af0bb8290ffb1b58a2b81da743
+    references/blender-production.md: e45baa0bf7614888c2d5f25e3c59dbf4b010fb700c32c02151b398507b9fb7b0
+    UPSTREAM.md: 3b7fd7911833917a86edb0be9f27122ce9ff624aab754e280e863c56419a33e8
 - name: blender-video-recreate
   repository: https://github.com/modengsir/blender-video-workflows
   ref: 8dbcdc4b7d1f1d8b701e8de6e9258b63d63a5afb
@@ -45,40 +45,40 @@ skills:
   installed_path: .agents/skills/blender-video-recreate
   status: active
   owner: blender-video-recreate
-  skill_sha256: fdac746531e84324eb6830595056be596dd281dcb53d21b228eeab524c42959b
+  skill_sha256: dd57e5e39e3ea0597eaca6f4e39dc521d721d152b461346e2fda611273ee52ed
   provenance_file: .agents/skills/blender-video-recreate/UPSTREAM.md
   origin: 本机Blender白模工作流；上游原文与本地适配分开保存
   shared_workflow: docs/工作流/白模制作与验收.md
   reference_sha256:
-    references/video-generation.md: 649b140a7d03f3818129193c56852d65de0e45d9e2d6918b99749ca698b813fc
+    references/video-generation.md: 3f6bcad4ba83550bece7f8d8c4550ddef0552f4cfb598729d4ddc916cc13bf08
     agents/openai.yaml: a4ef59ca8bb7103699ae1929a0eef626b7206cb52a05aab0cc4ed6282c00deb2
-    references/blender-production.md: 94adc2a8cbee3754b31928913296600d005c63abcaaa36db2d4e29700e9b026a
-    UPSTREAM.md: 8514679912ab8c215b60f784af79582b1057ce558157c1a181ef4553b1dc7e35
+    references/blender-production.md: e45baa0bf7614888c2d5f25e3c59dbf4b010fb700c32c02151b398507b9fb7b0
+    UPSTREAM.md: ee00493bca3375ee13b94e95d9142e5aad3c08e3c176daaa9ad047c16b9fd022
 - name: acting-prompt-writer
   installed_path: .agents/skills/acting-prompt-writer
   status: active
   owner: acting-prompt-writer
-  skill_sha256: 6dc7826958c145ffdf85e45bd41ee578d7472359a3dc01ce4f529d8955e82217
+  skill_sha256: a8237bfa2869183138e842f13ccecf9ee33d3418bdeed72063ed334dbccda044
   origin: 用户提供的人物演技提示词方法，适配项目镜头保留与可见表演约束
   reference_sha256:
     references/融合说明.md: 036656bc47b4892f2bfb3f671a7db29a49422f1440bc7157fc0f514053e48ef0
-    agents/openai.yaml: cb69e76c73e667bda801f9cc171607341129d16b04c4c59390e1ca6ee4099e0f
+    agents/openai.yaml: 15e32b34b898c677c370a7d21f79bb7731012bfe495e2b21e7230e758c1e09f9
 - name: autodl-aigc
   installed_path: .agents/skills/autodl-aigc
   status: active
   owner: autodl-aigc
-  skill_sha256: 7c779856acc1bb07b5722e827695e9321ca6c321d94ac8e06a2eff96755f16a3
+  skill_sha256: c35770422c40d1f0cf8218ab7984445d87aeceb11abdbccef2734b7191264cb9
   origin: project adapter or user-provided source; see provenance_file and backup
   pre_reorganization_skill_sha256: a8fd0944f510e401d75ef902559cd1eb139db294abbd7b02fe69a6c87b1b389e
 - name: character-reference-board
   installed_path: .agents/skills/character-reference-board
   status: active
   owner: character-reference-board
-  skill_sha256: 8e6821d591efdb95a26cadbc6a970a026ee150c4145e6cf20e22da80bc38dc26
+  skill_sha256: 948a291eb4ca5ffddf3469a979acab3a571f2241d3ff5bf4bc119bb69b7db2c1
   origin: project adapter or user-provided source; see provenance_file and backup
   pre_reorganization_skill_sha256: 8991e3b710c1e72aceb360044a60b3dae4f979e65a9a2b98c027fdea13a426a3
   reference_sha256:
-    agents/openai.yaml: aa327a56e3faf6597ff0ceca89afa946cea1a11ed81bdaf92e851362d0659fce
+    agents/openai.yaml: 38c65dbea51c5e855d627bb1afa6707f245707347561be60ecb5f12709226576
     references/版式与三视图.md: 1121033a665fece70c692b34171bc0ba1d5c4e211b05c9ccc68b488ea0651b65
     references/英文提示词写法.md: 11288e5ed86446f128972fda79359d86b09f2871b6436a28766539451b62522d
 - name: fight-scene-design
@@ -89,6 +89,8 @@ skills:
   provenance_file: .agents/skills/fight-scene-design/UPSTREAM.md
   origin: project adapter or user-provided source; see provenance_file and backup
   pre_reorganization_skill_sha256: 544e5c307b0ab06dc4ec51b9ef10bf672a8a6effcf032061d09a2f93a3d4f85d
+  reference_sha256:
+    references/动作与摄影.md: 01b93431b85806cca27692073926a43829e9a0c671f6934a463e86459b239168
 - name: huashu-seedance
   repository: https://github.com/alchaincyf/seedance-skill
   ref: 4530b443b686c363da27109712ac18aec07aa6b9
@@ -97,7 +99,7 @@ skills:
   installed_path: .agents/skills/huashu-seedance
   status: active
   owner: huashu-seedance
-  skill_sha256: b8d74f05982323fb524848f1564d9265399e2c3e95978b2750c6dd89e067c76d
+  skill_sha256: 9a366e508cd058efd2e25f5d4f723c50cd3331fc8488bb9220d0ff1664c0e101
   provenance_file: .agents/skills/huashu-seedance/UPSTREAM.md
   previous_registry_skill_sha256: 8a0e68d4f8c123f777bcac1dd2511fdcd6f043a183b2d0d790156c8a34953b00
   pre_reorganization_skill_sha256: 8a0e68d4f8c123f777bcac1dd2511fdcd6f043a183b2d0d790156c8a34953b00
@@ -117,31 +119,31 @@ skills:
   installed_path: .agents/skills/short-drama-workflow
   status: active
   owner: short-drama-workflow
-  skill_sha256: 922c218be976073be153379297bf8d8054266d2059e675abec6d34d2c875ca40
+  skill_sha256: 3b245e31be7749b481970fd63cbdea4e94cdea8cec78c0a85396af2a0a137343
   origin: project adapter or user-provided source; see provenance_file and backup
   pre_reorganization_skill_sha256: 34a61f12f074169719db3d581bf7c41fd4035408cfe3b73a6a1a2e5beb3a6065
 - name: storyboard-camera
   installed_path: .agents/skills/storyboard-camera
   status: active
   owner: storyboard-camera
-  skill_sha256: 13203aa85c70992f1089eb1ec4eafca85903497788ecf52370a72dfbe373354e
+  skill_sha256: 6b511e1160ab96664ea19981630c2a3f676dc93a1190139cbd90fb6f40ef12ce
   origin: project adapter or user-provided source; see provenance_file and backup
   reference_sha256:
-    agents/openai.yaml: 04bf021bade21d24f36053dbdc0cb25b15199bc7e119c98179230c78ebdfea5a
+    agents/openai.yaml: 63384698e2afb4cd6402c80de0b8c9d21f470eeac322660ee645ea14d09dc502
 - name: video-retargeting
   installed_path: .agents/skills/video-retargeting
   status: active
   owner: video-retargeting
-  skill_sha256: 03203fd87fc6474f402a99fd238c46bbb13734abb852e637dc9f5664e1e4ea25
+  skill_sha256: b25a41c35871abba223104a22c3f60f58aea8cbf60f50e643b7f61dff5ff9d46
   origin: project adapter or user-provided source; see provenance_file and backup
   pre_reorganization_skill_sha256: 0494112167f90a871455f9266e9e07b47103d3bf1d9bc35544de77c4330cbb12
   reference_sha256:
-    agents/openai.yaml: 0ccd1828995bb71e0434b8bc1301c0ac1ba034a3e95e6327df4fb0a3fb9d0ed0
+    agents/openai.yaml: cb7d692e7fdbf132dba55208be376c45d40356d799211be9637beea4daa76de4
 - name: visual-assets
   installed_path: .agents/skills/visual-assets
   status: active
   owner: visual-assets
-  skill_sha256: f1cabdc6582632e091f858b15b3788c659a411ec465c1d56866da769bfc88383
+  skill_sha256: f8d79808a845e2fe46850d9b3885f86b472b29696645bf47ec5ff7e963d13a98
   origin: project adapter or user-provided source; see provenance_file and backup
 - name: 补帧
   installed_path: .agents/skills/补帧

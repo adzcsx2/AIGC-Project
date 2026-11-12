@@ -1,6 +1,8 @@
 # Codex项目导航
 
-人物YAML、仅剧本需要说话时配置音色与集中试听：先读 [人物与声音流程](工作流/character-voice.md)，再读作品project.yaml.characters；工具入口为 `tools/角色.py`。
+找共用角色/造型/声音/场景：先读目标作品project.yaml，再读 [共享资产流程](工作流/asset-library.md)。统一入口 `projects/共享资产库/project.yaml`，查找命令 `tools/资产.py list --query <中文名>`；接续作品先执行 `tools/资产.py check --project <作品/project.yaml>`，沿本地materials路径使用，不猜原作品位置或浮动最新版本。
+
+人物YAML、language说话语言（默认en）、对白翻译、音色与集中试听：先读 [人物与声音流程](工作流/character-voice.md)，再读作品project.yaml.characters；工具入口为 `tools/角色.py`。
 
 先按本次目标选入口，路径均相对仓库根目录。
 
@@ -8,7 +10,7 @@
 |---|---|
 | 自然语言选技能、组合和继续当前阶段 | `docs/skill-routing.md`；当前硬性规则 `AGENTS.md` |
 | 可调用技能 | `.agents/skills/<name>/SKILL.md` 与 `agents/openai.yaml` |
-| 文案、剧本、分镜、摄影与动作设计的查漏、优化和修订复核 | `.agents/skills/rewview/SKILL.md`；具体职责见 `docs/skill-routing.md`，按当前作品及适用专业标准取证 |
+| 文案、剧本、分镜、摄影与动作设计的五轮完整审计、修订和放行 | `.agents/skills/review/SKILL.md`；具体职责见 `docs/skill-routing.md`，按当前作品及适用专业标准取证 |
 | 人物视图标准与用户排版参考图 | `.agents/skills/character-reference-board/references/版式与三视图.md`；只做正面特写、正面全身无头、背面全身 |
 | 新人物、动物等先三视图再入场景/API | `docs/工作流/character-voice.md`「新角色三视图前置与API绑定」；实际传入三视图身份参考，不能仅传场景临时角色 |
 | 剧本必读基准、生成提醒前总审计 | `.agents/skills/cinematic-script-audit/SKILL.md`；`templates/short-drama/电影级生成前审计.md` |

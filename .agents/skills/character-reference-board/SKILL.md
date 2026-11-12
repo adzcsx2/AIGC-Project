@@ -5,6 +5,11 @@ description: 从已确认设定或角色图制作人物、动物及其他生物�
 
 # 人物三视图参考板
 
+Identity and outfits follow [the shared asset workflow](../../../docs/工作流/asset-library.md).
+Every newly made or actively selected board must have exactly the three required views, including
+animals and dragons. Record the actual visual inspection against the image hash. Old multi-view
+sheets are historical sources only; previous acceptance does not satisfy the current layout.
+
 新人物、动物及其他非人角色先按 [新角色三视图前置与API绑定](../../../docs/工作流/character-voice.md#新角色三视图前置与api绑定) 制作独立三视图，再用于场景图及下游API身份输入；不先在场景里临时生成角色。该步骤属于已授权制作的必要前置，无需另点名本技能；只写文案/提示词或维护规则仍不生成。无原图时从已确认外观与本片style直接制作，已有合格同身份三视图可复用。
 
 同一人物的板、原图与造型引用同一角色YAML，规则见 `docs/工作流/character-voice.md`。只有剧本需要人物说话时才配置声音；只制作参考板时不要求用户先选声音，也不为增加名字而改图；显示名与剧情称呼分离。
@@ -15,7 +20,7 @@ description: 从已确认设定或角色图制作人物、动物及其他生物�
 
 用户2026-11-10确定：同一张板**仅正面特写、正面全身无头、背面全身**。按 [三视图版式与用户基准图](references/版式与三视图.md) 执行；正面身体只显示颈部以下至脚底，背面保留完整后脑至脚底。省略头部仅是正面身体视图的展示方式，不改角色实际解剖。
 
-禁止自动加入侧面、侧脸、俯仰视角、运动姿态格、表情格或其他视图。视频有爬行、飞行等动作或镜头变化也不构成加格理由；只有用户以后明确另定视图时才改变。已有合格参考板可复用，不为新标准重做所有老素材。
+禁止自动加入侧面、侧脸、俯仰视角、运动姿态格、表情格或其他视图。视频有爬行、飞行等动作或镜头变化也不构成加格理由；只有用户以后明确另定视图时才改变。只有实际符合当前三视图并有对应检查依据的参考板可直接用于新的角色板绑定；历史源片和已提交任务恢复保留原记录。
 
 ## 先审计参考
 

@@ -2,11 +2,22 @@
 # 新角色包括动物；ref_image_0实际传入其合格三视图，场景图不能替代身份板。多角色按真实槽位逐个绑定。
 materials_manifest: ../../materials.yaml
 shot_id: SHOT-01
-workflow_id: minimax_h3_zm_u24
+workflow_id: minimax_h3_zm_u30
 inputs:
-  prompt: Replace this placeholder with the audited English prompt for the confirmed
-    continuous scene.
+  prompt: Replace this placeholder with the reviewed English scene prompt. State each
+    character's actual standing height and measurement range, and explicitly follow
+    the supplied HEIGHT REFERENCE and standing scale comparison for physical size.
+    Identity boards control identity; standing diagrams control size only; the complete
+    shot image controls story pose, composition and environment. Specify natural action
+    timing, support/contact feedback and project style. Never copy standing poses into
+    a reclining scene. Audit the actual reference roles and order before generation.
   ref_image_0: ../../02-素材/人物/角色01-三视图参考板.png
-  ref_image_1: ../../02-素材/场景/场景01.png
-  duration: 15
+  ref_image_1: ../../02-素材/人物/角色02-三视图参考板.png
+  ref_image_2: ../../02-素材/尺寸参考/角色身高刻度图.png
+  ref_image_3: ../../02-素材/尺寸参考/纯角色站立比例图.png
+  ref_image_4: ../../02-素材/场景/场景01.png
+  ref_image_5: ../../02-素材/镜头/本段完整姿态同框图.png
+  # 多角色尺度关键镜头示例；单主体按用途调整，必要身份板不能丢。
+  # 秒数按剧情/对白与u30当次实时契约选择，不是固定5秒或15秒。
+  duration: 5
   resolution: 768p横

@@ -5,12 +5,15 @@ schema_version: 1
 character_id: CHAR-01
 label: 人物01
 display_name: null  # 只供用户识别；不会自动成为台词中的称呼
+language: en  # 实际说话语言；中文需求/台词按此转换，例如“你好”→“Hello”；不代表需要新增对白
 attributes:
   summary: null
   appearance: null
   personality: null
   source_documents: []  # 长设定正文保留在原文，此处只指向来源
 visual_references: []  # 项目内路径；或{manifest: materials.yaml, asset_id: CHAR-01}
+# 复用共享角色时用tools/资产.py bind-character生成library_binding和本地主档快照。
+# 固定身份/性格/造型从锁定主档读取，本地attributes仅留剧情属性；见docs/工作流/asset-library.md。
 # 新人物参考板只含正面特写、正面全身无头、背面全身；版式见character-reference-board，不追加其他视图。
 speech_usage: unknown  # 仅dialogue触发配声；none/vocalization/unknown不触发。随当前剧本更新。
 voice:  # 剧本不要求人物说话时可为空或省略；建档不等于要配声

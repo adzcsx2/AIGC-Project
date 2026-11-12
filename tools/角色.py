@@ -8,6 +8,7 @@ from pathlib import Path
 
 import yaml
 
+from autodl_video.character_language import language_code
 from autodl_video.characters import project_path, voice_queue
 from autodl_video.config import atomic_text, load_yaml
 from autodl_video.errors import AutoDLError
@@ -18,11 +19,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def init_character(
-    project_file: Path, character_id: str, label: str, *, root: Path = ROOT
+    project_file: Path, character_id: str, label: str, *, root: Path = ROOT,
+    language: str = "en",
 ) -> Path:
     """Publish one new profile and its index while preserving every existing entry."""
     if not character_id.strip() or not label.strip():
         raise AutoDLError("init需要非空--id和--label")
+    language = language_code(language)
     if any(c in label for c in '/\\:*?"<>|') or label in {".", ".."}:
         raise AutoDLError("label不能包含路径或Windows文件名特殊字符")
     project_file = resolve_media_path(project_file, root)
@@ -38,7 +41,7 @@ def init_character(
         relative = f"01-文档/角色/{label}.yaml"
         dest = project_path(project_file.parent, relative, repository_root=root)
         profile = load_yaml(root / "templates/short-drama/角色.yaml")
-        profile.update(character_id=character_id, label=label)
+        profile.update(character_id=character_id, label=label, language=language)
         profile_text = yaml.safe_dump(profile, allow_unicode=True, sort_keys=False)
         registry[character_id] = relative
         project_text = yaml.safe_dump(project, allow_unicode=True, sort_keys=False)
@@ -72,6 +75,7 @@ def main():
     parser.add_argument("project", type=Path, help="作品project.yaml")
     parser.add_argument("--id", dest="character_id")
     parser.add_argument("--label", help="人物中文识别描述，例如青衣女子")
+    parser.add_argument("--language", default="en", help="人物说话语言，默认en（英文）")
     args = parser.parse_args()
     args.project = resolve_media_path(args.project, ROOT)
     if args.action == "queue":
@@ -80,7 +84,9 @@ def main():
     if not args.character_id or not args.label:
         parser.error("init需要--id和--label")
     try:
-        dest = init_character(args.project, args.character_id, args.label)
+        dest = init_character(
+            args.project, args.character_id, args.label, language=args.language
+        )
     except AutoDLError as exc:
         parser.error(str(exc))
     print(dest)

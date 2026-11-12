@@ -1,0 +1,16 @@
+schema_version: 1
+entity_id: PROP-EXAMPLE
+revision: '01'
+category: prop
+label: 示例道具
+aliases: []
+attributes:
+  shape: null
+  material: null
+  scale_and_basis: null
+  grip_or_support: null
+  physical_response: null
+variants: {}  # 完整/损坏等可复用状态，文件引用asset_id+revision
+references: []
+style_reference: null
+provenance: {path_base: repository, sources: [], unresolved: []}

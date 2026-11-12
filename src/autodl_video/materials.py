@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import copy
 import hashlib
 from pathlib import Path
 
+from .asset_bindings import shot_identity_issues, validate_pin
 from .characters import VoiceApproval, check_shot_voices, shot_voice_issues
 from .config import load_yaml
 from .errors import AutoDLError
@@ -25,12 +27,15 @@ def local_path(base: Path, value: object, *, root: Path | None = None) -> Path:
 def _file_issue(
     base: Path, item: dict, *, image: bool = False, root: Path | None = None
 ) -> str | None:
+    if item.get("kind") == "character" and item.get("purpose") == "historical_source":
+        return "Historical character sources cannot replace the current reviewed three-view board"
     if item.get("state") != "ready":
         return "待补充或待检查：state 尚未标记为 ready"
     try:
         path = local_path(base, item.get("path"), root=root)
         if not path.is_file() or path.stat().st_size == 0:
             return "文件不存在或为空"
+        validate_pin(item, path)
         if image:
             with path.open("rb") as stream:
                 header = stream.read(12)
@@ -40,7 +45,9 @@ def _file_issue(
                 or (header.startswith(b"RIFF") and header[8:12] == b"WEBP")
             ):
                 return "需要真实的 PNG/JPEG/WebP 图片，提示词文本不算图片"
-    except (AutoDLError, OSError, ValueError):
+    except AutoDLError as exc:
+        return str(exc)
+    except (OSError, ValueError):
         return "需要可读取的本地文件路径"
     return None
 
@@ -143,6 +150,7 @@ def _check(path: Path, data: dict, shot_id: str | None, *, root: Path | None = N
                 required.add(asset_id)
     for key in [shot_id] if shot_id is not None else shots:
         issues.extend(shot_voice_issues(path, data, key, root=root))
+        issues.extend(shot_identity_issues(path, data, key, root=root))
     for key in DOCUMENTS:
         item = data["documents"].get(key, {})
         reason = _file_issue(path.parent, item, root=root)
@@ -176,8 +184,14 @@ def check_materials(
 
 
 def assert_shot_ready(
-    manifest_path: Path, shot_id: str, inputs: dict, rules: dict, base_dir: Path,
-    *, root: Path | None = None,
+    manifest_path: Path,
+    shot_id: str,
+    inputs: dict,
+    rules: dict,
+    base_dir: Path,
+    *,
+    root: Path | None = None,
+    captured_pins: dict | None = None,
 ) -> dict[str, VoiceApproval]:
     manifest_path = resolve_media_path(manifest_path, root)
     data = _read(manifest_path)
@@ -206,11 +220,24 @@ def assert_shot_ready(
         image_count += expected == "image"
     if not image_count:
         raise AutoDLError("当前短剧图生视频流程需要至少一张已就绪参考图")
+    if captured_pins is not None:
+        captured_pins.update(
+            {
+                field: copy.deepcopy(data["assets"][asset_id]["library_ref"])
+                for field, asset_id in bindings.items()
+                if data["assets"][asset_id].get("library_ref") is not None
+            }
+        )
     return voices.approvals
 
 
 def check_config_materials(
-    config: dict, rules: dict, base_dir: Path, *, root: Path | None = None
+    config: dict,
+    rules: dict,
+    base_dir: Path,
+    *,
+    root: Path | None = None,
+    captured_pins: dict | None = None,
 ) -> dict[str, VoiceApproval]:
     linked = {"materials_manifest", "shot_id"} & config.keys()
     if not linked:
@@ -221,4 +248,6 @@ def check_config_materials(
     inputs = config.get("inputs", {})
     if not isinstance(inputs, dict):
         raise AutoDLError("inputs must be a mapping")
-    return assert_shot_ready(manifest, config["shot_id"], inputs, rules, base_dir, root=root)
+    return assert_shot_ready(
+        manifest, config["shot_id"], inputs, rules, base_dir, root=root, captured_pins=captured_pins
+    )

@@ -90,6 +90,83 @@ def approve(voices):
     save(path, data)
 
 
+def embedded_voice_fixture(voices):
+    approve(voices)
+    path, data, _ = voices
+    work = path.parent
+    (work / "引导.mp4").write_bytes(b"source-video-with-audio")
+    (work / "对白.aac").write_bytes(b"encoded-selected-speaker")
+    (work / "配音记录.json").write_text('{"task_id":"tts-existing-task"}', encoding="utf-8")
+    data["assets"]["GUIDE"] = {"kind": "video", "path": "引导.mp4", "state": "ready"}
+    data["assets"]["DIALOGUE"] = {"kind": "audio", "path": "对白.aac", "state": "ready"}
+
+    def digest(name):
+        return hashlib.sha256((work / name).read_bytes()).hexdigest()
+
+    evidence = {
+        "schema_version": 1,
+        "kind": "embedded_source_audio",
+        "character_id": "GIRL",
+        "video_sha256": digest("引导.mp4"),
+        "dialogue_sha256": digest("对白.aac"),
+        "voice_sample_sha256": digest("声音.wav"),
+        "audio_stream_copy_verified": True,
+        "provenance": {"path": "配音记录.json", "sha256": digest("配音记录.json")},
+    }
+    (work / "音轨审计.json").write_text(json.dumps(evidence), encoding="utf-8")
+    data["shots"]["EMBEDDED"] = {
+        "required_assets": ["IMAGE", "GUIDE", "DIALOGUE", "VOICE"],
+        "reference_bindings": {"img": "IMAGE", "ref_video": "GUIDE"},
+        "speakers": ["GIRL"],
+        "voice_bindings": {"ref_video": "GIRL"},
+        "source_audio": {
+            "character_id": "GIRL",
+            "input_field": "ref_video",
+            "dialogue_asset": "DIALOGUE",
+            "evidence": {"path": "音轨审计.json", "sha256": digest("音轨审计.json")},
+        },
+    }
+    save(path, data)
+    return path, data
+
+
+def test_embedded_track_uses_real_video_input_and_pins_sent_bytes(voices):
+    from autodl_video.characters import validate_voice_payload
+
+    path, _ = embedded_voice_fixture(voices)
+    rules = {"img": {"type": "image"}, "ref_video": {"type": "video"}}
+    approvals = assert_shot_ready(
+        path, "EMBEDDED", {"img": "图.png", "ref_video": "引导.mp4"}, rules, path.parent
+    )
+    payload = {
+        "ref_video": "data:video/mp4;base64,"
+        + base64.b64encode(b"source-video-with-audio").decode()
+    }
+    validate_voice_payload(payload, approvals)
+    payload["ref_video"] = "data:video/mp4;base64," + base64.b64encode(b"changed-video").decode()
+    with pytest.raises(AutoDLError, match="实际提交"):
+        validate_voice_payload(payload, approvals)
+
+
+@pytest.mark.parametrize(
+    "changed", ["引导.mp4", "对白.aac", "声音.wav", "音轨审计.json", "配音记录.json"]
+)
+def test_embedded_track_rejects_changed_provenance_or_media(voices, changed):
+    path, data = embedded_voice_fixture(voices)
+    with (path.parent / changed).open("ab") as f:
+        f.write(b"changed")
+    assert shot_voice_issues(path, data, "EMBEDDED", {"ref_video": {"type": "video"}})
+
+
+def test_embedded_track_rejects_unapproved_speaker_and_nonvideo_field(voices):
+    path, data = embedded_voice_fixture(voices)
+    assert shot_voice_issues(path, data, "EMBEDDED", {"ref_video": {"type": "image"}})
+    profile = yaml.safe_load((path.parent / "少女.yaml").read_text(encoding="utf-8"))
+    profile["voice"]["status"] = "unconfigured"
+    save(path.parent / "少女.yaml", profile)
+    assert shot_voice_issues(path, data, "EMBEDDED", {"ref_video": {"type": "video"}})
+
+
 def test_pending_voice_blocks_only_dependent_shot(voices):
     path, _, _ = voices
     assert check_materials(path, "SILENT")["ready"]
@@ -245,8 +322,11 @@ def test_voice_policy_cannot_borrow_another_works_same_character_id(voices):
     rules = {"img": {"type": "image"}, "ref_audio_0": {"type": "audio"}}
     with pytest.raises(AutoDLError, match="所属作品"):
         assert_shot_ready(
-            path, "SPEAK", {"img": "图.png", "ref_audio_0": "另一个作品/声音.wav"},
-            rules, path.parent,
+            path,
+            "SPEAK",
+            {"img": "图.png", "ref_audio_0": "另一个作品/声音.wav"},
+            rules,
+            path.parent,
         )
 
 
@@ -266,22 +346,35 @@ def test_voice_policy_requires_real_entry_but_allows_nested_manifests(voices):
     manifest = nested / "materials.yaml"
     save(manifest, data)
     assert_shot_ready(
-        manifest, "SPEAK", {"img": "图.png", "ref_audio_0": "声音.wav"},
-        {"img": {"type": "image"}, "ref_audio_0": {"type": "audio"}}, path.parent,
+        manifest,
+        "SPEAK",
+        {"img": "图.png", "ref_audio_0": "声音.wav"},
+        {"img": {"type": "image"}, "ref_audio_0": {"type": "audio"}},
+        path.parent,
     )
 
 
 def voice_config(voices):
     path, _, _ = voices
     (path.parent / "catalog").mkdir(exist_ok=True)
-    save(path.parent / "catalog/workflows.yaml", {
-        "schema_version": 1,
-        "workflows": {"demo": {"input_rules": {
-            "img": {"type": "image"}, "ref_audio_0": {"type": "audio"},
-        }}},
-    })
+    save(
+        path.parent / "catalog/workflows.yaml",
+        {
+            "schema_version": 1,
+            "workflows": {
+                "demo": {
+                    "input_rules": {
+                        "img": {"type": "image"},
+                        "ref_audio_0": {"type": "audio"},
+                    }
+                }
+            },
+        },
+    )
     config = {
-        "workflow_id": "demo", "materials_manifest": "materials.yaml", "shot_id": "SPEAK",
+        "workflow_id": "demo",
+        "materials_manifest": "materials.yaml",
+        "shot_id": "SPEAK",
         "inputs": {"img": "图.png", "ref_audio_0": "声音.wav"},
     }
     save(path.parent / "shot.yaml", config)
@@ -336,17 +429,24 @@ def mock_voice_submission(voices, monkeypatch, *, shot_id="SPEAK", extra_purpose
     if extra_purpose is not None:
         (path.parent / "额外参考.wav").write_bytes(b"RIFF-extra-unapproved-reference")
         data["assets"]["EXTRA"] = {
-            "kind": "audio", "purpose": extra_purpose, "required": False,
-            "path": "额外参考.wav", "state": "ready",
+            "kind": "audio",
+            "purpose": extra_purpose,
+            "required": False,
+            "path": "额外参考.wav",
+            "state": "ready",
         }
         data["shots"][shot_id]["reference_bindings"]["ref_audio_1"] = "EXTRA"
         config["inputs"]["ref_audio_1"] = "额外参考.wav"
         rules["ref_audio_1"] = {"type": "audio"}
     save(path, data)
     save(config_path, config)
-    save(path.parent / "catalog/workflows.yaml", {
-        "schema_version": 1, "workflows": {"demo": {"input_rules": rules}},
-    })
+    save(
+        path.parent / "catalog/workflows.yaml",
+        {
+            "schema_version": 1,
+            "workflows": {"demo": {"input_rules": rules}},
+        },
+    )
     requests = []
 
     def handler(request):
@@ -370,12 +470,15 @@ def test_unbound_extra_character_voice_blocks_before_network(voices, monkeypatch
     approve(voices)
     path, _, _ = voices
     config_path, _, requests = mock_voice_submission(
-        voices, monkeypatch, extra_purpose="character_voice",
+        voices,
+        monkeypatch,
+        extra_purpose="character_voice",
     )
     report = check_materials(path, "SPEAK")
     assert not report["ready"]
-    assert any("ref_audio_1" in issue and "缺少voice_bindings" in issue
-               for issue in report["issues"])
+    assert any(
+        "ref_audio_1" in issue and "缺少voice_bindings" in issue for issue in report["issues"]
+    )
     with pytest.raises(AutoDLError, match="缺少voice_bindings"):
         VideoProject(path.parent).generate(config_path, wait=False)
     assert requests == []
@@ -384,7 +487,9 @@ def test_unbound_extra_character_voice_blocks_before_network(voices, monkeypatch
 
 @pytest.mark.parametrize("stale_binding", [False, True])
 def test_silent_shot_removes_unused_voice_without_requesting_approval(
-    voices, monkeypatch, stale_binding,
+    voices,
+    monkeypatch,
+    stale_binding,
 ):
     path, data, profile = voices
     profile["speech_usage"] = "none"
@@ -392,7 +497,10 @@ def test_silent_shot_removes_unused_voice_without_requesting_approval(
     save(path.parent / "少女.yaml", profile)
     data["shots"] = {"SILENT": data["shots"]["SILENT"]}
     config_path, config, requests = mock_voice_submission(
-        voices, monkeypatch, shot_id="SILENT", extra_purpose="character_voice",
+        voices,
+        monkeypatch,
+        shot_id="SILENT",
+        extra_purpose="character_voice",
     )
     if stale_binding:
         data["shots"]["SILENT"]["voice_bindings"]["ref_audio_1"] = "GIRL"
@@ -419,12 +527,16 @@ def test_silent_shot_removes_unused_voice_without_requesting_approval(
 
 @pytest.mark.parametrize("extra_purpose", [None, "ambient_sound", "emotion_reference"])
 def test_approved_voice_and_other_audio_keep_submission_semantics(
-    voices, monkeypatch, extra_purpose,
+    voices,
+    monkeypatch,
+    extra_purpose,
 ):
     approve(voices)
     path, _, _ = voices
     config_path, _, requests = mock_voice_submission(
-        voices, monkeypatch, extra_purpose=extra_purpose,
+        voices,
+        monkeypatch,
+        extra_purpose=extra_purpose,
     )
     assert check_materials(path, "SPEAK")["ready"]
     result = VideoProject(path.parent).generate(config_path, wait=False)
@@ -432,19 +544,24 @@ def test_approved_voice_and_other_audio_keep_submission_semantics(
     posts = [request for request in requests if request.method == "POST"]
     assert len(posts) == 1
     payload = json.loads(posts[0].content)
-    assert base64.b64decode(payload["ref_audio_0"].split(",", 1)[1]) == (
-        path.parent / "声音.wav"
-    ).read_bytes()
+    assert (
+        base64.b64decode(payload["ref_audio_0"].split(",", 1)[1])
+        == (path.parent / "声音.wav").read_bytes()
+    )
     if extra_purpose is not None:
-        assert base64.b64decode(payload["ref_audio_1"].split(",", 1)[1]) == (
-            path.parent / "额外参考.wav"
-        ).read_bytes()
+        assert (
+            base64.b64decode(payload["ref_audio_1"].split(",", 1)[1])
+            == (path.parent / "额外参考.wav").read_bytes()
+        )
     assert (path.parent / ".autodl/tasks/voice-test.json").is_file()
 
 
 @pytest.mark.parametrize("foreign_reference", ["profile", "audio"])
 def test_nested_work_cannot_supply_character_or_voice_approval(
-    voices, monkeypatch, capsys, foreign_reference,
+    voices,
+    monkeypatch,
+    capsys,
+    foreign_reference,
 ):
     approve(voices)
     path, data, profile = voices
@@ -476,18 +593,26 @@ def test_nested_work_cannot_supply_character_or_voice_approval(
 
 
 def test_explicit_root_applies_to_all_migrated_references_and_transmitted_bytes(
-    voices, monkeypatch, capsys,
+    voices,
+    monkeypatch,
+    capsys,
 ):
     approve(voices)
     path, data, profile = voices
     root = path.parent
-    data.update(schema_version=2, creative_confirmation={
-        "state": "confirmed", "confirmation_ref": "本作品剧本确认",
-        "script_sha256": hashlib.sha256((root / "script.md").read_bytes()).hexdigest(),
-    })
+    data.update(
+        schema_version=2,
+        creative_confirmation={
+            "state": "confirmed",
+            "confirmation_ref": "本作品剧本确认",
+            "script_sha256": hashlib.sha256((root / "script.md").read_bytes()).hexdigest(),
+        },
+    )
     aliases = {
-        "legacy/project.yaml": "project.yaml", "legacy/materials.yaml": "materials.yaml",
-        "legacy/girl.yaml": "少女.yaml", "legacy/voice.wav": "声音.wav",
+        "legacy/project.yaml": "project.yaml",
+        "legacy/materials.yaml": "materials.yaml",
+        "legacy/girl.yaml": "少女.yaml",
+        "legacy/voice.wav": "声音.wav",
         "legacy/image.png": "图.png",
     }
     for document in data["documents"].values():
@@ -502,7 +627,8 @@ def test_explicit_root_applies_to_all_migrated_references_and_transmitted_bytes(
     save(root / "project.yaml", {"characters": {"GIRL": "legacy/girl.yaml"}})
     (root / ".autodl").mkdir()
     (root / ".autodl/path-map.json").write_text(
-        json.dumps({"files": aliases, "directories": {}}), encoding="utf-8",
+        json.dumps({"files": aliases, "directories": {}}),
+        encoding="utf-8",
     )
     config_path, config, requests = mock_voice_submission(voices, monkeypatch)
     config.update(materials_manifest="legacy/materials.yaml")
@@ -529,13 +655,18 @@ def test_explicit_root_applies_to_all_migrated_references_and_transmitted_bytes(
 @pytest.mark.parametrize("changed_field", ["ref_audio_0", "ref_audio_1"])
 @pytest.mark.parametrize("after_read", ["keep_changed", "restore_file", "replace_receipt"])
 def test_submission_checks_frozen_voice_bytes_against_captured_approval(
-    voices, monkeypatch, changed_field, after_read,
+    voices,
+    monkeypatch,
+    changed_field,
+    after_read,
 ):
     approve(voices)
     manifest, data, profile = voices
     root = manifest.parent
     config_path, config, requests = mock_voice_submission(
-        voices, monkeypatch, extra_purpose="character_voice",
+        voices,
+        monkeypatch,
+        extra_purpose="character_voice",
     )
     second = copy.deepcopy(profile)
     second["character_id"] = "OTHER"
@@ -558,9 +689,15 @@ def test_submission_checks_frozen_voice_bytes_against_captured_approval(
     replacement = b"RIFF-unapproved-replacement"
     alias = "legacy/voice.wav"
     (root / ".autodl").mkdir()
-    (root / ".autodl/path-map.json").write_text(json.dumps({
-        "files": {alias: sample.name}, "directories": {},
-    }), encoding="utf-8")
+    (root / ".autodl/path-map.json").write_text(
+        json.dumps(
+            {
+                "files": {alias: sample.name},
+                "directories": {},
+            }
+        ),
+        encoding="utf-8",
+    )
     chosen["voice"]["reference_audio"] = alias
     save(character_file, chosen)
     data["assets"][shot["reference_bindings"][changed_field]]["path"] = alias

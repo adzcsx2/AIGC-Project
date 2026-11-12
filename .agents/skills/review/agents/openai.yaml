@@ -1,0 +1,6 @@
+interface:
+  display_name: "文案、设计与媒体五轮审计（review）"
+  short_description: "完整审计并修订5轮，最终无遗留问题且必需证据齐全才放行；区分设计与媒体实测"
+  default_prompt: "Use $review for five fresh full-scope audit passes on this text, design, or provided media, repairing within scope unless review-only; check action speed independently where applicable, distinguish design from measured evidence, and report CLEAN only after all five passes and a final clean verdict with every mandatory item verified, otherwise BLOCKED."
+policy:
+  allow_implicit_invocation: true

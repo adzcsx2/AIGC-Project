@@ -1,4 +1,5 @@
 # 保存到 projects/<作品>/materials.yaml；占位素材不得标ready。
+# 共享素材用tools/资产.py import锁定library_ref/sha256及本作品路径；不手填浮动latest或跨作品API媒体路径。
 # 新人物/动物先有合格三视图，再制作含角色场景图；逐个登记为character资产并实际绑定API，不仅登记场景图。
 schema_version: 2
 voice_policy:
@@ -39,6 +40,7 @@ assets:
       asset.
 shots:
   SHOT-01:
+    character_looks: {}  # 共享角色按镜换装：CHAR-01: {look_id: winter, board_asset_id: CHAR-WINTER}；不填则用角色当前造型
     speakers: null  # 仅列本镜剧本要求说话的人物；无人说话填[]，呼吸/吼声不算说话
     voice_bindings: {}  # 如ref_audio_0: CHAR-01；同时在reference_bindings登记音频资产
     required_assets:
