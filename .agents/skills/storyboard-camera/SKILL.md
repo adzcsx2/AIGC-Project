@@ -5,7 +5,7 @@ description: 承接电影级基准，为已确认内容设计分镜、分段、�
 
 # 分镜与摄影
 
-当前新视频按[u30多图规则](../../../docs/工作流/director-workflow.md#u30多图身份身高与完整同框规则)执行：只用u30，不制作白模。以下白模专项仅在审已有白模/历史任务或用户明确另定时适用；不能反推为本轮制作前置。
+当前新视频按[u30多图规则](../../../docs/工作流/director-workflow.md#u30多图身份身高与完整同框规则)执行：只用u30，不制作/提交白模视频。尺寸/空间关键参考图按用户2026-11-13采纳的[静态白模构图→写实参考图](../../../docs/工作流/白模制作与验收.md#静态白模构图图与写实参考图)先验证一张再复用；该静态图用途与后文历史/另行要求的白模视频专项分开，静图不证明动作速度。
 
 Whitebox input must follow the [model-only guide contract](../../../docs/工作流/白模制作与验收.md#model-demonstration-only-environment-from-reference-images): demonstrate simple models, scale/space/orientation, motion and camera on a blank neutral canvas. Supply environment/appearance through separate reference images; no scene image plane or frozen photographic actor in ref_video. Check evaluated world rotations, including the active rotation mode/channel.
 
@@ -45,7 +45,7 @@ Whitebox input must follow the [model-only guide contract](../../../docs/工作�
 
 ## 模型提示词
 
-新视频统一u30多图，不制作/提交白模；按[u30多图规则](../../../docs/工作流/director-workflow.md#u30多图身份身高与完整同框规则)准备身份、站立尺度、完整姿态/同框和环境参考，先review提示词/素材方案再生图，实际图片核对与总审计后按已有授权执行。历史任务沿原ID恢复。
+新视频统一u30多图，不制作/提交白模视频；静态构图图仅按上述专节用于参考图前置；按[u30多图规则](../../../docs/工作流/director-workflow.md#u30多图身份身高与完整同框规则)准备身份、站立尺度、完整姿态/同框和环境参考，先review提示词/素材方案再生图，实际图片核对与总审计后按已有授权执行。历史任务沿原ID恢复。
 
 - 按导演流程「项目风格与防漂移」读取本作品 `project.yaml.documents.style` 与实际基准；每个独立请求的英文正文落实适用风格核心，覆盖近景和后半段。明确身份/风格/环境/动作参考职责，风格文件ready不等于已继承；记录来源版本并核对实际配置，不让白模简化外观成为最终风格。
 

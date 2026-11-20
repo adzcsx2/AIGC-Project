@@ -5,7 +5,7 @@ description: 保留已有视频动作/运镜的角色替换、白模转绘与动
 
 # 原视频驱动角色替换
 
-当前新视频统一u30多图，不制作/提交白模；见[当前导演规则](../../../docs/工作流/director-workflow.md#u30多图身份身高与完整同框规则)。本技能的白模/视频驱动细节仅供历史任务恢复或用户以后明确另定用途，不是当前新视频默认；不自动切回titim。
+当前新视频统一u30多图，不制作/提交白模视频；尺寸/空间关键参考图允许先做[静态白模构图→写实参考图](../../../docs/工作流/白模制作与验收.md#静态白模构图图与写实参考图)，静态工程由blender-video-original承接。本技能的运动白模/视频驱动细节仅供历史任务或用户另定用途，不是当前新视频默认；不自动切回titim。
 
 多主体输入须先把实际身份图序、白模起始左右、身高/同框图排列和英文映射统一，不能只靠prompt纠正相反排序。执行[图序与空间映射](../../../docs/工作流/video-retargeting.md#多主体图序与空间映射)，辅助图按真实槽位语义使用。
 
@@ -13,7 +13,7 @@ description: 保留已有视频动作/运镜的角色替换、白模转绘与动
 
 Whitebox input must follow the [model-only guide contract](../../../docs/工作流/白模制作与验收.md#model-demonstration-only-environment-from-reference-images): demonstrate simple models, scale/space/orientation, motion and camera on a blank neutral canvas. Supply environment/appearance through separate reference images; no scene image plane or frozen photographic actor in ref_video. Check evaluated world rotations, including the active rotation mode/channel.
 
-新增/重做视频内容遵从当前u30无白模规则；历史原片驱动任务恢复保留原输入和task_id，不重新提交。
+新增/重做视频内容遵从当前u30无白模视频规则；历史原片驱动任务恢复保留原输入和task_id，不重新提交。
 
 人物按 `docs/工作流/character-voice.md` 独立建档；仅剧本需要人物说话时配置音色，无台词/非语言声不触发。明确保留源声时记录源片声音来源，不从“已有音轨”推定用户已选定角色声线。titim当前无独立声音参考槽，不伪造字段或为建档重做原片；要换配音时审计实际路线，继续无关工作，最后集中试听。
 
@@ -36,7 +36,7 @@ Whitebox input must follow the [model-only guide contract](../../../docs/工作�
 
 ## 先判断输入与目的
 
-- 默认有白模视频用titim并实际绑定ref_video，没有白模视频才用u30；仍先完成简单白模，按此路由无需逐次询问接口。原片驱动保留真实视频用途；用户明确另定时遵从，真实不兼容时说明具体缺口，不删视频降级或伪造字段。简单占位约束空间/摄影，身体细节由提示词补全；用途与兼容路线以导演流程为准。
+- 新视频固定按当前u30路线，静态白模图只用于前置生图校准，不产生titim/ref_video默认。历史原片/白模视频任务保留真实用途、原入口和task_id；用户另行指定视频驱动时核对实际兼容能力和授权，不因旧示例恢复运动白模默认，不伪造字段。
 - 只想让角色模仿动作：说明可选专用入口的能力差异；只有用户明确另选后才用Wan等，不承诺背景逐像素不变。
 - 想自己设计空间与运镜：新任务由`blender-video-original`优先调用本机`D:\blender-5.3.0\blender.exe`；参考视频需三维重建/修正用`blender-video-recreate`。
   `huashu-seedance`只保留明确指定的旧scene.json/照片拟合流程；这些技能均不自带任意视频自动动捕。
@@ -72,7 +72,7 @@ Whitebox input must follow the [model-only guide contract](../../../docs/工作�
 - 实际查看自己的角色图，核对全身比例、脸、服装、身体结构、武器、画风与目标镜头是否可见。
   身份与身体结构缺口使用 `character-reference-board` 的固定三视图；按已授权工具生成或交付用户指定的MJ提示词，
   不把“等用户补图”当作已有生成授权下的固定停点。
-- 有白模视频默认titim、无白模才默认u30，实际输入按导演流程核实；下方旧示例不覆盖当前路由、真实能力与用户明确指定。
+- 旧有白模视频→titim分流仅作历史任务恢复依据；新视频仍按当前u30规则，静态白模图只供前置转绘，不能因有静图切回titim。下方旧示例不覆盖当前路由与真实能力。
 - 用户选用 `minimax_h3_zm_titim` 时，真实输入为 `ref_image_0..8` + `ref_video`。
   明确图1换哪个原片主体；位置或特征以所查看的原片为准，不靠文件名猜。
   `video_subject_to_replace` 默认 person，仅按平台支持填英文检测类别；

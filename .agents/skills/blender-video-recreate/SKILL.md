@@ -6,11 +6,11 @@ license: MIT
 
 # 参考视频复刻三维白模
 
-当前新视频统一u30多图，不制作/提交白模；见[当前导演规则](../../../docs/工作流/director-workflow.md#u30多图身份身高与完整同框规则)。本技能的白模/视频驱动细节仅供历史任务恢复或用户以后明确另定用途，不是当前新视频默认；不自动切回titim。
+当前新视频统一u30多图，不制作/提交白模视频；尺寸/空间关键参考图允许先做[静态白模构图→写实参考图](../../../docs/工作流/白模制作与验收.md#静态白模构图图与写实参考图)，静态工程由blender-video-original承接。本技能的运动白模/视频驱动细节仅供历史任务或用户另定用途，不是当前新视频默认；不自动切回titim。
 
 Whitebox input must follow the [model-only guide contract](../../../docs/工作流/白模制作与验收.md#model-demonstration-only-environment-from-reference-images): demonstrate simple models, scale/space/orientation, motion and camera on a blank neutral canvas. Supply environment/appearance through separate reference images; no scene image plane or frozen photographic actor in ref_video. Check evaluated world rotations, including the active rotation mode/channel.
 
-新视频制作默认先做简单白模；按 [共享规范](../../../docs/工作流/白模制作与验收.md#默认先做白模) 区分合格已有白模复用、用户明确例外及纯文件处理。源片动作/摄影保留要求由预演对照验证，不为默认流程重做已认可旧片。
+本技能只在明确要求的源片运动白模复刻/修正或历史恢复范围执行；按[共享规范](../../../docs/工作流/白模制作与验收.md#运动白模技术与历史范围)复用已有合格引导，源片动作/摄影要求由实际预演对照，不默认重做已认可旧片。新参考图静态构图交blender-video-original，见上方专节。
 
 先读 `docs/skill-routing.md` 与根目录 `AGENTS.md`。源片可来自其他视频工具或用户已有视频；需三维复刻/修正时优先用 `D:\blender-5.3.0\blender.exe`。已有合格白模且只换人物、场景时，直接交 `video-retargeting`，不额外制作白模。
 
